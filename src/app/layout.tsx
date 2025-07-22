@@ -22,8 +22,9 @@ export const metadata: Metadata = {
         'salsa, Amsterdam, events, parties, workshops, rueda, Cuban salsa, latin dance',
 };
 
-// GTM ID - in production, use environment variable
+// GTM ID and GA4 ID - in production, use environment variables
 const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID || 'GTM-NPW3P6K6';
+const GA4_ID = process.env.NEXT_PUBLIC_GA4_ID || 'G-Q9G97ZV7QT';
 
 export default function RootLayout({
     children,
@@ -47,6 +48,27 @@ export default function RootLayout({
             `,
                     }}
                 />
+
+                {/* Google Analytics 4 (gtag.js) - Optional: Use either this OR GTM, not both */}
+                {/* Uncomment below if you want direct GA4 instead of via GTM */}
+                {/*
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA4_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script
+          id="google-analytics"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${GA4_ID}');
+            `,
+          }}
+        />
+        */}
             </head>
             <body
                 className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-gray-900`}
