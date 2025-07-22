@@ -102,7 +102,7 @@ export default function EventCard({ event }: EventCardProps) {
                 {event.vibe && (
                     <div className='mb-3'>
                         <p className='text-sm text-gray-600 italic bg-gray-50 p-2 rounded-lg'>
-                            "{event.vibe}"
+                            &ldquo;{event.vibe}&rdquo;
                         </p>
                     </div>
                 )}

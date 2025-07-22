@@ -7,7 +7,7 @@ import { salsaEvents } from '@/data/events';
 export default function LocatiesPage() {
     // Groepeer events per stad
     const eventsByCity = useMemo(() => {
-        const cities: { [key: string]: any[] } = {};
+        const cities: { [key: string]: typeof salsaEvents } = {};
         salsaEvents.forEach((event) => {
             if (!cities[event.city]) {
                 cities[event.city] = [];
@@ -19,7 +19,12 @@ export default function LocatiesPage() {
 
     // Krijg unieke venues
     const venues = useMemo(() => {
-        const venueMap: { [key: string]: any } = {};
+        const venueMap: { [key: string]: {
+            name: string;
+            city: string;
+            location: string;
+            events: typeof salsaEvents;
+        } } = {};
         salsaEvents.forEach((event) => {
             const key = `${event.venue}-${event.city}`;
             if (!venueMap[key]) {
@@ -148,7 +153,7 @@ export default function LocatiesPage() {
                                 <div className='space-y-2'>
                                     {venue.events
                                         .slice(0, 3)
-                                        .map((event: any) => (
+                                        .map((event) => (
                                             <div
                                                 key={event.id}
                                                 className='flex items-center gap-2 text-xs text-gray-500'

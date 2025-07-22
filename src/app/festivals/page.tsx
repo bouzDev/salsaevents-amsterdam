@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
-import { Calendar, Music, Trophy, Users, Star } from 'lucide-react';
+import { Calendar, Music, Trophy, Users } from 'lucide-react';
 import EventCard from '@/components/EventCard';
 import { salsaEvents } from '@/data/events';
 

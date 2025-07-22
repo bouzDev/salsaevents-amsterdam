@@ -1,10 +1,10 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { Search, Filter, Calendar, MapPin, Music, Heart } from 'lucide-react';
+import { Search, Calendar, MapPin, Music, Heart } from 'lucide-react';
 import EventCard from '@/components/EventCard';
 import { salsaEvents } from '@/data/events';
-import { SalsaEvent } from '@/types/event';
+
 
 export default function Home() {
     const [searchTerm, setSearchTerm] = useState('');
