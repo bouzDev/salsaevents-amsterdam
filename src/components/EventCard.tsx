@@ -7,6 +7,14 @@ interface EventCardProps {
     event: SalsaEvent;
 }
 
+// Extend Window interface for GTM
+declare global {
+    interface Window {
+        gtag?: (command: string, targetId: string, parameters?: Record<string, unknown>) => void;
+        dataLayer?: Record<string, unknown>[];
+    }
+}
+
 const getEventTypeColor = (type: string) => {
     switch (type) {
         case 'party':
@@ -22,10 +30,42 @@ const getEventTypeColor = (type: string) => {
     }
 };
 
+// GTM tracking function
+const trackEventClick = (
+    eventTitle: string,
+    eventType: string,
+    url: string
+) => {
+    if (typeof window !== 'undefined' && window.gtag) {
+        window.gtag('event', 'event_click', {
+            event_category: 'engagement',
+            event_label: eventTitle,
+            event_type: eventType,
+            destination_url: url,
+        });
+    }
+
+    // Also push to dataLayer for GTM
+    if (typeof window !== 'undefined' && window.dataLayer) {
+        window.dataLayer.push({
+            event: 'event_click',
+            event_title: eventTitle,
+            event_type: eventType,
+            destination_url: url,
+        });
+    }
+};
+
 export default function EventCard({ event }: EventCardProps) {
     const formattedDate = format(parseISO(event.date), 'EEEE, MMMM do', {
         locale: enUS,
     });
+
+    const handleMoreInfoClick = () => {
+        if (event.url) {
+            trackEventClick(event.title, event.type, event.url);
+        }
+    };
 
     return (
         <div className='card p-6 hover:shadow-sm'>
@@ -82,7 +122,7 @@ export default function EventCard({ event }: EventCardProps) {
                     {/* Vibe */}
                     {event.vibe && (
                         <p className='text-caption text-gray-600 italic mb-3'>
-                            "{event.vibe}"
+                            &ldquo;{event.vibe}&rdquo;
                         </p>
                     )}
 
@@ -113,6 +153,7 @@ export default function EventCard({ event }: EventCardProps) {
                             href={event.url}
                             target='_blank'
                             rel='noopener noreferrer'
+                            onClick={handleMoreInfoClick}
                             className='btn-secondary inline-flex items-center gap-2 px-4 py-2 text-sm'
                         >
                             More info

@@ -22,7 +22,7 @@ export default function FestivalsPage() {
                 </h1>
                 <p className='text-body text-gray-600 max-w-2xl mx-auto mb-8'>
                     From intensive workshops to spectacular festivals - here
-                    you'll find everything to take your salsa skills to the next
+                    you&apos;ll find everything to take your salsa skills to the next
                     level.
                 </p>
 
@@ -86,7 +86,7 @@ export default function FestivalsPage() {
                             </h3>
                             <p className='text-body text-gray-600 mb-6'>
                                 Improve your techniques with professional
-                                instructors. From beginners to advanced, there's
+                                instructors. From beginners to advanced, there&apos;s
                                 always something new to learn in the world of
                                 salsa.
                             </p>

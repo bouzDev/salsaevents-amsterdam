@@ -50,7 +50,7 @@ export default function LocationsPage() {
                     Salsa Locations
                 </h1>
                 <p className='text-body text-gray-600 max-w-2xl mx-auto mb-8'>
-                    From intimate cafés to grand event halls - here you'll find
+                    From intimate cafés to grand event halls - here you&apos;ll find
                     all the hotspots where you can dance in the Netherlands.
                 </p>
 
