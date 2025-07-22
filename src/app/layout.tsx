@@ -14,9 +14,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-    title: 'SalsaEvents Amsterdam - Waar dansen we salsa deze week?',
+    title: 'SalsaEvents Amsterdam - Where are we dancing salsa this week?',
     description:
-        'Ontdek de beste salsa evenementen, parties, workshops en festivals in Amsterdam en omgeving. Van rueda tot Cuban salsa, vind jouw perfecte dansavond!',
+        'Discover the best salsa events, parties, workshops and festivals in Amsterdam and surrounding areas. From rueda to Cuban salsa, find your perfect dance night!',
     keywords:
         'salsa, Amsterdam, events, parties, workshops, rueda, Cuban salsa, latin dance',
 };
@@ -27,9 +27,9 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang='nl'>
+        <html lang='en'>
             <body
-                className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50 min-h-screen`}
+                className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-gray-900`}
             >
                 <Navbar />
                 <main>{children}</main>

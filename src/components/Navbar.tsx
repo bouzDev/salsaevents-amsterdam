@@ -1,47 +1,43 @@
 'use client';
 
 import { useState } from 'react';
-import { Menu, X, Calendar, Music, MapPin } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import Link from 'next/link';
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
-        <nav className='bg-gradient-to-r from-red-600 to-orange-600 text-white shadow-lg sticky top-0 z-50'>
-            <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
-                <div className='flex justify-between items-center h-16'>
+        <nav className='border-b border-gray-200 bg-white/80 backdrop-blur-md sticky top-0 z-50'>
+            <div className='max-w-6xl mx-auto px-6'>
+                <div className='flex justify-between items-center h-12'>
                     {/* Logo */}
                     <Link
                         href='/'
-                        className='flex items-center space-x-2 group'
+                        className='font-semibold text-gray-900 text-lg'
                     >
-                        <Music className='w-8 h-8 group-hover:rotate-12 transition-transform' />
-                        <span className='text-xl font-bold'>SalsaEvents</span>
+                        SalsaEvents
                     </Link>
 
                     {/* Desktop Menu */}
                     <div className='hidden md:flex items-center space-x-8'>
                         <Link
                             href='/'
-                            className='flex items-center space-x-1 hover:text-yellow-200 transition-colors'
+                            className='text-gray-600 hover:text-gray-900 text-sm font-medium transition-colors'
                         >
-                            <Calendar className='w-4 h-4' />
-                            <span>Events</span>
+                            Events
                         </Link>
                         <Link
                             href='/festivals'
-                            className='flex items-center space-x-1 hover:text-yellow-200 transition-colors'
+                            className='text-gray-600 hover:text-gray-900 text-sm font-medium transition-colors'
                         >
-                            <Music className='w-4 h-4' />
-                            <span>Festivals</span>
+                            Festivals
                         </Link>
                         <Link
-                            href='/locaties'
-                            className='flex items-center space-x-1 hover:text-yellow-200 transition-colors'
+                            href='/locations'
+                            className='text-gray-600 hover:text-gray-900 text-sm font-medium transition-colors'
                         >
-                            <MapPin className='w-4 h-4' />
-                            <span>Locaties</span>
+                            Locations
                         </Link>
                     </div>
 
@@ -49,12 +45,12 @@ export default function Navbar() {
                     <div className='md:hidden'>
                         <button
                             onClick={() => setIsOpen(!isOpen)}
-                            className='text-white hover:text-yellow-200 transition-colors'
+                            className='text-gray-600 hover:text-gray-900 p-1'
                         >
                             {isOpen ? (
-                                <X className='w-6 h-6' />
+                                <X className='w-5 h-5' />
                             ) : (
-                                <Menu className='w-6 h-6' />
+                                <Menu className='w-5 h-5' />
                             )}
                         </button>
                     </div>
@@ -62,31 +58,28 @@ export default function Navbar() {
 
                 {/* Mobile Menu */}
                 {isOpen && (
-                    <div className='md:hidden'>
-                        <div className='px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-red-700/50 rounded-lg mb-4'>
+                    <div className='md:hidden pb-4 pt-2'>
+                        <div className='space-y-2'>
                             <Link
                                 href='/'
-                                className='flex items-center space-x-2 px-3 py-2 rounded-md hover:bg-white/10 transition-colors'
+                                className='block px-3 py-2 text-gray-600 hover:text-gray-900 text-sm font-medium'
                                 onClick={() => setIsOpen(false)}
                             >
-                                <Calendar className='w-4 h-4' />
-                                <span>Events</span>
+                                Events
                             </Link>
                             <Link
                                 href='/festivals'
-                                className='flex items-center space-x-2 px-3 py-2 rounded-md hover:bg-white/10 transition-colors'
+                                className='block px-3 py-2 text-gray-600 hover:text-gray-900 text-sm font-medium'
                                 onClick={() => setIsOpen(false)}
                             >
-                                <Music className='w-4 h-4' />
-                                <span>Festivals</span>
+                                Festivals
                             </Link>
                             <Link
-                                href='/locaties'
-                                className='flex items-center space-x-2 px-3 py-2 rounded-md hover:bg-white/10 transition-colors'
+                                href='/locations'
+                                className='block px-3 py-2 text-gray-600 hover:text-gray-900 text-sm font-medium'
                                 onClick={() => setIsOpen(false)}
                             >
-                                <MapPin className='w-4 h-4' />
-                                <span>Locaties</span>
+                                Locations
                             </Link>
                         </div>
                     </div>
