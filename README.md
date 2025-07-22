@@ -1,36 +1,127 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 💃 SalsaEvents Amsterdam 🕺
 
-## Getting Started
+Een prachtige, moderne website voor het ontdekken van salsa evenementen in Amsterdam en omgeving!
 
-First, run the development server:
+![Next.js](https://img.shields.io/badge/Next.js-14-black?style=flat-square&logo=next.js)
+![TypeScript](https://img.shields.io/badge/TypeScript-blue?style=flat-square&logo=typescript)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat-square&logo=tailwind-css)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🌟 Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+-   **🎯 Event Discovery**: Ontdek salsa parties, workshops, festivals en sociale evenementen
+-   **🔍 Smart Search**: Zoek op titel, beschrijving, venue of stad
+-   **🏷️ Advanced Filtering**: Filter op event type en locatie
+-   **📱 Responsive Design**: Perfect op desktop, tablet en mobiel
+-   **🎨 Modern UI**: Prachtige gradients en animaties met salsa thema
+-   **📍 Location Pages**: Ontdek alle venues en steden
+-   **🎉 Festival Section**: Speciale sectie voor workshops en festivals
+-   **💭 Event Vibes**: Beschrijvingen van de sfeer bij elk evenement
+-   **🏷️ Tags System**: Gemakkelijk categoriseren en vinden van events
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🚀 Getting Started
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Prerequisites
 
-## Learn More
+-   Node.js 18+
+-   npm of yarn
 
-To learn more about Next.js, take a look at the following resources:
+### Installation
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Clone de repository:
+   \`\`\`bash
+   git clone [repository-url]
+   cd salsaevents-amsterdam
+   \`\`\`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+2. Installeer dependencies:
+   \`\`\`bash
+   npm install
+   \`\`\`
 
-## Deploy on Vercel
+3. Start de development server:
+   \`\`\`bash
+   npm run dev
+   \`\`\`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+4. Open [http://localhost:3000](http://localhost:3000) in je browser
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📁 Project Structure
+
+\`\`\`
+src/
+├── app/ # Next.js App Router
+│ ├── page.tsx # Homepage met alle events
+│ ├── festivals/ # Festivals & workshops pagina
+│ ├── locaties/ # Venues & steden pagina
+│ └── layout.tsx # Root layout
+├── components/ # React components
+│ ├── EventCard.tsx # Event card component
+│ └── Navbar.tsx # Navigatie component
+├── data/ # Mock data
+│ └── events.ts # Salsa events data
+└── types/ # TypeScript types
+└── event.ts # Event interfaces
+\`\`\`
+
+## 🎯 Event Data Structure
+
+Events bevatten de volgende informatie:
+
+-   **Basic Info**: Titel, beschrijving, datum, tijd
+-   **Location**: Venue, adres, stad
+-   **Categorization**: Type (party/workshop/festival/social)
+-   **Tags**: Voor gemakkelijk filteren
+-   **Vibe**: Beschrijving van de sfeer
+-   **Recurring**: Voor wekelijkse/maandelijkse events
+
+## 🎨 Styling & Design
+
+-   **Tailwind CSS** voor styling
+-   **Lucide React** voor icons
+-   **Salsa-inspired color scheme**: Reds, oranges, en warme kleuren
+-   **Responsive grid layouts**
+-   **Smooth animations en transitions**
+-   **Modern glassmorphism effects**
+
+## 🔧 Tech Stack
+
+-   **Framework**: Next.js 14 met App Router
+-   **Language**: TypeScript
+-   **Styling**: Tailwind CSS
+-   **Icons**: Lucide React
+-   **Date Handling**: date-fns met Nederlandse localization
+
+## 📱 Pages
+
+1. **Homepage (/)**: Alle events met search en filtering
+2. **Festivals (/festivals)**: Focus op workshops en festivals
+3. **Locaties (/locaties)**: Overzicht van venues en steden
+
+## 🚀 Deployment
+
+Build voor productie:
+\`\`\`bash
+npm run build
+npm start
+\`\`\`
+
+Of deploy naar Vercel:
+\`\`\`bash
+vercel --prod
+\`\`\`
+
+## 🤝 Contributing
+
+Contributions zijn welkom! Voel je vrij om:
+
+-   Issues te rapporteren
+-   Feature requests in te dienen
+-   Pull requests te maken
+
+## 📝 License
+
+Dit project is gemaakt voor de Nederlandse salsa community 💃🕺
+
+---
+
+**Gemaakt met ❤️ voor de salsa community in Nederland**
