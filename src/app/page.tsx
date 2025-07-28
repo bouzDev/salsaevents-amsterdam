@@ -10,9 +10,22 @@ export default function Home() {
     const [selectedCity, setSelectedCity] = useState('');
     const [selectedType, setSelectedType] = useState('');
 
-    // Filter events
+    // Helper function to check if event is in the future or today
+    const isEventUpcoming = (eventDate: string): boolean => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Reset time to start of day
+        const eventDateObj = new Date(eventDate);
+        return eventDateObj >= today;
+    };
+
+    // Filter events - only show upcoming events
     const filteredEvents = useMemo(() => {
         return salsaEvents.filter((event) => {
+            // First check if event is upcoming
+            if (!isEventUpcoming(event.date)) {
+                return false;
+            }
+
             const matchesSearch =
                 event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 event.description
@@ -28,9 +41,12 @@ export default function Home() {
         });
     }, [searchTerm, selectedCity, selectedType]);
 
-    // Get unique cities and types for filters
-    const cities = [...new Set(salsaEvents.map((event) => event.city))];
-    const types = [...new Set(salsaEvents.map((event) => event.type))];
+    // Get unique cities and types for filters (only from upcoming events)
+    const upcomingEvents = salsaEvents.filter((event) =>
+        isEventUpcoming(event.date)
+    );
+    const cities = [...new Set(upcomingEvents.map((event) => event.city))];
+    const types = [...new Set(upcomingEvents.map((event) => event.type))];
 
     return (
         <div className='bg-white min-h-screen'>
@@ -46,7 +62,7 @@ export default function Home() {
 
                 {/* Quick Stats */}
                 <div className='flex justify-center items-center gap-8 text-caption text-gray-500 mb-12'>
-                    <span>{salsaEvents.length} Events</span>
+                    <span>{upcomingEvents.length} Events</span>
                     <span>•</span>
                     <span>{cities.length} Cities</span>
                     <span>•</span>
