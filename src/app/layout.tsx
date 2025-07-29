@@ -38,20 +38,35 @@ export const metadata: Metadata = {
         address: false,
         telephone: false,
     },
-    metadataBase: new URL('https://salsaevents-amsterdam.vercel.app'),
+    metadataBase: new URL('https://salsaevents-amsterdam.com'),
     icons: {
         icon: [
-            { url: '/favicon.ico', sizes: '32x32', type: 'image/x-icon' },
-            { url: '/salsaeventslogo.svg', type: 'image/svg+xml' }
+            {
+                url: '/my-favicon/favicon.ico',
+                sizes: '32x32',
+                type: 'image/x-icon',
+            },
+            { url: '/my-favicon/favicon.svg', type: 'image/svg+xml' },
+            {
+                url: '/my-favicon/favicon-96x96.png',
+                sizes: '96x96',
+                type: 'image/png',
+            },
         ],
-        shortcut: '/favicon.ico',
-        apple: '/salsaeventslogo.svg',
+        shortcut: '/my-favicon/favicon.ico',
+        apple: '/my-favicon/apple-touch-icon.png',
+    },
+    manifest: '/my-favicon/site.webmanifest',
+    appleWebApp: {
+        title: 'Salsa Events',
+        statusBarStyle: 'default',
+        capable: true,
     },
     openGraph: {
         title: 'Cuban Salsa Events Amsterdam - Where to Dance Cuban Salsa This Week',
         description:
             'Discover the best Cuban salsa events, parties, workshops and festivals in Amsterdam and surrounding areas. Find authentic Cuban salsa every week!',
-        url: 'https://salsaevents-amsterdam.vercel.app',
+        url: 'https://salsaevents-amsterdam.com',
         siteName: 'SalsaEvents Amsterdam',
         images: [
             {
@@ -127,13 +142,13 @@ export default function RootLayout({
                             'name': 'SalsaEvents Amsterdam',
                             'description':
                                 'The best Cuban salsa events, parties, workshops and festivals in Amsterdam and surrounding areas',
-                            'url': 'https://salsaevents-amsterdam.vercel.app',
+                            'url': 'https://salsaevents-amsterdam.com',
                             'potentialAction': {
                                 '@type': 'SearchAction',
                                 'target': {
                                     '@type': 'EntryPoint',
                                     'urlTemplate':
-                                        'https://salsaevents-amsterdam.vercel.app/?city={search_term_string}',
+                                        'https://salsaevents-amsterdam.com/?city={search_term_string}',
                                 },
                                 'query-input':
                                     'required name=search_term_string',

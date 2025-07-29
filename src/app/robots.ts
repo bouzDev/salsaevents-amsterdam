@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
             allow: '/',
             disallow: ['/api/', '/_next/'],
         },
-        sitemap: 'https://salsaevents-amsterdam.vercel.app/sitemap.xml',
+        sitemap: 'https://salsaevents-amsterdam.com/sitemap.xml',
     };
 }
