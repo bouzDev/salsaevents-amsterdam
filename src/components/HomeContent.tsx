@@ -81,12 +81,13 @@ export default function HomeContent() {
             {/* Hero Section */}
             <section className='max-w-4xl mx-auto px-6 pt-16 pb-12 text-center'>
                 <h1 className='text-display text-gray-900 mb-4'>
-                    Where are we dancing salsa this week?
+                    Where are we dancing Cuban salsa this week?
                 </h1>
                 <p className='text-body text-gray-600 max-w-2xl mx-auto mb-8'>
-                    Discover the best spots to dance Cuban salsa - events,
-                    parties, workshops and festivals in Amsterdam and
-                    surrounding areas.
+                    Discover the best spots to dance authentic Cuban salsa,
+                    rueda de casino, and salsa cubana - events, parties,
+                    workshops and festivals in Amsterdam and surrounding areas.
+                    Your weekly guide to the Cuban salsa scene!
                 </p>
 
                 {/* Quick Stats */}
@@ -218,6 +219,111 @@ export default function HomeContent() {
                         </button>
                     </div>
                 )}
+            </section>
+
+            {/* FAQ Section for SEO */}
+            <section className='bg-gray-50 py-16'>
+                <div className='max-w-4xl mx-auto px-6'>
+                    <h2 className='text-headline text-gray-900 mb-8 text-center'>
+                        Frequently Asked Questions about Cuban Salsa in
+                        Amsterdam
+                    </h2>
+
+                    <div className='space-y-8'>
+                        <div>
+                            <h3 className='text-title text-gray-900 mb-3'>
+                                What is Cuban Salsa and how is it different from
+                                other salsa styles?
+                            </h3>
+                            <p className='text-body text-gray-600'>
+                                Cuban salsa, also known as salsa cubana or
+                                Casino, is the original form of salsa that
+                                originated in Cuba. Unlike LA-style or New
+                                York-style salsa that are danced in lines, Cuban
+                                salsa is danced in a more circular motion. It
+                                emphasizes the connection between partners,
+                                improvisation, and includes the famous rueda de
+                                casino where couples dance in a circle.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h3 className='text-title text-gray-900 mb-3'>
+                                What is Rueda de Casino?
+                            </h3>
+                            <p className='text-body text-gray-600'>
+                                Rueda de Casino is a group dance where couples
+                                form a circle and dance Cuban salsa together.
+                                One person calls out moves, and all couples
+                                perform them simultaneously, often switching
+                                partners. It's a fun, social way to dance Cuban
+                                salsa and is very popular in Amsterdam's salsa
+                                scene.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h3 className='text-title text-gray-900 mb-3'>
+                                Where can I learn Cuban Salsa in Amsterdam?
+                            </h3>
+                            <p className='text-body text-gray-600'>
+                                Amsterdam has a vibrant Cuban salsa scene with
+                                many workshops and classes available. Popular
+                                venues include Q Factory, various dance studios,
+                                and outdoor locations like Noordermarkt. Many
+                                events combine workshops with social dancing,
+                                making them perfect for beginners and
+                                experienced dancers alike.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h3 className='text-title text-gray-900 mb-3'>
+                                When are the best Cuban Salsa events in
+                                Amsterdam?
+                            </h3>
+                            <p className='text-body text-gray-600'>
+                                Cuban salsa events happen throughout the week in
+                                Amsterdam. Popular recurring events include
+                                weekly socials on Fridays, outdoor rueda
+                                sessions, and themed parties. Summer months
+                                often feature more outdoor events and festivals.
+                                Check our weekly updated list to find the best
+                                Cuban salsa events happening this week!
+                            </p>
+                        </div>
+
+                        <div>
+                            <h3 className='text-title text-gray-900 mb-3'>
+                                Do I need a partner to attend Cuban Salsa
+                                events?
+                            </h3>
+                            <p className='text-body text-gray-600'>
+                                No! Most Cuban salsa events in Amsterdam are
+                                very welcoming to solo dancers. The community is
+                                friendly and partner rotation is common,
+                                especially in rueda de casino. Many events start
+                                with workshops where you'll learn with different
+                                partners, followed by social dancing where
+                                everyone mixes.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h3 className='text-title text-gray-900 mb-3'>
+                                What should I wear to Cuban Salsa events?
+                            </h3>
+                            <p className='text-body text-gray-600'>
+                                Wear comfortable clothes that allow you to move
+                                freely and shoes that let you turn easily. Many
+                                dancers prefer leather-soled shoes or dance
+                                sneakers. For outdoor events like the rueda
+                                sessions in Noordermarkt, dress for the weather
+                                but keep dance-ability in mind!
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </section>
         </div>
     );
