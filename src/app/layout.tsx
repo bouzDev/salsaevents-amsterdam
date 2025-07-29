@@ -39,6 +39,14 @@ export const metadata: Metadata = {
         telephone: false,
     },
     metadataBase: new URL('https://salsaevents-amsterdam.vercel.app'),
+    icons: {
+        icon: [
+            { url: '/favicon.ico', sizes: '32x32', type: 'image/x-icon' },
+            { url: '/salsaeventslogo.svg', type: 'image/svg+xml' }
+        ],
+        shortcut: '/favicon.ico',
+        apple: '/salsaeventslogo.svg',
+    },
     openGraph: {
         title: 'Cuban Salsa Events Amsterdam - Where to Dance Cuban Salsa This Week',
         description:
@@ -47,7 +55,7 @@ export const metadata: Metadata = {
         siteName: 'SalsaEvents Amsterdam',
         images: [
             {
-                url: '/salsaeventamsterdam.jpg',
+                url: '/salsaeventsamsterdam.jpg',
                 width: 1200,
                 height: 630,
                 alt: 'Cuban Salsa Events Amsterdam - Dance Cuban Salsa This Week',
@@ -61,7 +69,7 @@ export const metadata: Metadata = {
         title: 'Cuban Salsa Events Amsterdam - Where to Dance Cuban Salsa This Week',
         description:
             'Discover the best Cuban salsa events, parties, workshops and festivals in Amsterdam and surrounding areas. Find authentic Cuban salsa every week!',
-        images: ['/salsaeventamsterdam.jpg'],
+        images: ['/salsaeventsamsterdam.jpg'],
     },
     robots: {
         index: true,

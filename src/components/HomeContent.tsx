@@ -256,8 +256,8 @@ export default function HomeContent() {
                                 form a circle and dance Cuban salsa together.
                                 One person calls out moves, and all couples
                                 perform them simultaneously, often switching
-                                partners. It's a fun, social way to dance Cuban
-                                salsa and is very popular in Amsterdam's salsa
+                                partners. It&apos;s a fun, social way to dance Cuban
+                                salsa and is very popular in Amsterdam&apos;s salsa
                                 scene.
                             </p>
                         </div>
@@ -303,7 +303,7 @@ export default function HomeContent() {
                                 very welcoming to solo dancers. The community is
                                 friendly and partner rotation is common,
                                 especially in rueda de casino. Many events start
-                                with workshops where you'll learn with different
+                                with workshops where you&apos;ll learn with different
                                 partners, followed by social dancing where
                                 everyone mixes.
                             </p>
