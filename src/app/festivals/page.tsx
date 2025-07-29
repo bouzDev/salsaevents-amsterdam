@@ -1,17 +1,39 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useEffect, useState } from 'react';
 import { Users, Trophy } from 'lucide-react';
 import EventCard from '@/components/EventCard';
-import { salsaEvents } from '@/data/events';
+import { getSalsaEvents } from '@/data/events';
+import { SalsaEvent } from '@/types/event';
 
 export default function FestivalsPage() {
-    // Filter only workshops and festivals
+    const [salsaEvents, setSalsaEvents] = useState<SalsaEvent[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    // Load events from CSV
+    useEffect(() => {
+        getSalsaEvents().then((events) => {
+            setSalsaEvents(events);
+            setLoading(false);
+        });
+    }, []);
+
+    // Helper function to check if event is in the future or today
+    const isEventUpcoming = (eventDate: string): boolean => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Reset time to start of day
+        const eventDateObj = new Date(eventDate);
+        return eventDateObj >= today;
+    };
+
+    // Filter only upcoming workshops and festivals
     const festivalsAndWorkshops = useMemo(() => {
         return salsaEvents.filter(
-            (event) => event.type === 'festival' || event.type === 'workshop'
+            (event) =>
+                (event.type === 'festival' || event.type === 'workshop') &&
+                isEventUpcoming(event.date)
         );
-    }, []);
+    }, [salsaEvents]);
 
     return (
         <div className='bg-white min-h-screen'>
@@ -22,8 +44,8 @@ export default function FestivalsPage() {
                 </h1>
                 <p className='text-body text-gray-600 max-w-2xl mx-auto mb-8'>
                     From intensive workshops to spectacular festivals - here
-                    you&apos;ll find everything to take your salsa skills to the next
-                    level.
+                    you&apos;ll find everything to take your salsa skills to the
+                    next level.
                 </p>
 
                 {/* Stats */}
@@ -56,7 +78,13 @@ export default function FestivalsPage() {
 
             {/* Events List */}
             <section className='max-w-4xl mx-auto px-6 pb-16'>
-                {festivalsAndWorkshops.length > 0 ? (
+                {loading ? (
+                    <div className='text-center py-16'>
+                        <p className='text-body text-gray-600'>
+                            Loading events...
+                        </p>
+                    </div>
+                ) : festivalsAndWorkshops.length > 0 ? (
                     <div className='space-y-4'>
                         {festivalsAndWorkshops.map((event) => (
                             <EventCard key={event.id} event={event} />
@@ -86,22 +114,22 @@ export default function FestivalsPage() {
                             </h3>
                             <p className='text-body text-gray-600 mb-6'>
                                 Improve your techniques with professional
-                                instructors. From beginners to advanced, there&apos;s
-                                always something new to learn in the world of
-                                salsa.
+                                instructors. From beginners to advanced,
+                                there&apos;s always something new to learn in
+                                the world of salsa.
                             </p>
                             <div className='flex flex-wrap justify-center gap-2'>
                                 <span className='text-xs text-blue-600 bg-blue-50 border border-blue-200 px-3 py-1 rounded-md'>
                                     Rueda de Casino
                                 </span>
                                 <span className='text-xs text-blue-600 bg-blue-50 border border-blue-200 px-3 py-1 rounded-md'>
-                                    Cuban Salsa
+                                    Timba
                                 </span>
                                 <span className='text-xs text-blue-600 bg-blue-50 border border-blue-200 px-3 py-1 rounded-md'>
-                                    LA Style
+                                    Son
                                 </span>
                                 <span className='text-xs text-blue-600 bg-blue-50 border border-blue-200 px-3 py-1 rounded-md'>
-                                    Bachata
+                                    Rumba
                                 </span>
                             </div>
                         </div>

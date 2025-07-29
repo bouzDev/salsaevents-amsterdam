@@ -1,502 +1,289 @@
 import { SalsaEvent } from '@/types/event';
 
-export const salsaEvents: SalsaEvent[] = [
-    {
-        id: '1',
-        title: 'Rueda at Noordermarkt',
-        description: 'Rueda de Casino in open air',
-        date: '2025-07-23',
-        time: 'Evening',
-        venue: 'Noordermarkt',
-        location: 'Noordermarkt',
-        city: 'Amsterdam',
-        url: 'https://www.latinworld.nl/latin/agenda/rueda-en-la-callerueda-de-casino-in-open-air-23-07-2025-rueda-afuera-amsterdam-103300.php',
-        type: 'workshop',
-        tags: ['rueda', 'open-air', 'free'],
-        vibe: 'Cozy and relaxed, perfect introduction for beginners',
-        isRecurring: false,
-    },
-    {
-        id: '2',
-        title: 'Summer Breeze Latin Night',
-        description: 'Latin Night at Westweelde',
-        date: '2025-07-24',
-        time: 'Evening',
-        venue: 'Westweelde',
-        location: 'Westweelde',
-        city: 'Amsterdam',
-        url: 'https://westweelde.fullhouse.tech/event/summer-breeze-latin-night-at-westweelde-summer-2-zeip34',
-        type: 'party',
-        tags: ['latin', 'summer', 'outdoor'],
-        vibe: 'Summer vibes with amazing music and drinks',
-        isRecurring: false,
-    },
-    {
-        id: '3',
-        title: 'Fuego Latino',
-        description: 'Workshops and party in De Pijp',
-        date: '2025-07-25',
-        time: 'Full evening',
-        venue: 'De Pijp',
-        location: 'De Pijp',
-        city: 'Amsterdam',
-        url: 'https://www.bueno.nu/webshop/school/246/schedule-detail/1140265',
-        type: 'workshop',
-        tags: ['workshop', 'party', 'de-pijp'],
-        vibe: 'Educational workshops followed by an amazing party',
-        isRecurring: false,
-    },
-    {
-        id: '4',
-        title: 'Weekly Friday Social',
-        description: 'Weekly salsa social',
-        date: '2025-07-25',
-        time: 'Evening',
-        venue: 'Sao Paolo Cafe',
-        location: 'Sao Paolo Cafe',
-        city: 'Amsterdam',
-        type: 'social',
-        tags: ['social', 'weekly', 'friday'],
-        vibe: 'Relaxed Friday night with familiar faces',
-        isRecurring: true,
-        frequency: 'weekly',
-    },
-    {
-        id: '5',
-        title: 'Baila Bel Air Latin Nights',
-        description: 'Latin Night in Bel Air style',
-        date: '2025-07-25',
-        time: 'Night',
-        venue: 'Baila Bel Air',
-        location: 'Baila Bel Air',
-        city: 'Amsterdam',
-        url: 'https://www.latinworld.nl/latin/agenda/baila-bel-air-latin-night-25-07-2025-baila-bel-air-amsterdam-93901.php',
-        type: 'party',
-        tags: ['latin', 'nightlife', 'luxury'],
-        vibe: 'Stylish party with professional dancers',
-        isRecurring: false,
-    },
-    {
-        id: '6',
-        title: 'Biggest Rueda',
-        description: 'Largest Rueda at Rotterdam Central Station',
-        date: '2025-07-26',
-        time: 'Afternoon',
-        venue: 'Rotterdam Central Station',
-        location: 'Station Square',
-        city: 'Rotterdam',
-        url: 'https://facebook.com/events/s/zomercarnaval-rueda-de-casino/806859455188258/',
-        type: 'festival',
-        tags: ['rueda', 'record', 'summer-carnival'],
-        vibe: 'Spectacular event with hundreds of dancers',
-        isRecurring: false,
-    },
-    {
-        id: '7',
-        title: 'Casa Latina Boat Party',
-        description: 'Salsa party on a boat',
-        date: '2025-07-26',
-        time: 'Evening',
-        venue: 'Boat',
-        location: 'Utrecht',
-        city: 'Utrecht',
-        url: 'https://casa-latina.nl/events/casa-latina-boat-party-utrecht-saturday-july-26/',
-        type: 'party',
-        tags: ['boat', 'water', 'unique'],
-        vibe: 'Unique experience dancing on the water',
-        isRecurring: false,
-    },
-    {
-        id: '8',
-        title: 'Latin Party at the Church',
-        description: 'Tropical party in a church',
-        date: '2025-07-26',
-        time: 'Evening',
-        venue: 'The Church',
-        location: 'Den Haag',
-        city: 'Den Haag',
-        url: 'https://www.latinworld.nl/latin/agenda/latin-party-atthe-church-tropical-party-26-07-2025-dj-el-monte-el-monte-events-den-haag-103656.php',
-        type: 'party',
-        tags: ['tropical', 'church', 'special'],
-        vibe: 'Mystical atmosphere in a beautiful location',
-        isRecurring: false,
-    },
-    {
-        id: '9',
-        title: 'La Gozadera Anniversary Party',
-        description: 'Anniversary of La Gozadera Cuban Salsa',
-        date: '2025-07-27',
-        time: 'Full day',
-        venue: 'NDSM Treehouse',
-        location: 'NDSM-wharf',
-        city: 'Amsterdam',
-        url: 'https://www.latinworld.nl/latin/agenda/anniversary-of-la-gozadera-cuban-salsa-party-en-okan-salsa-27-07-2025-okan-salsa-amsterdam-103762.php',
-        type: 'festival',
-        tags: ['anniversary', 'cuban', 'okan-salsa'],
-        vibe: 'Festive celebration with authentic Cuban salsa',
-        isRecurring: false,
-    },
-    // Nieuwe events (28 juli - 3 augustus)
-    {
-        id: '10',
-        title: 'Men Styling Workshop',
-        description: 'Men Styling workshop at Q Factory',
-        date: '2025-07-28',
-        time: 'Evening',
-        venue: 'Q Factory',
-        location: 'Q Factory',
-        city: 'Amsterdam',
-        url: 'https://shop.weeztix.com/91debce1-e0df-4361-8920-f871652ea48a/tickets?shop_code=ymvf7d49',
-        type: 'workshop',
-        tags: ['men', 'styling', 'workshop'],
-        vibe: 'Perfect opportunity for men to improve their salsa styling',
-        isRecurring: false,
-    },
-    {
-        id: '11',
-        title: 'Salsa Te Gusta x Pong Social',
-        description: 'Special collaboration social event',
-        date: '2025-07-29',
-        time: 'Evening',
-        venue: 'Pong Social',
-        location: 'Pong Social',
-        city: 'Amsterdam',
-        url: 'https://bash.social/e/y11F6Lq9uLJ9?u=0',
-        type: 'social',
-        tags: ['social', 'collaboration', 'salsa-te-gusta'],
-        vibe: 'Unique combination of salsa and social gaming',
-        isRecurring: false,
-    },
-    {
-        id: '12',
-        title: 'Rueda in Noordermarkt',
-        description: 'Rueda de Casino in open air',
-        date: '2025-07-30',
-        time: 'Evening',
-        venue: 'Noordermarkt',
-        location: 'Noordermarkt',
-        city: 'Amsterdam',
-        url: 'https://www.latinworld.nl/latin/agenda/rueda-en-la-callerueda-de-casino-in-open-air-30-07-2025-rueda-afuera-amsterdam-103301.php',
-        type: 'workshop',
-        tags: ['rueda', 'open-air', 'free'],
-        vibe: 'Beautiful outdoor rueda session under the stars',
-        isRecurring: false,
-    },
-    {
-        id: '13',
-        title: 'Summer Breeze',
-        description: 'Summer Breeze at Westweelde',
-        date: '2025-07-31',
-        time: 'Evening',
-        venue: 'Westweelde',
-        location: 'Westweelde',
-        city: 'Amsterdam',
-        url: 'https://westweelde.fullhouse.tech/section/summerbreeze-events-0xuh',
-        type: 'party',
-        tags: ['summer', 'outdoor', 'westweelde'],
-        vibe: 'Perfect summer evening with great atmosphere',
-        isRecurring: false,
-    },
-    {
-        id: '14',
-        title: 'Latin Friday',
-        description: 'Latin Friday at Cancun',
-        date: '2025-08-01',
-        time: 'Evening',
-        venue: 'Cancun',
-        location: 'Cancun',
-        city: 'Amsterdam',
-        url: 'https://www.instagram.com/reel/DMpYWEkCbwU/?igsh=MTlwMXQxZm5yN2d2NQ==',
-        type: 'party',
-        tags: ['latin', 'friday', 'cancun'],
-        vibe: 'Vibrant Latin party with authentic atmosphere',
-        isRecurring: false,
-    },
-    {
-        id: '15',
-        title: 'Weekly Social',
-        description: 'Weekly Social at Cafe Sao Paolo',
-        date: '2025-08-01',
-        time: 'Evening',
-        venue: 'Cafe Sao Paolo',
-        location: 'Cafe Sao Paolo',
-        city: 'Amsterdam',
-        type: 'social',
-        tags: ['social', 'weekly', 'friday', 'sao-paolo'],
-        vibe: 'Cozy and welcoming weekly social gathering',
-        isRecurring: true,
-        frequency: 'weekly',
-    },
-    {
-        id: '16',
-        title: 'Pica Rico Salsa & Bachata Festival',
-        description: 'Salsa & Bachata Festival at Maria & Pepe',
-        date: '2025-08-01',
-        time: 'Full day',
-        venue: 'Maria & Pepe',
-        location: 'Maria & Pepe',
-        city: 'Rotterdam',
-        url: 'https://oase.stager.co/shop/default/events/111550344',
-        type: 'festival',
-        tags: ['festival', 'salsa', 'bachata', 'rotterdam'],
-        vibe: 'Amazing festival with both salsa and bachata dancers',
-        isRecurring: false,
-    },
-    {
-        id: '17',
-        title: 'Salsa Fiesta',
-        description: 'Salsa Fiesta at De Hallen',
-        date: '2025-08-02',
-        time: 'Evening',
-        venue: 'De Hallen',
-        location: 'De Hallen',
-        city: 'Amsterdam',
-        url: 'https://facebook.com/events/s/salsa-fiesta-de-hallen-w-dj-ma/2131247670683354/',
-        type: 'party',
-        tags: ['fiesta', 'party', 'de-hallen'],
-        vibe: 'Epic salsa party with DJ Marco in iconic location',
-        isRecurring: false,
-    },
-    {
-        id: '18',
-        title: 'Salsa at Cafe Noorderlicht',
-        description: 'Sunday salsa at Cafe Noorderlicht',
-        date: '2025-08-03',
-        time: 'Evening',
-        venue: 'Cafe Noorderlicht',
-        location: 'Cafe Noorderlicht',
-        city: 'Amsterdam',
-        url: 'https://www.instagram.com/p/DMcZdhwiAfM/?igsh=MWNwMmpjdGh4M3ZyYQ==',
-        type: 'social',
-        tags: ['sunday', 'social', 'noorderlicht'],
-        vibe: 'Relaxing Sunday salsa session by the water',
-        isRecurring: false,
-    },
-    {
-        id: '19',
-        title: 'Sabrosura Sundays',
-        description: 'Sabrosura Sundays at Biergarten Rotterdam',
-        date: '2025-08-03',
-        time: 'Afternoon',
-        venue: 'Biergarten Rotterdam',
-        location: 'Biergarten',
-        city: 'Rotterdam',
-        url: 'https://facebook.com/events/s/sabrosura-sundays-pura-sabrosu/595408533301797/',
-        type: 'social',
-        tags: ['sunday', 'biergarten', 'rotterdam', 'sabrosura'],
-        vibe: 'Pura sabrosura in een gezellige biergarten setting',
-        isRecurring: true,
-        frequency: 'weekly',
-    },
-    // Aanvullende events August - December
-    {
-        id: '20',
-        title: 'Lady Styling Workshop',
-        description: 'Lady Styling Workshop at Q Factory',
-        date: '2025-08-04',
-        time: 'Evening',
-        venue: 'Q Factory',
-        location: 'Q Factory',
-        city: 'Amsterdam',
-        url: 'https://eventix.shop/ymvf7d49',
-        type: 'workshop',
-        tags: ['lady', 'styling', 'workshop'],
-        vibe: 'Elegant workshop for ladies to perfect their salsa styling',
-        isRecurring: false,
-    },
-    {
-        id: '21',
-        title: 'Papa Te Gusta - STG Social',
-        description: 'Social event at Papa Zatarra',
-        date: '2025-08-09',
-        time: 'Evening',
-        venue: 'Papa Zatarra',
-        location: 'Papa Zatarra',
-        city: 'Amsterdam',
-        url: 'https://bash.social/e/t69uXnVG6UP5?u=0',
-        type: 'social',
-        tags: ['social', 'stg', 'papa-zatarra'],
-        vibe: 'Gezellige social evening met authentieke Latin sfeer',
-        isRecurring: false,
-    },
-    {
-        id: '22',
-        title: "DJ Rafi's Beach Party",
-        description: "Cuban Salsa Beach Bootcamp & Party at Meijer's an Zee",
-        date: '2025-08-10',
-        time: 'Full day',
-        venue: "Meijer's an Zee",
-        location: "Meijer's an Zee",
-        city: 'Den Haag',
-        url: 'https://billetto.nl/en/e/dj-rafi-s-beach-bootcamp-cuban-salsa-beachparty-zondag-10-augustus-Tickets-1469966',
-        type: 'party',
-        tags: ['beach', 'cuban', 'dj-rafi', 'bootcamp'],
-        vibe: 'Unieke combinatie van workshops en beach party bij de zee',
-        isRecurring: false,
-    },
-    {
-        id: '23',
-        title: 'Partner Dancing Workshop',
-        description: 'Partner Dancing workshop at Q Factory',
-        date: '2025-08-11',
-        time: 'Evening',
-        venue: 'Q Factory',
-        location: 'Q Factory',
-        city: 'Amsterdam',
-        url: 'https://eventix.shop/ymvf7d49',
-        type: 'workshop',
-        tags: ['partner', 'dancing', 'workshop'],
-        vibe: 'Learn to dance together in perfect harmony',
-        isRecurring: false,
-    },
-    {
-        id: '24',
-        title: 'Cuban Summer Festival',
-        description: 'Cuban Summer Festival with workshops & parties',
-        date: '2025-08-15',
-        time: 'Multi-day',
-        venue: 'Various locations',
-        location: 'Amsterdam',
-        city: 'Amsterdam',
-        url: 'https://www.instagram.com/cubansummerfestival',
-        type: 'festival',
-        tags: ['cuban', 'summer', 'festival', 'multi-day'],
-        vibe: 'Het hoogtepunt van de zomer met authentieke Cubaanse salsa',
-        isRecurring: false,
-    },
-    {
-        id: '25',
-        title: 'Latin Party at the Church',
-        description: 'Latin Party Flower Power Edition',
-        date: '2025-08-23',
-        time: 'Evening',
-        venue: 'The Church',
-        location: 'The Church',
-        city: 'Den Haag',
-        url: 'https://www.latinworld.nl/latin/agenda/latin-party-atthe-church-flower-power-edition-23-08-2025-dj-el-monte-el-monte-events-den-haag-104076.php',
-        type: 'party',
-        tags: ['latin', 'church', 'flower-power', 'dj-el-monte'],
-        vibe: 'Groovy flower power edition in mystieke kerksfeer',
-        isRecurring: false,
-    },
-    {
-        id: '26',
-        title: 'STG x Pong!',
-        description: 'Salsa Te Gusta collaboration with Pong',
-        date: '2025-08-26',
-        time: 'Evening',
-        venue: 'Pong',
-        location: 'Pong',
-        city: 'Amsterdam',
-        url: 'https://bash.social/e/G2Ruxa4E70AP?u=0',
-        type: 'social',
-        tags: ['stg', 'pong', 'collaboration', 'social'],
-        vibe: 'Unieke mix van salsa en social gaming',
-        isRecurring: false,
-    },
-    {
-        id: '27',
-        title: 'Ola Bembe Festival',
-        description: 'Ola Bembe Festival at Scheveningen',
-        date: '2025-08-29',
-        time: 'Multi-day',
-        venue: 'Scheveningen',
-        location: 'Scheveningen',
-        city: 'Den Haag',
-        url: 'https://www.ochumaledanceacademy.com/bembé-festival',
-        type: 'festival',
-        tags: ['bembe', 'festival', 'scheveningen', 'multi-day'],
-        vibe: 'Spirituele en energieke festival ervaring aan het strand',
-        isRecurring: false,
-    },
-    {
-        id: '28',
-        title: 'Casa Latina Boat Party',
-        description: 'Casa Latina boat party in Amsterdam',
-        date: '2025-08-30',
-        time: 'Evening',
-        venue: 'Boat',
-        location: 'Amsterdam canals',
-        city: 'Amsterdam',
-        url: 'https://casa-latina.nl/events/casa-latina-boat-party-amsterdam-saturday-august-30/',
-        type: 'party',
-        tags: ['boat', 'casa-latina', 'amsterdam', 'canals'],
-        vibe: 'Magische boat party door de Amsterdamse grachten',
-        isRecurring: false,
-    },
-    {
-        id: '29',
-        title: 'La Historia de la Salsa',
-        description: 'Live concert: The History of Salsa',
-        date: '2025-09-06',
-        time: 'Evening',
-        venue: 'Concert Hall',
-        location: 'Utrecht',
-        city: 'Utrecht',
-        url: 'https://www.klassiekemuziek.nl/e/19700/pimiento-con-mucho-gusto-historie-van-de-salsa',
-        type: 'festival',
-        tags: ['live-concert', 'history', 'salsa', 'educational'],
-        vibe: 'Educatieve en muzikale reis door de geschiedenis van salsa',
-        isRecurring: false,
-    },
-    {
-        id: '30',
-        title: "DJ Rafi's Cuban Beach Party",
-        description: 'Cuban Salsa Beach Party at Meijer An Zee',
-        date: '2025-09-07',
-        time: 'Full day',
-        venue: 'Meijer An Zee',
-        location: 'Meijer An Zee',
-        city: 'Den Haag',
-        url: 'https://facebook.com/events/s/dj-rafis-cuban-salsa-beach-par/635661432893200/',
-        type: 'party',
-        tags: ['beach', 'cuban', 'dj-rafi', 'september'],
-        vibe: 'Laatste zomer vibes met Cubaanse salsa aan zee',
-        isRecurring: false,
-    },
-    {
-        id: '31',
-        title: 'El Teteo Festival',
-        description: 'El Teteo Festival with workshops & parties',
-        date: '2025-09-12',
-        time: 'Multi-day',
-        venue: 'Various locations',
-        location: 'Amsterdam',
-        city: 'Amsterdam',
-        url: 'https://www.instagram.com/elteteo.nl',
-        type: 'festival',
-        tags: ['teteo', 'festival', 'workshops', 'multi-day'],
-        vibe: 'Energiek festival vol met workshops en geweldige parties',
-        isRecurring: false,
-    },
-    {
-        id: '32',
-        title: 'Soy Cubano Party',
-        description: 'Soy Cubano Latin Party with 2 areas',
-        date: '2025-09-20',
-        time: 'Evening',
-        venue: 'Club Maggy',
-        location: 'Club Maggy',
-        city: 'Utrecht',
-        url: 'https://facebook.com/events/s/soy-cubano-latin-party-2-areas/23895376276814497/',
-        type: 'party',
-        tags: ['cubano', 'latin', 'club', '2-areas'],
-        vibe: 'Authentieke Cubaanse party met twee verschillende dance floors',
-        isRecurring: false,
-    },
-    {
-        id: '33',
-        title: "Pa'Lante Festival",
-        description: "Pa'Lante Festival - Multi-day celebration",
-        date: '2025-12-05',
-        time: 'Multi-day',
-        venue: 'Various locations',
-        location: 'Amsterdam',
-        city: 'Amsterdam',
-        url: 'https://www.instagram.com/palante.festival',
-        type: 'festival',
-        tags: ['palante', 'festival', 'december', 'multi-day'],
-        vibe: 'Winterse warmte met het beste van Latin dance',
-        isRecurring: false,
-    },
-];
+// Parse CSV data
+const parseCSV = (csvText: string): { [key: string]: string }[] => {
+    const lines = csvText.trim().split('\n');
+    const headers = lines[0].split(',');
+
+    return lines.slice(1).map((line) => {
+        // Handle quoted values that might contain commas
+        const values: string[] = [];
+        let current = '';
+        let inQuotes = false;
+
+        for (let i = 0; i < line.length; i++) {
+            const char = line[i];
+            if (char === '"') {
+                inQuotes = !inQuotes;
+            } else if (char === ',' && !inQuotes) {
+                values.push(current.trim());
+                current = '';
+            } else {
+                current += char;
+            }
+        }
+        values.push(current.trim()); // Add the last value
+
+        const obj: { [key: string]: string } = {};
+        headers.forEach((header, index) => {
+            obj[header.trim()] = values[index]?.replace(/"/g, '') || '';
+        });
+        return obj;
+    });
+};
+
+// Generate weekly events for upcoming weeks
+const generateWeeklyEvents = (
+    weeklyEvent: { [key: string]: string },
+    weeksToGenerate: number = 12
+): SalsaEvent[] => {
+    const events: SalsaEvent[] = [];
+    const dayMap: { [key: string]: number } = {
+        sunday: 0,
+        monday: 1,
+        tuesday: 2,
+        wednesday: 3,
+        thursday: 4,
+        friday: 5,
+        saturday: 6,
+    };
+
+    const dayNumber = dayMap[weeklyEvent.day.toLowerCase()];
+    if (dayNumber === undefined) return events;
+
+    const today = new Date();
+    const endDate = weeklyEvent['end-date']
+        ? new Date(weeklyEvent['end-date'])
+        : new Date(today.getFullYear() + 1, today.getMonth(), today.getDate());
+
+    for (let i = 0; i < weeksToGenerate; i++) {
+        const eventDate = new Date(today);
+        eventDate.setDate(
+            today.getDate() + 7 * i + ((dayNumber - today.getDay() + 7) % 7)
+        );
+
+        // Skip if before today or after end date
+        if (eventDate < today || eventDate > endDate) continue;
+
+        const tags = weeklyEvent.tags
+            ? weeklyEvent.tags.split(',').map((tag: string) => tag.trim())
+            : [];
+
+        events.push({
+            id: `${weeklyEvent.id}-${eventDate.toISOString().split('T')[0]}`,
+            title: weeklyEvent.title,
+            description: weeklyEvent.description,
+            date: eventDate.toISOString().split('T')[0],
+            time: weeklyEvent.time,
+            venue: weeklyEvent.venue,
+            location: weeklyEvent.venue,
+            city: weeklyEvent.city,
+            url: weeklyEvent.url || undefined,
+            type: weeklyEvent.type as
+                | 'party'
+                | 'workshop'
+                | 'festival'
+                | 'social',
+            tags: tags,
+            vibe: weeklyEvent.vibe,
+            isRecurring: true,
+            frequency: 'weekly' as const,
+        });
+    }
+
+    return events;
+};
+
+// Fallback data in case CSV loading fails
+const getFallbackEvents = (): SalsaEvent[] => {
+    const oneTimeEvents = [
+        {
+            id: '11',
+            title: 'Salsa Te Gusta x Pong Social',
+            description: 'Special collaboration social event',
+            date: '2025-07-29',
+            time: '19:15-23:30',
+            venue: 'Pong',
+            city: 'Amsterdam',
+            type: 'social',
+            tags: 'social,collaboration,salsa-te-gusta',
+            url: 'https://bash.social/e/y11F6Lq9uLJ9?u=0',
+            vibe: 'Unique combination of salsa and social gaming',
+        },
+        {
+            id: '12',
+            title: 'Rueda in Noordermarkt',
+            description: 'Rueda de Casino in open air',
+            date: '2025-07-30',
+            time: '20:00-22:00',
+            venue: 'Noordermarkt',
+            city: 'Amsterdam',
+            type: 'workshop',
+            tags: 'rueda,open-air,free',
+            url: 'https://www.latinworld.nl/latin/agenda/rueda-en-la-callerueda-de-casino-in-open-air-30-07-2025-rueda-afuera-amsterdam-103301.php',
+            vibe: 'Beautiful outdoor rueda session under the stars',
+        },
+        {
+            id: '20',
+            title: 'Lady Styling Workshop',
+            description: 'Lady Styling Workshop at Q Factory',
+            date: '2025-08-04',
+            time: '20:00-22:00',
+            venue: 'Q Factory',
+            city: 'Amsterdam',
+            type: 'workshop',
+            tags: 'lady,styling,workshop',
+            url: 'https://eventix.shop/ymvf7d49',
+            vibe: 'Elegant workshop for ladies to perfect their salsa styling',
+        },
+    ];
+
+    const weeklyEventsData = [
+        {
+            'id': '15',
+            'title': 'Weekly Social',
+            'description': 'Weekly Social at Cafe Sao Paolo',
+            'day': 'friday',
+            'end-date': '',
+            'time': '20:00-01:00',
+            'venue': 'Cafe Sao Paolo',
+            'city': 'Amsterdam',
+            'type': 'social',
+            'tags': 'social,weekly,friday,sao-paolo,free',
+            'url': '',
+            'vibe': 'Cozy and welcoming weekly social gathering',
+        },
+    ];
+
+    const events: SalsaEvent[] = [];
+
+    // Process one-time events
+    oneTimeEvents.forEach((eventData) => {
+        const tags = eventData.tags
+            ? eventData.tags.split(',').map((tag: string) => tag.trim())
+            : [];
+        events.push({
+            id: eventData.id,
+            title: eventData.title,
+            description: eventData.description,
+            date: eventData.date,
+            time: eventData.time,
+            venue: eventData.venue,
+            location: eventData.venue,
+            city: eventData.city,
+            url: eventData.url || undefined,
+            type: eventData.type as
+                | 'party'
+                | 'workshop'
+                | 'festival'
+                | 'social',
+            tags: tags,
+            vibe: eventData.vibe,
+            isRecurring: false,
+        });
+    });
+
+    // Process weekly events
+    weeklyEventsData.forEach((weeklyEvent) => {
+        const generatedEvents = generateWeeklyEvents(weeklyEvent);
+        events.push(...generatedEvents);
+    });
+
+    return events.sort(
+        (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+    );
+};
+
+// Load events from CSV files
+const loadEventsFromCSV = async (): Promise<SalsaEvent[]> => {
+    const events: SalsaEvent[] = [];
+
+    try {
+        console.log('Loading events from CSV files...');
+
+        // Load one-time events
+        const eventsResponse = await fetch('/data/events.csv');
+        if (!eventsResponse.ok) {
+            throw new Error(
+                `Failed to fetch events.csv: ${eventsResponse.status}`
+            );
+        }
+        const eventsText = await eventsResponse.text();
+        console.log('Events CSV loaded, length:', eventsText.length);
+
+        const oneTimeEvents = parseCSV(eventsText);
+        console.log('Parsed one-time events:', oneTimeEvents.length);
+
+        // Load weekly events
+        const weeklyEventsResponse = await fetch('/data/weekly-events.csv');
+        if (!weeklyEventsResponse.ok) {
+            throw new Error(
+                `Failed to fetch weekly-events.csv: ${weeklyEventsResponse.status}`
+            );
+        }
+        const weeklyEventsText = await weeklyEventsResponse.text();
+        console.log(
+            'Weekly events CSV loaded, length:',
+            weeklyEventsText.length
+        );
+
+        const weeklyEventsData = parseCSV(weeklyEventsText);
+        console.log('Parsed weekly events:', weeklyEventsData.length);
+
+        // Process one-time events
+        oneTimeEvents.forEach((eventData) => {
+            const tags = eventData.tags
+                ? eventData.tags.split(',').map((tag: string) => tag.trim())
+                : [];
+            events.push({
+                id: eventData.id,
+                title: eventData.title,
+                description: eventData.description,
+                date: eventData.date,
+                time: eventData.time,
+                venue: eventData.venue,
+                location: eventData.venue,
+                city: eventData.city,
+                url: eventData.url || undefined,
+                type: eventData.type as
+                    | 'party'
+                    | 'workshop'
+                    | 'festival'
+                    | 'social',
+                tags: tags,
+                vibe: eventData.vibe,
+                isRecurring: false,
+            });
+        });
+
+        // Process weekly events
+        weeklyEventsData.forEach((weeklyEvent) => {
+            const generatedEvents = generateWeeklyEvents(weeklyEvent);
+            events.push(...generatedEvents);
+        });
+
+        console.log('Total events loaded:', events.length);
+        return events.sort(
+            (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+        );
+    } catch (error) {
+        console.error('Error loading CSV files:', error);
+        console.log('Using fallback data instead');
+        return getFallbackEvents();
+    }
+};
+
+// Create a promise to load events
+let eventsPromise: Promise<SalsaEvent[]> | null = null;
+
+// Export a function that returns the loaded events
+export const getSalsaEvents = (): Promise<SalsaEvent[]> => {
+    if (!eventsPromise) {
+        eventsPromise = loadEventsFromCSV();
+    }
+    return eventsPromise;
+};
+
+// For backwards compatibility, export an empty array initially
+// Components should use getSalsaEvents() instead
+export const salsaEvents: SalsaEvent[] = [];

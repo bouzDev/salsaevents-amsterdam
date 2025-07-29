@@ -1,23 +1,50 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { MapPin, Clock, Music } from 'lucide-react';
-import { salsaEvents } from '@/data/events';
+import { getSalsaEvents } from '@/data/events';
+import { SalsaEvent } from '@/types/event';
 
 export default function LocationsPage() {
-    // Group events by city
+    const router = useRouter();
+    const [salsaEvents, setSalsaEvents] = useState<SalsaEvent[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    // Load events from CSV
+    useEffect(() => {
+        getSalsaEvents().then(events => {
+            setSalsaEvents(events);
+            setLoading(false);
+        });
+    }, []);
+
+    // Helper function to check if event is in the future or today
+    const isEventUpcoming = (eventDate: string): boolean => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Reset time to start of day
+        const eventDateObj = new Date(eventDate);
+        return eventDateObj >= today;
+    };
+
+    // Get only upcoming events
+    const upcomingEvents = useMemo(() => {
+        return salsaEvents.filter((event) => isEventUpcoming(event.date));
+    }, [salsaEvents]);
+
+    // Group upcoming events by city
     const eventsByCity = useMemo(() => {
         const cities: { [key: string]: typeof salsaEvents } = {};
-        salsaEvents.forEach((event) => {
+        upcomingEvents.forEach((event) => {
             if (!cities[event.city]) {
                 cities[event.city] = [];
             }
             cities[event.city].push(event);
         });
         return cities;
-    }, []);
+    }, [upcomingEvents]);
 
-    // Get unique venues
+    // Get unique venues from upcoming events
     const venues = useMemo(() => {
         const venueMap: {
             [key: string]: {
@@ -27,7 +54,7 @@ export default function LocationsPage() {
                 events: typeof salsaEvents;
             };
         } = {};
-        salsaEvents.forEach((event) => {
+        upcomingEvents.forEach((event) => {
             const key = `${event.venue}-${event.city}`;
             if (!venueMap[key]) {
                 venueMap[key] = {
@@ -40,7 +67,7 @@ export default function LocationsPage() {
             venueMap[key].events.push(event);
         });
         return Object.values(venueMap);
-    }, []);
+    }, [upcomingEvents]);
 
     return (
         <div className='bg-white min-h-screen'>
@@ -50,8 +77,9 @@ export default function LocationsPage() {
                     Salsa Locations
                 </h1>
                 <p className='text-body text-gray-600 max-w-2xl mx-auto mb-8'>
-                    From intimate cafés to grand event halls - here you&apos;ll find
-                    all the hotspots where you can dance in the Netherlands.
+                    From intimate cafés to grand event halls - here you&apos;ll
+                    find all the hotspots where you can dance in the
+                    Netherlands.
                 </p>
 
                 {/* Stats */}
@@ -76,7 +104,11 @@ export default function LocationsPage() {
 
                 <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-16'>
                     {Object.entries(eventsByCity).map(([city, cityEvents]) => (
-                        <div key={city} className='card p-6'>
+                        <div 
+                            key={city} 
+                            className='card p-6 cursor-pointer hover:shadow-md transition-shadow'
+                            onClick={() => router.push(`/?city=${encodeURIComponent(city)}`)}
+                        >
                             <div className='flex items-center gap-3 mb-3'>
                                 <MapPin className='w-5 h-5 text-green-500' />
                                 <h3 className='text-title text-gray-900'>
@@ -84,8 +116,8 @@ export default function LocationsPage() {
                                 </h3>
                             </div>
                             <p className='text-body text-gray-600 mb-3'>
-                                {cityEvents.length} event
-                                {cityEvents.length !== 1 ? 's' : ''} this week
+                                {cityEvents.length} upcoming event
+                                {cityEvents.length !== 1 ? 's' : ''}
                             </p>
                             <div className='flex flex-wrap gap-2'>
                                 {[

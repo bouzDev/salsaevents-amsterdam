@@ -1,31 +1,60 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { MapPin, Clock, Music, Star } from 'lucide-react';
-import { salsaEvents } from '@/data/events';
+import { getSalsaEvents } from '@/data/events';
+import { SalsaEvent } from '@/types/event';
 
 export default function LocatiesPage() {
-    // Groepeer events per stad
+    const router = useRouter();
+    const [salsaEvents, setSalsaEvents] = useState<SalsaEvent[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    // Load events from CSV
+    useEffect(() => {
+        getSalsaEvents().then((events) => {
+            setSalsaEvents(events);
+            setLoading(false);
+        });
+    }, []);
+
+    // Helper functie om te checken of event in de toekomst is of vandaag
+    const isEventUpcoming = (eventDate: string): boolean => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Reset tijd naar begin van de dag
+        const eventDateObj = new Date(eventDate);
+        return eventDateObj >= today;
+    };
+
+    // Krijg alleen toekomstige events
+    const upcomingEvents = useMemo(() => {
+        return salsaEvents.filter((event) => isEventUpcoming(event.date));
+    }, [salsaEvents]);
+
+    // Groepeer toekomstige events per stad
     const eventsByCity = useMemo(() => {
         const cities: { [key: string]: typeof salsaEvents } = {};
-        salsaEvents.forEach((event) => {
+        upcomingEvents.forEach((event) => {
             if (!cities[event.city]) {
                 cities[event.city] = [];
             }
             cities[event.city].push(event);
         });
         return cities;
-    }, []);
+    }, [upcomingEvents]);
 
-    // Krijg unieke venues
+    // Krijg unieke venues van toekomstige events
     const venues = useMemo(() => {
-        const venueMap: { [key: string]: {
-            name: string;
-            city: string;
-            location: string;
-            events: typeof salsaEvents;
-        } } = {};
-        salsaEvents.forEach((event) => {
+        const venueMap: {
+            [key: string]: {
+                name: string;
+                city: string;
+                location: string;
+                events: typeof salsaEvents;
+            };
+        } = {};
+        upcomingEvents.forEach((event) => {
             const key = `${event.venue}-${event.city}`;
             if (!venueMap[key]) {
                 venueMap[key] = {
@@ -38,7 +67,7 @@ export default function LocatiesPage() {
             venueMap[key].events.push(event);
         });
         return Object.values(venueMap);
-    }, []);
+    }, [upcomingEvents]);
 
     return (
         <div className='min-h-screen bg-gray-50'>
@@ -85,7 +114,12 @@ export default function LocatiesPage() {
                     {Object.entries(eventsByCity).map(([city, cityEvents]) => (
                         <div
                             key={city}
-                            className='bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow'
+                            className='bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow cursor-pointer'
+                            onClick={() =>
+                                router.push(
+                                    `/?city=${encodeURIComponent(city)}`
+                                )
+                            }
                         >
                             <div className='flex items-center gap-3 mb-4'>
                                 <MapPin className='w-6 h-6 text-green-500' />
@@ -94,8 +128,8 @@ export default function LocatiesPage() {
                                 </h3>
                             </div>
                             <p className='text-gray-600 mb-4'>
-                                {cityEvents.length} event
-                                {cityEvents.length !== 1 ? 's' : ''} deze week
+                                {cityEvents.length} aankomende event
+                                {cityEvents.length !== 1 ? 's' : ''}
                             </p>
                             <div className='flex flex-wrap gap-2'>
                                 {[
@@ -151,17 +185,15 @@ export default function LocatiesPage() {
                                 </p>
 
                                 <div className='space-y-2'>
-                                    {venue.events
-                                        .slice(0, 3)
-                                        .map((event) => (
-                                            <div
-                                                key={event.id}
-                                                className='flex items-center gap-2 text-xs text-gray-500'
-                                            >
-                                                <Clock className='w-3 h-3' />
-                                                <span>{event.title}</span>
-                                            </div>
-                                        ))}
+                                    {venue.events.slice(0, 3).map((event) => (
+                                        <div
+                                            key={event.id}
+                                            className='flex items-center gap-2 text-xs text-gray-500'
+                                        >
+                                            <Clock className='w-3 h-3' />
+                                            <span>{event.title}</span>
+                                        </div>
+                                    ))}
                                     {venue.events.length > 3 && (
                                         <p className='text-xs text-gray-400'>
                                             +{venue.events.length - 3} meer...

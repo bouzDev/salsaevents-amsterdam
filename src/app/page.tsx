@@ -1,14 +1,36 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Search } from 'lucide-react';
 import EventCard from '@/components/EventCard';
-import { salsaEvents } from '@/data/events';
+import { getSalsaEvents } from '@/data/events';
+import { SalsaEvent } from '@/types/event';
 
 export default function Home() {
+    const searchParams = useSearchParams();
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCity, setSelectedCity] = useState('');
     const [selectedType, setSelectedType] = useState('');
+    const [selectedDate, setSelectedDate] = useState('');
+    const [salsaEvents, setSalsaEvents] = useState<SalsaEvent[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    // Load events from CSV
+    useEffect(() => {
+        getSalsaEvents().then((events) => {
+            setSalsaEvents(events);
+            setLoading(false);
+        });
+    }, []);
+
+    // Check for query parameters on load
+    useEffect(() => {
+        const cityParam = searchParams.get('city');
+        if (cityParam) {
+            setSelectedCity(cityParam);
+        }
+    }, [searchParams]);
 
     // Helper function to check if event is in the future or today
     const isEventUpcoming = (eventDate: string): boolean => {
@@ -36,17 +58,23 @@ export default function Home() {
                 selectedCity === '' || event.city === selectedCity;
             const matchesType =
                 selectedType === '' || event.type === selectedType;
+            const matchesDate =
+                selectedDate === '' || event.date === selectedDate;
 
-            return matchesSearch && matchesCity && matchesType;
+            return matchesSearch && matchesCity && matchesType && matchesDate;
         });
-    }, [searchTerm, selectedCity, selectedType]);
+    }, [searchTerm, selectedCity, selectedType, selectedDate, salsaEvents]);
 
-    // Get unique cities and types for filters (only from upcoming events)
-    const upcomingEvents = salsaEvents.filter((event) =>
-        isEventUpcoming(event.date)
-    );
+    // Get unique cities, types and dates for filters (only from upcoming events)
+    const upcomingEvents = useMemo(() => {
+        return salsaEvents.filter((event) => isEventUpcoming(event.date));
+    }, [salsaEvents]);
+
     const cities = [...new Set(upcomingEvents.map((event) => event.city))];
     const types = [...new Set(upcomingEvents.map((event) => event.type))];
+    const dates = [
+        ...new Set(upcomingEvents.map((event) => event.date)),
+    ].sort();
 
     return (
         <div className='bg-white min-h-screen'>
@@ -56,8 +84,9 @@ export default function Home() {
                     Where are we dancing salsa this week?
                 </h1>
                 <p className='text-body text-gray-600 max-w-2xl mx-auto mb-8'>
-                    Discover the best salsa events, parties, workshops and
-                    festivals in Amsterdam and surrounding areas.
+                    Discover the best spots to dance Cuban salsa - events,
+                    parties, workshops and festivals in Amsterdam and
+                    surrounding areas.
                 </p>
 
                 {/* Quick Stats */}
@@ -118,6 +147,30 @@ export default function Home() {
                                     </option>
                                 ))}
                             </select>
+
+                            <select
+                                value={selectedDate}
+                                onChange={(e) =>
+                                    setSelectedDate(e.target.value)
+                                }
+                                className='flex-1 px-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+                            >
+                                <option value=''>All dates</option>
+                                {dates.map((date) => {
+                                    const formattedDate = new Date(
+                                        date
+                                    ).toLocaleDateString('en-US', {
+                                        weekday: 'short',
+                                        month: 'short',
+                                        day: 'numeric',
+                                    });
+                                    return (
+                                        <option key={date} value={date}>
+                                            {formattedDate}
+                                        </option>
+                                    );
+                                })}
+                            </select>
                         </div>
 
                         {/* Results count */}
@@ -131,7 +184,13 @@ export default function Home() {
 
             {/* Events List */}
             <section className='max-w-4xl mx-auto px-6 pb-16'>
-                {filteredEvents.length > 0 ? (
+                {loading ? (
+                    <div className='text-center py-16'>
+                        <p className='text-body text-gray-600'>
+                            Loading events...
+                        </p>
+                    </div>
+                ) : filteredEvents.length > 0 ? (
                     <div className='space-y-4'>
                         {filteredEvents.map((event) => (
                             <EventCard key={event.id} event={event} />
@@ -151,6 +210,7 @@ export default function Home() {
                                 setSearchTerm('');
                                 setSelectedCity('');
                                 setSelectedType('');
+                                setSelectedDate('');
                             }}
                             className='btn-primary px-6 py-3 text-sm'
                         >
