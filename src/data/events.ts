@@ -52,18 +52,28 @@ const generateWeeklyEvents = (
     if (dayNumber === undefined) return events;
 
     const today = new Date();
+    today.setHours(0, 0, 0, 0); // Set to midnight for consistent comparison
+
     const endDate = weeklyEvent['end-date']
         ? new Date(weeklyEvent['end-date'])
         : new Date(today.getFullYear() + 1, today.getMonth(), today.getDate());
+    endDate.setHours(23, 59, 59, 999); // Set to end of day
 
     for (let i = 0; i < weeksToGenerate; i++) {
-        const eventDate = new Date(today);
-        eventDate.setDate(
-            today.getDate() + 7 * i + ((dayNumber - today.getDay() + 7) % 7)
-        );
+        // Create a clean date for this week
+        const startOfWeek = new Date(today);
+        startOfWeek.setDate(today.getDate() - today.getDay()); // Go to Sunday of this week
+
+        // Add the target day number and week offset
+        const eventDate = new Date(startOfWeek);
+        eventDate.setDate(startOfWeek.getDate() + dayNumber + 7 * i);
+        eventDate.setHours(0, 0, 0, 0); // Set to midnight
 
         // Skip if before today or after end date
-        if (eventDate < today || eventDate > endDate) continue;
+        const todayMidnight = new Date(today);
+        todayMidnight.setHours(0, 0, 0, 0);
+
+        if (eventDate < todayMidnight || eventDate > endDate) continue;
 
         const tags = weeklyEvent.tags
             ? weeklyEvent.tags.split(',').map((tag: string) => tag.trim())
