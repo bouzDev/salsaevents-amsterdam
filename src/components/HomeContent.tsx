@@ -256,9 +256,9 @@ export default function HomeContent() {
                                 form a circle and dance Cuban salsa together.
                                 One person calls out moves, and all couples
                                 perform them simultaneously, often switching
-                                partners. It&apos;s a fun, social way to dance Cuban
-                                salsa and is very popular in Amsterdam&apos;s salsa
-                                scene.
+                                partners. It&apos;s a fun, social way to dance
+                                Cuban salsa and is very popular in
+                                Amsterdam&apos;s salsa scene.
                             </p>
                         </div>
 
@@ -268,11 +268,19 @@ export default function HomeContent() {
                             </h3>
                             <p className='text-body text-gray-600'>
                                 Amsterdam has a vibrant Cuban salsa scene with
-                                many workshops and classes available. Popular
-                                venues include Q Factory, various dance studios,
-                                and outdoor locations like Noordermarkt. Many
-                                events combine workshops with social dancing,
-                                making them perfect for beginners and
+                                many workshops and classes available.{' '}
+                                <a
+                                    href='https://salsategusta.com'
+                                    target='_blank'
+                                    rel='noopener noreferrer'
+                                    className='text-blue-600 hover:text-blue-800 underline'
+                                >
+                                    Salsa te Gusta
+                                </a>{' '}
+                                is a leading academy offering lessons for all
+                                levels in a warm community environment. Many
+                                events also combine workshops with social
+                                dancing, making them perfect for beginners and
                                 experienced dancers alike.
                             </p>
                         </div>
@@ -303,9 +311,9 @@ export default function HomeContent() {
                                 very welcoming to solo dancers. The community is
                                 friendly and partner rotation is common,
                                 especially in rueda de casino. Many events start
-                                with workshops where you&apos;ll learn with different
-                                partners, followed by social dancing where
-                                everyone mixes.
+                                with workshops where you&apos;ll learn with
+                                different partners, followed by social dancing
+                                where everyone mixes.
                             </p>
                         </div>
 
