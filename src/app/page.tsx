@@ -1,7 +1,11 @@
 import { Suspense } from 'react';
 import HomeContent from '@/components/HomeContent';
+import { getSalsaEventsServer } from '@/data/events.server';
 
-export default function Home() {
+export default async function Home() {
+    // Load events server-side voor SEO
+    const events = await getSalsaEventsServer();
+
     return (
         <Suspense
             fallback={
@@ -17,7 +21,7 @@ export default function Home() {
                 </div>
             }
         >
-            <HomeContent />
+            <HomeContent initialEvents={events} />
         </Suspense>
     );
 }

@@ -4,25 +4,20 @@ import { useState, useMemo, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Search } from 'lucide-react';
 import EventCard from '@/components/EventCard';
-import { getSalsaEvents } from '@/data/events';
 import { SalsaEvent } from '@/types/event';
 
-export default function HomeContent() {
+interface HomeContentProps {
+    initialEvents: SalsaEvent[];
+}
+
+export default function HomeContent({ initialEvents }: HomeContentProps) {
     const searchParams = useSearchParams();
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCity, setSelectedCity] = useState('');
     const [selectedType, setSelectedType] = useState('');
     const [selectedDate, setSelectedDate] = useState('');
-    const [salsaEvents, setSalsaEvents] = useState<SalsaEvent[]>([]);
-    const [loading, setLoading] = useState(true);
-
-    // Load events from CSV
-    useEffect(() => {
-        getSalsaEvents().then((events) => {
-            setSalsaEvents(events);
-            setLoading(false);
-        });
-    }, []);
+    const [salsaEvents] = useState<SalsaEvent[]>(initialEvents);
+    const loading = false; // No loading since events are passed as props
 
     // Check for query parameters on load
     useEffect(() => {

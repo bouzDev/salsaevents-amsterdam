@@ -1,4 +1,6 @@
 import { SalsaEvent } from '@/types/event';
+import fs from 'fs';
+import path from 'path';
 
 // Parse CSV data
 const parseCSV = (csvText: string): { [key: string]: string }[] => {
@@ -204,40 +206,25 @@ const getFallbackEvents = (): SalsaEvent[] => {
     );
 };
 
-
-
-// Client-side function to load events from CSV files (for backwards compatibility)
-const loadEventsFromCSV = async (): Promise<SalsaEvent[]> => {
+// Server-side function to load events from CSV files
+export const getSalsaEventsServer = async (): Promise<SalsaEvent[]> => {
     const events: SalsaEvent[] = [];
 
     try {
-        console.log('Loading events from CSV files...');
+        console.log('Loading events from CSV files server-side...');
 
         // Load one-time events
-        const eventsResponse = await fetch('/data/events.csv');
-        if (!eventsResponse.ok) {
-            throw new Error(
-                `Failed to fetch events.csv: ${eventsResponse.status}`
-            );
-        }
-        const eventsText = await eventsResponse.text();
+        const eventsPath = path.join(process.cwd(), 'public/data/events.csv');
+        const eventsText = fs.readFileSync(eventsPath, 'utf8');
         console.log('Events CSV loaded, length:', eventsText.length);
 
         const oneTimeEvents = parseCSV(eventsText);
         console.log('Parsed one-time events:', oneTimeEvents.length);
 
         // Load weekly events
-        const weeklyEventsResponse = await fetch('/data/weekly-events.csv');
-        if (!weeklyEventsResponse.ok) {
-            throw new Error(
-                `Failed to fetch weekly-events.csv: ${weeklyEventsResponse.status}`
-            );
-        }
-        const weeklyEventsText = await weeklyEventsResponse.text();
-        console.log(
-            'Weekly events CSV loaded, length:',
-            weeklyEventsText.length
-        );
+        const weeklyEventsPath = path.join(process.cwd(), 'public/data/weekly-events.csv');
+        const weeklyEventsText = fs.readFileSync(weeklyEventsPath, 'utf8');
+        console.log('Weekly events CSV loaded, length:', weeklyEventsText.length);
 
         const weeklyEventsData = parseCSV(weeklyEventsText);
         console.log('Parsed weekly events:', weeklyEventsData.length);
@@ -279,23 +266,8 @@ const loadEventsFromCSV = async (): Promise<SalsaEvent[]> => {
             (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
         );
     } catch (error) {
-        console.error('Error loading CSV files:', error);
+        console.error('Error loading CSV files server-side:', error);
         console.log('Using fallback data instead');
         return getFallbackEvents();
     }
 };
-
-// Create a promise to load events (client-side)
-let eventsPromise: Promise<SalsaEvent[]> | null = null;
-
-// Client-side function that returns the loaded events
-export const getSalsaEvents = (): Promise<SalsaEvent[]> => {
-    if (!eventsPromise) {
-        eventsPromise = loadEventsFromCSV();
-    }
-    return eventsPromise;
-};
-
-// For backwards compatibility, export an empty array initially
-// Components should use getSalsaEvents() instead
-export const salsaEvents: SalsaEvent[] = [];
