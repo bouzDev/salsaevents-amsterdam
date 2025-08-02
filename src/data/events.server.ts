@@ -62,13 +62,22 @@ const generateWeeklyEvents = (
     endDate.setHours(23, 59, 59, 999); // Set to end of day
 
     for (let i = 0; i < weeksToGenerate; i++) {
-        // Create a clean date for this week
-        const startOfWeek = new Date(today);
-        startOfWeek.setDate(today.getDate() - today.getDay()); // Go to Sunday of this week
+        // Calculate the next occurrence of the target weekday
+        const eventDate = new Date(today);
 
-        // Add the target day number and week offset
-        const eventDate = new Date(startOfWeek);
-        eventDate.setDate(startOfWeek.getDate() + dayNumber + 7 * i);
+        // Calculate days to add to get to the next occurrence of dayNumber
+        const todayDayNumber = today.getDay();
+        let daysToAdd = dayNumber - todayDayNumber;
+
+        // If the target day has already passed this week, go to next week
+        if (daysToAdd < 0) {
+            daysToAdd += 7;
+        }
+        // If it's today, but we want to show future events, we can include today as well
+        // (you can adjust this logic if needed)
+
+        // Add the calculated days plus week offset
+        eventDate.setDate(today.getDate() + daysToAdd + 7 * i);
         eventDate.setHours(0, 0, 0, 0); // Set to midnight
 
         // Skip if before today or after end date
@@ -222,9 +231,15 @@ export const getSalsaEventsServer = async (): Promise<SalsaEvent[]> => {
         console.log('Parsed one-time events:', oneTimeEvents.length);
 
         // Load weekly events
-        const weeklyEventsPath = path.join(process.cwd(), 'public/data/weekly-events.csv');
+        const weeklyEventsPath = path.join(
+            process.cwd(),
+            'public/data/weekly-events.csv'
+        );
         const weeklyEventsText = fs.readFileSync(weeklyEventsPath, 'utf8');
-        console.log('Weekly events CSV loaded, length:', weeklyEventsText.length);
+        console.log(
+            'Weekly events CSV loaded, length:',
+            weeklyEventsText.length
+        );
 
         const weeklyEventsData = parseCSV(weeklyEventsText);
         console.log('Parsed weekly events:', weeklyEventsData.length);
