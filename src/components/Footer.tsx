@@ -13,7 +13,7 @@ export default function Footer() {
                             href='https://www.instagram.com/salsaeventsamsterdam/'
                             target='_blank'
                             rel='noopener noreferrer'
-                            className='flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors'
+                            className='flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors'
                         >
                             <Instagram className='w-5 h-5' />
                             <span className='font-medium'>
@@ -23,7 +23,7 @@ export default function Footer() {
                     </div>
 
                     {/* Credits */}
-                    <div className='text-center text-caption text-gray-500'>
+                    <div className='text-center text-caption text-gray-700'>
                         Made by{' '}
                         <a
                             href='https://www.instagram.com/salnaityte/'
@@ -45,7 +45,7 @@ export default function Footer() {
                     </div>
 
                     {/* Legal Links */}
-                    <div className='flex gap-4 text-caption text-gray-500'>
+                    <div className='flex gap-4 text-caption text-gray-700'>
                         <Link
                             href='/privacy'
                             className='hover:text-blue-600 transition-colors'
@@ -62,7 +62,7 @@ export default function Footer() {
                 </div>
 
                 {/* Copyright */}
-                <div className='mt-6 pt-6 border-t border-gray-200 text-center text-caption text-gray-500'>
+                <div className='mt-6 pt-6 border-t border-gray-200 text-center text-caption text-gray-700'>
                     © {new Date().getFullYear()} SalsaEvents Amsterdam. All
                     rights reserved.
                 </div>

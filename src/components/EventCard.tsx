@@ -10,7 +10,11 @@ interface EventCardProps {
 // Extend Window interface for GTM
 declare global {
     interface Window {
-        gtag?: (command: string, targetId: string, parameters?: Record<string, unknown>) => void;
+        gtag?: (
+            command: string,
+            targetId: string,
+            parameters?: Record<string, unknown>
+        ) => void;
         dataLayer?: Record<string, unknown>[];
     }
 }
@@ -85,20 +89,20 @@ export default function EventCard({ event }: EventCardProps) {
                                 event.type.slice(1)}
                         </span>
                         {event.isRecurring && (
-                            <span className='text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-md'>
+                            <span className='text-xs text-gray-700 bg-gray-100 px-2 py-1 rounded-md'>
                                 {event.frequency}
                             </span>
                         )}
                     </div>
 
                     {event.description && (
-                        <p className='text-body text-gray-600 mb-3'>
+                        <p className='text-body text-gray-700 mb-3'>
                             {event.description}
                         </p>
                     )}
 
                     {/* Date and Time */}
-                    <div className='flex items-center gap-6 text-caption text-gray-500 mb-2'>
+                    <div className='flex items-center gap-6 text-caption text-gray-700 mb-2'>
                         <div className='flex items-center gap-2'>
                             <Calendar className='w-4 h-4' />
                             <span>{formattedDate}</span>
@@ -112,7 +116,7 @@ export default function EventCard({ event }: EventCardProps) {
                     </div>
 
                     {/* Location */}
-                    <div className='flex items-center gap-2 text-caption text-gray-500 mb-3'>
+                    <div className='flex items-center gap-2 text-caption text-gray-700 mb-3'>
                         <MapPin className='w-4 h-4' />
                         <span>
                             {event.venue}, {event.city}
@@ -121,7 +125,7 @@ export default function EventCard({ event }: EventCardProps) {
 
                     {/* Vibe */}
                     {event.vibe && (
-                        <p className='text-caption text-gray-600 italic mb-3'>
+                        <p className='text-caption text-gray-700 italic mb-3'>
                             &ldquo;{event.vibe}&rdquo;
                         </p>
                     )}
@@ -132,7 +136,7 @@ export default function EventCard({ event }: EventCardProps) {
                             {event.tags.slice(0, 4).map((tag, index) => (
                                 <span
                                     key={index}
-                                    className='text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-md'
+                                    className='text-xs text-gray-700 bg-gray-100 px-2 py-1 rounded-md'
                                 >
                                     #{tag}
                                 </span>

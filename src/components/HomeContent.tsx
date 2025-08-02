@@ -75,10 +75,10 @@ export default function HomeContent({ initialEvents }: HomeContentProps) {
         <div className='bg-white min-h-screen'>
             {/* Hero Section */}
             <section className='max-w-4xl mx-auto px-6 pt-16 pb-12 text-center'>
-                <h1 className='text-display text-gray-900 mb-4'>
+                <h2 className='text-display text-gray-900 mb-4'>
                     Where are we dancing Cuban salsa this week?
-                </h1>
-                <p className='text-body text-gray-600 max-w-2xl mx-auto mb-8'>
+                </h2>
+                <p className='text-body text-gray-700 max-w-2xl mx-auto mb-8'>
                     Discover the best spots to dance authentic Cuban salsa,
                     rueda de casino, and salsa cubana - events, parties,
                     workshops and festivals in Amsterdam and surrounding areas.
@@ -86,7 +86,7 @@ export default function HomeContent({ initialEvents }: HomeContentProps) {
                 </p>
 
                 {/* Quick Stats */}
-                <div className='flex justify-center items-center gap-8 text-caption text-gray-500 mb-12'>
+                <div className='flex justify-center items-center gap-8 text-caption text-gray-700 mb-12'>
                     <span>{upcomingEvents.length} Events</span>
                     <span>•</span>
                     <span>{cities.length} Cities</span>
@@ -101,8 +101,12 @@ export default function HomeContent({ initialEvents }: HomeContentProps) {
                     <div className='flex flex-col space-y-4'>
                         {/* Search Bar */}
                         <div className='relative'>
+                            <label htmlFor='search-events' className='sr-only'>
+                                Search events, venues, and descriptions
+                            </label>
                             <Search className='absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5' />
                             <input
+                                id='search-events'
                                 type='text'
                                 placeholder='Search events, venues, descriptions...'
                                 value={searchTerm}
@@ -113,64 +117,91 @@ export default function HomeContent({ initialEvents }: HomeContentProps) {
 
                         {/* Filters */}
                         <div className='flex gap-3'>
-                            <select
-                                value={selectedCity}
-                                onChange={(e) =>
-                                    setSelectedCity(e.target.value)
-                                }
-                                className='flex-1 px-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent'
-                            >
-                                <option value=''>All cities</option>
-                                {cities.map((city) => (
-                                    <option key={city} value={city}>
-                                        {city}
-                                    </option>
-                                ))}
-                            </select>
-
-                            <select
-                                value={selectedType}
-                                onChange={(e) =>
-                                    setSelectedType(e.target.value)
-                                }
-                                className='flex-1 px-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent'
-                            >
-                                <option value=''>All types</option>
-                                {types.map((type) => (
-                                    <option key={type} value={type}>
-                                        {type.charAt(0).toUpperCase() +
-                                            type.slice(1)}
-                                    </option>
-                                ))}
-                            </select>
-
-                            <select
-                                value={selectedDate}
-                                onChange={(e) =>
-                                    setSelectedDate(e.target.value)
-                                }
-                                className='flex-1 px-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent'
-                            >
-                                <option value=''>All dates</option>
-                                {dates.map((date) => {
-                                    const formattedDate = new Date(
-                                        date
-                                    ).toLocaleDateString('en-US', {
-                                        weekday: 'short',
-                                        month: 'short',
-                                        day: 'numeric',
-                                    });
-                                    return (
-                                        <option key={date} value={date}>
-                                            {formattedDate}
+                            <div className='flex-1'>
+                                <label
+                                    htmlFor='filter-city'
+                                    className='sr-only'
+                                >
+                                    Filter by city
+                                </label>
+                                <select
+                                    id='filter-city'
+                                    value={selectedCity}
+                                    onChange={(e) =>
+                                        setSelectedCity(e.target.value)
+                                    }
+                                    className='w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+                                >
+                                    <option value=''>All cities</option>
+                                    {cities.map((city) => (
+                                        <option key={city} value={city}>
+                                            {city}
                                         </option>
-                                    );
-                                })}
-                            </select>
+                                    ))}
+                                </select>
+                            </div>
+
+                            <div className='flex-1'>
+                                <label
+                                    htmlFor='filter-type'
+                                    className='sr-only'
+                                >
+                                    Filter by event type
+                                </label>
+                                <select
+                                    id='filter-type'
+                                    value={selectedType}
+                                    onChange={(e) =>
+                                        setSelectedType(e.target.value)
+                                    }
+                                    className='w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+                                >
+                                    <option value=''>All types</option>
+                                    {types.map((type) => (
+                                        <option key={type} value={type}>
+                                            {type.charAt(0).toUpperCase() +
+                                                type.slice(1)}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            <div className='flex-1'>
+                                <label
+                                    htmlFor='filter-date'
+                                    className='sr-only'
+                                >
+                                    Filter by date
+                                </label>
+                                <select
+                                    id='filter-date'
+                                    value={selectedDate}
+                                    onChange={(e) =>
+                                        setSelectedDate(e.target.value)
+                                    }
+                                    className='w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+                                >
+                                    <option value=''>All dates</option>
+                                    {dates.map((date) => {
+                                        const formattedDate = new Date(
+                                            date
+                                        ).toLocaleDateString('en-US', {
+                                            weekday: 'short',
+                                            month: 'short',
+                                            day: 'numeric',
+                                        });
+                                        return (
+                                            <option key={date} value={date}>
+                                                {formattedDate}
+                                            </option>
+                                        );
+                                    })}
+                                </select>
+                            </div>
                         </div>
 
                         {/* Results count */}
-                        <p className='text-caption text-gray-500'>
+                        <p className='text-caption text-gray-700'>
                             {filteredEvents.length} event
                             {filteredEvents.length !== 1 ? 's' : ''} found
                         </p>
@@ -182,7 +213,7 @@ export default function HomeContent({ initialEvents }: HomeContentProps) {
             <section className='max-w-4xl mx-auto px-6 pb-16'>
                 {loading ? (
                     <div className='text-center py-16'>
-                        <p className='text-body text-gray-600'>
+                        <p className='text-body text-gray-700'>
                             Loading events...
                         </p>
                     </div>
@@ -197,7 +228,7 @@ export default function HomeContent({ initialEvents }: HomeContentProps) {
                         <h3 className='text-title text-gray-900 mb-2'>
                             No events found
                         </h3>
-                        <p className='text-body text-gray-600 mb-6'>
+                        <p className='text-body text-gray-700 mb-6'>
                             Try adjusting your search or filters to find more
                             results.
                         </p>
@@ -209,6 +240,7 @@ export default function HomeContent({ initialEvents }: HomeContentProps) {
                                 setSelectedDate('');
                             }}
                             className='btn-primary px-6 py-3 text-sm'
+                            aria-label='Reset all search filters and show all events'
                         >
                             Reset filters
                         </button>
@@ -230,7 +262,7 @@ export default function HomeContent({ initialEvents }: HomeContentProps) {
                                 What is Cuban Salsa and how is it different from
                                 other salsa styles?
                             </h3>
-                            <p className='text-body text-gray-600'>
+                            <p className='text-body text-gray-700'>
                                 Cuban salsa, also known as salsa cubana or
                                 Casino, is the original form of salsa that
                                 originated in Cuba. Unlike LA-style or New
@@ -246,7 +278,7 @@ export default function HomeContent({ initialEvents }: HomeContentProps) {
                             <h3 className='text-title text-gray-900 mb-3'>
                                 What is Rueda de Casino?
                             </h3>
-                            <p className='text-body text-gray-600'>
+                            <p className='text-body text-gray-700'>
                                 Rueda de Casino is a group dance where couples
                                 form a circle and dance Cuban salsa together.
                                 One person calls out moves, and all couples
@@ -261,7 +293,7 @@ export default function HomeContent({ initialEvents }: HomeContentProps) {
                             <h3 className='text-title text-gray-900 mb-3'>
                                 Where can I learn Cuban Salsa in Amsterdam?
                             </h3>
-                            <p className='text-body text-gray-600'>
+                            <p className='text-body text-gray-700'>
                                 Amsterdam has a vibrant Cuban salsa scene with
                                 many workshops and classes available.{' '}
                                 <a
@@ -285,7 +317,7 @@ export default function HomeContent({ initialEvents }: HomeContentProps) {
                                 When are the best Cuban Salsa events in
                                 Amsterdam?
                             </h3>
-                            <p className='text-body text-gray-600'>
+                            <p className='text-body text-gray-700'>
                                 Cuban salsa events happen throughout the week in
                                 Amsterdam. Popular recurring events include
                                 weekly socials on Fridays, outdoor rueda
@@ -301,7 +333,7 @@ export default function HomeContent({ initialEvents }: HomeContentProps) {
                                 Do I need a partner to attend Cuban Salsa
                                 events?
                             </h3>
-                            <p className='text-body text-gray-600'>
+                            <p className='text-body text-gray-700'>
                                 No! Most Cuban salsa events in Amsterdam are
                                 very welcoming to solo dancers. The community is
                                 friendly and partner rotation is common,
@@ -316,7 +348,7 @@ export default function HomeContent({ initialEvents }: HomeContentProps) {
                             <h3 className='text-title text-gray-900 mb-3'>
                                 What should I wear to Cuban Salsa events?
                             </h3>
-                            <p className='text-body text-gray-600'>
+                            <p className='text-body text-gray-700'>
                                 Wear comfortable clothes that allow you to move
                                 freely and shoes that let you turn easily. Many
                                 dancers prefer leather-soled shoes or dance

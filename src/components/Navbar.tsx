@@ -23,19 +23,19 @@ export default function Navbar() {
                     <div className='hidden md:flex items-center space-x-8'>
                         <Link
                             href='/'
-                            className='text-gray-600 hover:text-gray-900 text-sm font-medium transition-colors'
+                            className='text-gray-700 hover:text-gray-900 text-sm font-medium transition-colors'
                         >
                             Events
                         </Link>
                         <Link
                             href='/festivals'
-                            className='text-gray-600 hover:text-gray-900 text-sm font-medium transition-colors'
+                            className='text-gray-700 hover:text-gray-900 text-sm font-medium transition-colors'
                         >
                             Festivals
                         </Link>
                         <Link
                             href='/locations'
-                            className='text-gray-600 hover:text-gray-900 text-sm font-medium transition-colors'
+                            className='text-gray-700 hover:text-gray-900 text-sm font-medium transition-colors'
                         >
                             Locations
                         </Link>
@@ -45,7 +45,7 @@ export default function Navbar() {
                     <div className='md:hidden'>
                         <button
                             onClick={() => setIsOpen(!isOpen)}
-                            className='text-gray-600 hover:text-gray-900 p-1'
+                            className='text-gray-700 hover:text-gray-900 p-1'
                         >
                             {isOpen ? (
                                 <X className='w-5 h-5' />
@@ -62,21 +62,21 @@ export default function Navbar() {
                         <div className='space-y-2'>
                             <Link
                                 href='/'
-                                className='block px-3 py-2 text-gray-600 hover:text-gray-900 text-sm font-medium'
+                                className='block px-3 py-2 text-gray-700 hover:text-gray-900 text-sm font-medium'
                                 onClick={() => setIsOpen(false)}
                             >
                                 Events
                             </Link>
                             <Link
                                 href='/festivals'
-                                className='block px-3 py-2 text-gray-600 hover:text-gray-900 text-sm font-medium'
+                                className='block px-3 py-2 text-gray-700 hover:text-gray-900 text-sm font-medium'
                                 onClick={() => setIsOpen(false)}
                             >
                                 Festivals
                             </Link>
                             <Link
                                 href='/locations'
-                                className='block px-3 py-2 text-gray-600 hover:text-gray-900 text-sm font-medium'
+                                className='block px-3 py-2 text-gray-700 hover:text-gray-900 text-sm font-medium'
                                 onClick={() => setIsOpen(false)}
                             >
                                 Locations
