@@ -245,7 +245,7 @@ export const getSalsaEventsServer = async (): Promise<SalsaEvent[]> => {
 
         // const weeklyEventsData = parseCSV(weeklyEventsText);
         // console.log('Parsed weekly events:', weeklyEventsData.length);
-        
+
         // Define empty weekly events data for now
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const weeklyEventsData: { [key: string]: string }[] = [];

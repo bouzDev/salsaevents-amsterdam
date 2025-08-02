@@ -204,11 +204,11 @@ const getFallbackEvents = (): SalsaEvent[] => {
         });
     });
 
-            // Process weekly events - TEMPORARILY DISABLED
-        // weeklyEventsData.forEach((weeklyEvent) => {
-        //     const generatedEvents = generateWeeklyEvents(weeklyEvent);
-        //     events.push(...generatedEvents);
-        // });
+    // Process weekly events - TEMPORARILY DISABLED
+    // weeklyEventsData.forEach((weeklyEvent) => {
+    //     const generatedEvents = generateWeeklyEvents(weeklyEvent);
+    //     events.push(...generatedEvents);
+    // });
 
     return events.sort(
         (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
@@ -250,7 +250,7 @@ const loadEventsFromCSV = async (): Promise<SalsaEvent[]> => {
 
         // const weeklyEventsData = parseCSV(weeklyEventsText);
         // console.log('Parsed weekly events:', weeklyEventsData.length);
-        
+
         // Define empty weekly events data for now
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const weeklyEventsData: { [key: string]: string }[] = [];
