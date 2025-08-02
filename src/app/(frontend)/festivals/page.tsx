@@ -3,16 +3,16 @@
 import { useMemo, useEffect, useState } from 'react';
 import { Users, Trophy } from 'lucide-react';
 import EventCard from '@/components/EventCard';
-import { getSalsaEvents } from '@/data/events';
+import { getPayloadEvents } from '@/data/events-api';
 import { SalsaEvent } from '@/types/event';
 
 export default function FestivalsPage() {
     const [salsaEvents, setSalsaEvents] = useState<SalsaEvent[]>([]);
     const [loading, setLoading] = useState(true);
 
-    // Load events from CSV
+    // Load events from Payload CMS
     useEffect(() => {
-        getSalsaEvents().then((events) => {
+        getPayloadEvents().then((events) => {
             setSalsaEvents(events);
             setLoading(false);
         });

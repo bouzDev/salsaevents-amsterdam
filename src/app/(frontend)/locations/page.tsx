@@ -2,37 +2,35 @@
 
 import { useMemo, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { MapPin, Clock, Music, Star } from 'lucide-react';
-import { getSalsaEvents } from '@/data/events';
+import { MapPin, Clock, Music } from 'lucide-react';
+import { getPayloadEvents } from '@/data/events-api';
 import { SalsaEvent } from '@/types/event';
 
-export default function LocatiesPage() {
+export default function LocationsPage() {
     const router = useRouter();
     const [salsaEvents, setSalsaEvents] = useState<SalsaEvent[]>([]);
-    const [loading, setLoading] = useState(true);
 
-    // Load events from CSV
+    // Load events from Payload CMS
     useEffect(() => {
-        getSalsaEvents().then((events) => {
+        getPayloadEvents().then((events) => {
             setSalsaEvents(events);
-            setLoading(false);
         });
     }, []);
 
-    // Helper functie om te checken of event in de toekomst is of vandaag
+    // Helper function to check if event is in the future or today
     const isEventUpcoming = (eventDate: string): boolean => {
         const today = new Date();
-        today.setHours(0, 0, 0, 0); // Reset tijd naar begin van de dag
+        today.setHours(0, 0, 0, 0); // Reset time to start of day
         const eventDateObj = new Date(eventDate);
         return eventDateObj >= today;
     };
 
-    // Krijg alleen toekomstige events
+    // Get only upcoming events
     const upcomingEvents = useMemo(() => {
         return salsaEvents.filter((event) => isEventUpcoming(event.date));
     }, [salsaEvents]);
 
-    // Groepeer toekomstige events per stad
+    // Group upcoming events by city
     const eventsByCity = useMemo(() => {
         const cities: { [key: string]: typeof salsaEvents } = {};
         upcomingEvents.forEach((event) => {
@@ -44,7 +42,7 @@ export default function LocatiesPage() {
         return cities;
     }, [upcomingEvents]);
 
-    // Krijg unieke venues van toekomstige events
+    // Get unique venues from upcoming events
     const venues = useMemo(() => {
         const venueMap: {
             [key: string]: {
@@ -70,65 +68,57 @@ export default function LocatiesPage() {
     }, [upcomingEvents]);
 
     return (
-        <div className='min-h-screen bg-gray-50'>
+        <div className='bg-white min-h-screen'>
             {/* Hero Section */}
-            <section className='bg-gradient-to-r from-green-600 via-teal-500 to-blue-600 text-white'>
-                <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16'>
-                    <div className='text-center'>
-                        <h1 className='text-4xl md:text-6xl font-bold mb-4'>
-                            📍 Salsa Locaties
-                        </h1>
-                        <p className='text-xl md:text-2xl mb-6 text-green-100'>
-                            Ontdek waar de salsa magie gebeurt
-                        </p>
-                        <p className='text-lg mb-8 max-w-2xl mx-auto text-green-50'>
-                            Van intieme cafés tot grote evenementenhallen - hier
-                            vind je alle hotspots waar je kunt dansen in
-                            Nederland.
-                        </p>
+            <section className='max-w-4xl mx-auto px-6 pt-16 pb-12 text-center'>
+                <h1 className='text-display text-gray-900 mb-4'>
+                    Salsa Locations
+                </h1>
+                <p className='text-body text-gray-600 max-w-2xl mx-auto mb-8'>
+                    From intimate cafés to grand event halls - here you&apos;ll
+                    find all the hotspots where you can dance in the
+                    Netherlands.
+                </p>
 
-                        {/* Stats */}
-                        <div className='flex justify-center items-center gap-8 text-sm'>
-                            <div className='flex items-center gap-2'>
-                                <MapPin className='w-5 h-5' />
-                                <span>
-                                    {Object.keys(eventsByCity).length} Steden
-                                </span>
-                            </div>
-                            <div className='flex items-center gap-2'>
-                                <Music className='w-5 h-5' />
-                                <span>{venues.length} Venues</span>
-                            </div>
-                        </div>
+                {/* Stats */}
+                <div className='flex justify-center items-center gap-8 text-caption text-gray-500 mb-12'>
+                    <div className='flex items-center gap-2'>
+                        <MapPin className='w-4 h-4' />
+                        <span>{Object.keys(eventsByCity).length} Cities</span>
+                    </div>
+                    <span>•</span>
+                    <div className='flex items-center gap-2'>
+                        <Music className='w-4 h-4' />
+                        <span>{venues.length} Venues</span>
                     </div>
                 </div>
             </section>
 
             {/* Cities Section */}
-            <section className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12'>
-                <h2 className='text-3xl font-bold text-gray-900 mb-8 text-center'>
-                    Steden
+            <section className='max-w-4xl mx-auto px-6 pb-12'>
+                <h2 className='text-headline text-gray-900 mb-8 text-center'>
+                    Cities
                 </h2>
 
-                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16'>
+                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-16'>
                     {Object.entries(eventsByCity).map(([city, cityEvents]) => (
                         <div
                             key={city}
-                            className='bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow cursor-pointer'
+                            className='card p-6 cursor-pointer hover:shadow-md transition-shadow'
                             onClick={() =>
                                 router.push(
                                     `/?city=${encodeURIComponent(city)}`
                                 )
                             }
                         >
-                            <div className='flex items-center gap-3 mb-4'>
-                                <MapPin className='w-6 h-6 text-green-500' />
-                                <h3 className='text-xl font-bold text-gray-900'>
+                            <div className='flex items-center gap-3 mb-3'>
+                                <MapPin className='w-5 h-5 text-green-500' />
+                                <h3 className='text-title text-gray-900'>
                                     {city}
                                 </h3>
                             </div>
-                            <p className='text-gray-600 mb-4'>
-                                {cityEvents.length} aankomende event
+                            <p className='text-body text-gray-600 mb-3'>
+                                {cityEvents.length} upcoming event
                                 {cityEvents.length !== 1 ? 's' : ''}
                             </p>
                             <div className='flex flex-wrap gap-2'>
@@ -137,7 +127,7 @@ export default function LocatiesPage() {
                                 ].map((type) => (
                                     <span
                                         key={type}
-                                        className='bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium'
+                                        className='text-xs text-green-600 bg-green-50 border border-green-200 px-2 py-1 rounded-md'
                                     >
                                         {type}
                                     </span>
@@ -149,38 +139,37 @@ export default function LocatiesPage() {
             </section>
 
             {/* Venues Section */}
-            <section className='bg-white py-16'>
-                <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
-                    <h2 className='text-3xl font-bold text-gray-900 mb-8 text-center'>
-                        Populaire Venues
+            <section className='bg-gray-50 py-16'>
+                <div className='max-w-4xl mx-auto px-6'>
+                    <h2 className='text-headline text-gray-900 mb-8 text-center'>
+                        Popular Venues
                     </h2>
 
-                    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+                    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
                         {venues.map((venue, index) => (
                             <div
                                 key={index}
-                                className='bg-gray-50 rounded-xl p-6 hover:bg-gray-100 transition-colors'
+                                className='bg-white rounded-xl border border-gray-200 p-6 hover:border-blue-300 hover:shadow-sm transition-all'
                             >
                                 <div className='flex items-start justify-between mb-4'>
                                     <div>
-                                        <h3 className='text-lg font-bold text-gray-900 mb-1'>
+                                        <h3 className='text-title text-gray-900 mb-1'>
                                             {venue.name}
                                         </h3>
-                                        <div className='flex items-center gap-1 text-gray-600 text-sm'>
+                                        <div className='flex items-center gap-1 text-caption text-gray-500'>
                                             <MapPin className='w-4 h-4' />
                                             <span>{venue.city}</span>
                                         </div>
                                     </div>
-                                    <div className='flex items-center gap-1 text-orange-500'>
-                                        <Star className='w-4 h-4 fill-current' />
-                                        <span className='text-sm font-medium'>
+                                    <div className='text-blue-500 bg-blue-50 border border-blue-200 rounded-md px-2 py-1'>
+                                        <span className='text-xs font-medium'>
                                             {venue.events.length}
                                         </span>
                                     </div>
                                 </div>
 
-                                <p className='text-gray-600 text-sm mb-4'>
-                                    {venue.events.length} aankomende event
+                                <p className='text-caption text-gray-600 mb-4'>
+                                    {venue.events.length} upcoming event
                                     {venue.events.length !== 1 ? 's' : ''}
                                 </p>
 
@@ -188,15 +177,15 @@ export default function LocatiesPage() {
                                     {venue.events.slice(0, 3).map((event) => (
                                         <div
                                             key={event.id}
-                                            className='flex items-center gap-2 text-xs text-gray-500'
+                                            className='flex items-center gap-2 text-caption text-gray-500'
                                         >
                                             <Clock className='w-3 h-3' />
                                             <span>{event.title}</span>
                                         </div>
                                     ))}
                                     {venue.events.length > 3 && (
-                                        <p className='text-xs text-gray-400'>
-                                            +{venue.events.length - 3} meer...
+                                        <p className='text-caption text-gray-400'>
+                                            +{venue.events.length - 3} more...
                                         </p>
                                     )}
                                 </div>
@@ -207,40 +196,40 @@ export default function LocatiesPage() {
             </section>
 
             {/* Tips Section */}
-            <section className='bg-gradient-to-r from-blue-50 to-green-50 py-16'>
-                <div className='max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center'>
-                    <h2 className='text-3xl font-bold text-gray-900 mb-8'>
-                        Tips voor een geweldige avond
+            <section className='py-16'>
+                <div className='max-w-4xl mx-auto px-6 text-center'>
+                    <h2 className='text-headline text-gray-900 mb-8'>
+                        Tips for a great night
                     </h2>
                     <div className='grid grid-cols-1 md:grid-cols-3 gap-8'>
                         <div>
                             <Clock className='mx-auto w-8 h-8 text-blue-500 mb-4' />
-                            <h3 className='font-bold text-gray-900 mb-2'>
-                                Kom op tijd
+                            <h3 className='text-title text-gray-900 mb-2'>
+                                Arrive on time
                             </h3>
-                            <p className='text-gray-600 text-sm'>
-                                Veel events beginnen met een workshop. Perfect
-                                om warm te draaien!
+                            <p className='text-body text-gray-600'>
+                                Many events start with a workshop. Perfect to
+                                warm up!
                             </p>
                         </div>
                         <div>
                             <Music className='mx-auto w-8 h-8 text-blue-500 mb-4' />
-                            <h3 className='font-bold text-gray-900 mb-2'>
-                                Luister naar de muziek
+                            <h3 className='text-title text-gray-900 mb-2'>
+                                Listen to the music
                             </h3>
-                            <p className='text-gray-600 text-sm'>
-                                Elke venue heeft zijn eigen stijl en voorkeur
-                                voor verschillende salsa types.
+                            <p className='text-body text-gray-600'>
+                                Each venue has its own style and preference for
+                                different salsa types.
                             </p>
                         </div>
                         <div>
                             <MapPin className='mx-auto w-8 h-8 text-blue-500 mb-4' />
-                            <h3 className='font-bold text-gray-900 mb-2'>
-                                Check de locatie
+                            <h3 className='text-title text-gray-900 mb-2'>
+                                Check the location
                             </h3>
-                            <p className='text-gray-600 text-sm'>
-                                Sommige events verhuizen of hebben speciale
-                                toegangsinstructies.
+                            <p className='text-body text-gray-600'>
+                                Some events move or have special access
+                                instructions.
                             </p>
                         </div>
                     </div>

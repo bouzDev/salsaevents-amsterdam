@@ -1,10 +1,10 @@
 import { Suspense } from 'react';
 import HomeContent from '@/components/HomeContent';
-import { getSalsaEventsServer } from '@/data/events.server';
+import { getSalsaEventsMain } from '@/data/events.server';
 
 export default async function Home() {
-    // Load events server-side voor SEO
-    const events = await getSalsaEventsServer();
+    // Load events server-side vanuit Payload CMS voor SEO
+    const events = await getSalsaEventsMain();
 
     return (
         <Suspense

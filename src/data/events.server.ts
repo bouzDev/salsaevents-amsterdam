@@ -1,6 +1,7 @@
 import { SalsaEvent } from '@/types/event';
 import fs from 'fs';
 import path from 'path';
+import { getPayload } from 'payload';
 
 // Parse CSV data
 const parseCSV = (csvText: string): { [key: string]: string }[] => {
@@ -291,4 +292,66 @@ export const getSalsaEventsServer = async (): Promise<SalsaEvent[]> => {
         console.log('Using fallback data instead');
         return getFallbackEvents();
     }
+};
+
+// New function to get events from Payload CMS database
+export const getSalsaEventsFromPayload = async (): Promise<SalsaEvent[]> => {
+    try {
+        console.log('Loading events from Payload database...');
+
+        const payload = await getPayload({
+            config: await import('@/payload.config').then((mod) => mod.default),
+        });
+
+        const result = await payload.find({
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            collection: 'events' as any,
+            limit: 1000, // Adjust as needed
+            sort: 'date',
+        });
+
+        const events: SalsaEvent[] = result.docs.map(
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (doc: any) => {
+                // Convert tags string to array if needed
+                const tags = doc.tags
+                    ? typeof doc.tags === 'string'
+                        ? doc.tags.split(',').map((tag: string) => tag.trim())
+                        : doc.tags
+                    : [];
+
+                return {
+                    id: doc.id,
+                    title: doc.title,
+                    description: doc.description || '',
+                    date: new Date(doc.date).toISOString().split('T')[0], // Format as YYYY-MM-DD
+                    time: doc.time || '',
+                    venue: doc.venue,
+                    location: doc.venue, // Use venue as location for backwards compatibility
+                    city: doc.city,
+                    url: doc.url || undefined,
+                    price: doc.price || undefined,
+                    type: doc.type,
+                    tags: tags as string[],
+                    vibe: doc.vibe || '',
+                    imageUrl: doc.imageUrl || undefined,
+                    isRecurring: doc.isRecurring || false,
+                    frequency: doc.frequency || undefined,
+                };
+            }
+        );
+
+        console.log(`Loaded ${events.length} events from Payload database`);
+        return events;
+    } catch (error) {
+        console.error('Error loading events from Payload database:', error);
+        console.log('Falling back to CSV data...');
+        return getSalsaEventsServer(); // Fallback to CSV
+    }
+};
+
+// Main function that tries Payload first, then falls back to CSV
+export const getSalsaEventsMain = async (): Promise<SalsaEvent[]> => {
+    // Try Payload first, if that fails, use CSV as fallback
+    return await getSalsaEventsFromPayload();
 };
