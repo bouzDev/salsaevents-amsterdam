@@ -248,6 +248,34 @@ export default function HomeContent({ initialEvents }: HomeContentProps) {
                 )}
             </section>
 
+            {/* Call to Action - View All Events */}
+            <section className='max-w-4xl mx-auto px-6 py-16'>
+                <div className='bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl p-8 text-center text-white'>
+                    <h2 className='text-headline text-white mb-4'>
+                        Discover More Events?
+                    </h2>
+                    <p className='text-body text-white/90 mb-6 max-w-2xl mx-auto'>
+                        View all available salsa events, workshops and
+                        festivals - including past events. From beginner to
+                        advanced, there's something for everyone!
+                    </p>
+                    <div className='flex flex-col sm:flex-row gap-4 justify-center'>
+                        <a
+                            href='/events'
+                            className='bg-white text-indigo-600 hover:bg-gray-100 font-semibold py-3 px-8 rounded-lg transition-colors'
+                        >
+                            View All Events
+                        </a>
+                        <a
+                            href='/register'
+                            className='bg-transparent border-2 border-white text-white hover:bg-white hover:text-indigo-600 font-semibold py-3 px-8 rounded-lg transition-colors'
+                        >
+                            Create Account
+                        </a>
+                    </div>
+                </div>
+            </section>
+
             {/* FAQ Section for SEO */}
             <section className='bg-gray-50 py-16'>
                 <div className='max-w-4xl mx-auto px-6'>

@@ -1,0 +1,6 @@
+title,description,date,time,venue,city,type,url,price,tags,vibe,imageUrl,isRecurring,frequency
+"Cuban Salsa Night","Amazing Cuban salsa party with live DJ","2024-12-28","20:00-01:00","Paradiso","Amsterdam","party","https://example.com/event1","€15","salsa,party,cuban","Energetic and fun atmosphere","","false",""
+"Rueda Workshop","Learn Rueda de Casino basics","2024-12-30","19:00-21:00","Dance Studio Central","Amsterdam","workshop","https://example.com/workshop","€20","rueda,workshop,beginners","Friendly learning environment","","false",""
+"Salsa Festival","Weekend salsa festival with international artists","2025-01-15","14:00-23:00","RAI Amsterdam","Amsterdam","festival","https://example.com/festival","€45","festival,salsa,international","Multi-day celebration of Cuban salsa","","false",""
+"Weekly Social","Regular weekly social dancing","2025-01-03","20:00-23:00","Cafe Latino","Amsterdam","social","","Free","social,weekly,free","Relaxed and welcoming","","true","weekly"
+"Bachata Fusion","Mix of bachata and salsa","2025-01-05","21:00-02:00","Club Salsa","Amsterdam","party","https://example.com/bachata","€12","bachata,salsa,fusion","Modern Latin vibes","","false",""

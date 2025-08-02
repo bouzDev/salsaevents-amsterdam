@@ -322,6 +322,7 @@ export const getSalsaEventsFromPayload = async (): Promise<SalsaEvent[]> => {
 
                 return {
                     id: doc.id,
+                    slug: doc.slug,
                     title: doc.title,
                     description: doc.description || '',
                     date: new Date(doc.date).toISOString().split('T')[0], // Format as YYYY-MM-DD

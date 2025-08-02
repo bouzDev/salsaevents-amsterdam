@@ -2,6 +2,7 @@ import { SalsaEvent } from '@/types/event';
 import { Calendar, MapPin, Clock, ExternalLink } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { enUS } from 'date-fns/locale';
+import Link from 'next/link';
 
 interface EventCardProps {
     event: SalsaEvent;
@@ -72,100 +73,108 @@ export default function EventCard({ event }: EventCardProps) {
     };
 
     return (
-        <div className='card p-6 hover:shadow-sm'>
-            <div className='flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4'>
-                {/* Left Content */}
-                <div className='flex-1'>
-                    <div className='flex items-center gap-3 mb-2'>
-                        <h3 className='text-title text-gray-900'>
-                            {event.title}
-                        </h3>
-                        <span
-                            className={`inline-flex items-center px-2 py-1 rounded-md text-xs font-medium border ${getEventTypeColor(
-                                event.type
-                            )}`}
-                        >
-                            {event.type.charAt(0).toUpperCase() +
-                                event.type.slice(1)}
-                        </span>
-                        {event.isRecurring && (
-                            <span className='text-xs text-gray-700 bg-gray-100 px-2 py-1 rounded-md'>
-                                {event.frequency}
+        <div className='card p-6 hover:shadow-lg transition-shadow cursor-pointer'>
+            <Link href={`/events/${event.slug || event.id}`}>
+                <div className='flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4'>
+                    {/* Left Content */}
+                    <div className='flex-1'>
+                        <div className='flex items-center gap-3 mb-2'>
+                            <h3 className='text-title text-gray-900 hover:text-indigo-600 transition-colors'>
+                                {event.title}
+                            </h3>
+                            <span
+                                className={`inline-flex items-center px-2 py-1 rounded-md text-xs font-medium border ${getEventTypeColor(
+                                    event.type
+                                )}`}
+                            >
+                                {event.type.charAt(0).toUpperCase() +
+                                    event.type.slice(1)}
                             </span>
-                        )}
-                    </div>
-
-                    {event.description && (
-                        <p className='text-body text-gray-700 mb-3'>
-                            {event.description}
-                        </p>
-                    )}
-
-                    {/* Date and Time */}
-                    <div className='flex items-center gap-6 text-caption text-gray-700 mb-2'>
-                        <div className='flex items-center gap-2'>
-                            <Calendar className='w-4 h-4' />
-                            <span>{formattedDate}</span>
+                            {event.isRecurring && (
+                                <span className='text-xs text-gray-700 bg-gray-100 px-2 py-1 rounded-md'>
+                                    {event.frequency}
+                                </span>
+                            )}
                         </div>
-                        {event.time && (
+
+                        {event.description && (
+                            <p className='text-body text-gray-700 mb-3'>
+                                {event.description}
+                            </p>
+                        )}
+
+                        {/* Date and Time */}
+                        <div className='flex items-center gap-6 text-caption text-gray-700 mb-2'>
                             <div className='flex items-center gap-2'>
-                                <Clock className='w-4 h-4' />
-                                <span>{event.time}</span>
+                                <Calendar className='w-4 h-4' />
+                                <span>{formattedDate}</span>
+                            </div>
+                            {event.time && (
+                                <div className='flex items-center gap-2'>
+                                    <Clock className='w-4 h-4' />
+                                    <span>{event.time}</span>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Location */}
+                        <div className='flex items-center gap-2 text-caption text-gray-700 mb-3'>
+                            <MapPin className='w-4 h-4' />
+                            <span>
+                                {event.venue}, {event.city}
+                            </span>
+                        </div>
+
+                        {/* Vibe */}
+                        {event.vibe && (
+                            <p className='text-caption text-gray-700 italic mb-3'>
+                                &ldquo;{event.vibe}&rdquo;
+                            </p>
+                        )}
+
+                        {/* Tags */}
+                        {event.tags.length > 0 && (
+                            <div className='flex flex-wrap gap-2'>
+                                {event.tags.slice(0, 4).map((tag, index) => (
+                                    <span
+                                        key={index}
+                                        className='text-xs text-gray-700 bg-gray-100 px-2 py-1 rounded-md'
+                                    >
+                                        #{tag}
+                                    </span>
+                                ))}
+                                {event.tags.length > 4 && (
+                                    <span className='text-xs text-gray-400'>
+                                        +{event.tags.length - 4} more
+                                    </span>
+                                )}
                             </div>
                         )}
                     </div>
 
-                    {/* Location */}
-                    <div className='flex items-center gap-2 text-caption text-gray-700 mb-3'>
-                        <MapPin className='w-4 h-4' />
-                        <span>
-                            {event.venue}, {event.city}
-                        </span>
-                    </div>
-
-                    {/* Vibe */}
-                    {event.vibe && (
-                        <p className='text-caption text-gray-700 italic mb-3'>
-                            &ldquo;{event.vibe}&rdquo;
-                        </p>
-                    )}
-
-                    {/* Tags */}
-                    {event.tags.length > 0 && (
-                        <div className='flex flex-wrap gap-2'>
-                            {event.tags.slice(0, 4).map((tag, index) => (
-                                <span
-                                    key={index}
-                                    className='text-xs text-gray-700 bg-gray-100 px-2 py-1 rounded-md'
-                                >
-                                    #{tag}
-                                </span>
-                            ))}
-                            {event.tags.length > 4 && (
-                                <span className='text-xs text-gray-400'>
-                                    +{event.tags.length - 4} more
-                                </span>
-                            )}
+                    {/* Right Content */}
+                    <div className='flex-shrink-0 flex flex-col gap-2'>
+                        <div className='text-sm text-gray-600 bg-indigo-50 px-3 py-1 rounded-full text-center'>
+                            More details
                         </div>
-                    )}
+                        {event.url && (
+                            <a
+                                href={event.url}
+                                target='_blank'
+                                rel='noopener noreferrer'
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleMoreInfoClick();
+                                }}
+                                className='btn-secondary inline-flex items-center gap-2 px-4 py-2 text-sm'
+                            >
+                                External info
+                                <ExternalLink className='w-4 h-4' />
+                            </a>
+                        )}
+                    </div>
                 </div>
-
-                {/* Right Content */}
-                <div className='flex-shrink-0'>
-                    {event.url && (
-                        <a
-                            href={event.url}
-                            target='_blank'
-                            rel='noopener noreferrer'
-                            onClick={handleMoreInfoClick}
-                            className='btn-secondary inline-flex items-center gap-2 px-4 py-2 text-sm'
-                        >
-                            More info
-                            <ExternalLink className='w-4 h-4' />
-                        </a>
-                    )}
-                </div>
-            </div>
+            </Link>
         </div>
     );
 }

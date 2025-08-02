@@ -83,3 +83,13 @@ export const getPayloadEvents = (): Promise<SalsaEvent[]> => {
 export const clearEventsCache = () => {
     eventsCache = null;
 };
+
+// Auto-refresh cache every 5 minutes (only in browser)
+if (typeof window !== 'undefined') {
+    setInterval(
+        () => {
+            clearEventsCache();
+        },
+        5 * 60 * 1000
+    );
+}

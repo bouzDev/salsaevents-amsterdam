@@ -10,6 +10,8 @@
         "migrate-events": "node scripts/migrate-events.mjs",
         "prepare-events": "node scripts/migrate-events-simple.mjs",
         "import-events": "node scripts/import-via-api.mjs",
+        "add-slugs": "node scripts/add-slugs-via-api.mjs",
+        "csv-import": "node scripts/csv-to-payload.mjs",
         "payload": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts payload"
     },
     "dependencies": {

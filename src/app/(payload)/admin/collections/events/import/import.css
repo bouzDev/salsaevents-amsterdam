@@ -1,0 +1,185 @@
+/* Use Payload's admin styling */
+.import-container {
+    padding: var(--base);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.import-header {
+    margin-bottom: var(--base);
+    padding-bottom: var(--base);
+    border-bottom: 1px solid var(--theme-elevation-150);
+}
+
+.import-title {
+    color: var(--theme-text);
+    margin: 0 0 calc(var(--base) / 2) 0;
+    font-size: var(--font-size-h2);
+    font-weight: var(--font-weight-semibold);
+}
+
+.import-description {
+    color: var(--theme-elevation-500);
+    margin: 0 0 var(--base) 0;
+    font-size: var(--font-size-base);
+}
+
+.import-navigation {
+    display: flex;
+    gap: var(--base);
+    margin-top: var(--base);
+}
+
+.import-nav-button {
+    display: inline-flex;
+    align-items: center;
+    gap: calc(var(--base) / 2);
+    padding: calc(var(--base) / 2) var(--base);
+    border: 1px solid var(--theme-elevation-200);
+    border-radius: var(--border-radius-s);
+    background: var(--theme-elevation-0);
+    color: var(--theme-text);
+    text-decoration: none;
+    font-size: var(--font-size-sm);
+    transition: all 0.15s ease;
+}
+
+.import-nav-button:hover {
+    background: var(--theme-elevation-50);
+    border-color: var(--theme-elevation-300);
+    color: var(--theme-text);
+    text-decoration: none;
+}
+
+.import-nav-button.primary {
+    background: var(--theme-success-500);
+    border-color: var(--theme-success-500);
+    color: white;
+}
+
+.import-nav-button.primary:hover {
+    background: var(--theme-success-600);
+    border-color: var(--theme-success-600);
+    color: white;
+}
+
+.import-upload-area {
+    border: 2px dashed var(--theme-elevation-200);
+    border-radius: var(--border-radius-m);
+    padding: calc(var(--base) * 2);
+    text-align: center;
+    background: var(--theme-elevation-0);
+    margin-bottom: var(--base);
+    transition: border-color 0.2s ease;
+}
+
+.import-upload-area:hover {
+    border-color: var(--theme-elevation-300);
+}
+
+.import-upload-icon {
+    font-size: 48px;
+    margin-bottom: calc(var(--base) / 2);
+}
+
+.import-upload-title {
+    color: var(--theme-text);
+    margin: 0 0 calc(var(--base) / 2) 0;
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-medium);
+}
+
+.import-upload-subtitle {
+    color: var(--theme-elevation-500);
+    margin: 0 0 var(--base) 0;
+    font-size: var(--font-size-sm);
+}
+
+.import-file-input {
+    padding: calc(var(--base) / 2) var(--base);
+    border: 1px solid var(--theme-elevation-200);
+    border-radius: var(--border-radius-s);
+    background: var(--theme-elevation-0);
+    font-size: var(--font-size-base);
+    cursor: pointer;
+}
+
+.import-file-input:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.import-message {
+    padding: var(--base);
+    border-radius: var(--border-radius-s);
+    margin-bottom: var(--base);
+    font-size: var(--font-size-base);
+    border: 1px solid;
+}
+
+.import-message.success {
+    background: var(--theme-success-50);
+    border-color: var(--theme-success-200);
+    color: var(--theme-success-600);
+}
+
+.import-message.error {
+    background: var(--theme-error-50);
+    border-color: var(--theme-error-200);
+    color: var(--theme-error-600);
+}
+
+.import-message.info {
+    background: var(--theme-info-50);
+    border-color: var(--theme-info-200);
+    color: var(--theme-info-600);
+}
+
+.import-progress {
+    background: var(--theme-elevation-50);
+    border: 1px solid var(--theme-elevation-200);
+    border-radius: var(--border-radius-s);
+    padding: var(--base);
+    text-align: center;
+    margin-bottom: var(--base);
+}
+
+.import-progress-title {
+    color: var(--theme-text);
+    margin-bottom: calc(var(--base) / 2);
+    font-size: var(--font-size-base);
+}
+
+.import-progress-subtitle {
+    color: var(--theme-elevation-500);
+    font-size: var(--font-size-sm);
+    margin: 0;
+}
+
+.import-instructions {
+    background: var(--theme-elevation-0);
+    border: 1px solid var(--theme-elevation-150);
+    border-radius: var(--border-radius-m);
+    padding: var(--base);
+}
+
+.import-instructions-title {
+    color: var(--theme-text);
+    margin: 0 0 var(--base) 0;
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-medium);
+}
+
+.import-instructions-content {
+    color: var(--theme-elevation-500);
+    font-size: var(--font-size-sm);
+    line-height: 1.6;
+}
+
+.import-instructions-content p {
+    margin: 0 0 calc(var(--base) / 2) 0;
+}
+
+.import-instructions-content p:last-child {
+    margin-bottom: 0;
+}

@@ -40,5 +40,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
             changeFrequency: 'monthly',
             priority: 0.3,
         },
+        // Events sitemap index
+        {
+            url: `${baseUrl}/events-sitemap.xml`,
+            lastModified: new Date(),
+            changeFrequency: 'daily',
+            priority: 0.9,
+        },
     ];
 }

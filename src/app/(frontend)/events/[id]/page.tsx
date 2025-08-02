@@ -1,0 +1,84 @@
+import React from 'react';
+import EventDetail from '../../../../components/events/EventDetail';
+import { notFound } from 'next/navigation';
+
+interface EventDetailPageProps {
+    params: {
+        id: string;
+    };
+}
+
+async function getEvent(slugOrId: string) {
+    try {
+        const baseUrl =
+            process.env.PAYLOAD_PUBLIC_SERVER_URL || 'http://localhost:3000';
+
+        // First try to find by slug
+        let response = await fetch(
+            `${baseUrl}/api/events?where[slug][equals]=${slugOrId}&limit=1`,
+            {
+                cache: 'no-store',
+            }
+        );
+
+        if (response.ok) {
+            const data = await response.json();
+            if (data.docs && data.docs.length > 0) {
+                return data.docs[0];
+            }
+        }
+
+        // If slug not found, try by ID (backwards compatibility)
+        response = await fetch(`${baseUrl}/api/events/${slugOrId}`, {
+            cache: 'no-store',
+        });
+
+        if (!response.ok) {
+            return null;
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Failed to fetch event:', error);
+        return null;
+    }
+}
+
+export default async function EventDetailPage({
+    params,
+}: EventDetailPageProps) {
+    const resolvedParams = await params;
+    const event = await getEvent(resolvedParams.id);
+
+    if (!event) {
+        notFound();
+    }
+
+    return <EventDetail event={event} />;
+}
+
+export async function generateMetadata({ params }: EventDetailPageProps) {
+    const resolvedParams = await params;
+    const event = await getEvent(resolvedParams.id);
+
+    if (!event) {
+        return {
+            title: 'Event not found',
+        };
+    }
+
+    return {
+        title: `${event.title} | Salsa Events Amsterdam`,
+        description:
+            event.description ||
+            `Join us for ${event.title} at ${event.venue} in ${event.city}`,
+        openGraph: {
+            title: event.title,
+            description:
+                event.description ||
+                `Join us for ${event.title} at ${event.venue} in ${event.city}`,
+            images: event.imageUrl ? [event.imageUrl] : [],
+        },
+    };
+}
