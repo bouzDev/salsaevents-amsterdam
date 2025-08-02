@@ -32,7 +32,8 @@ const parseCSV = (csvText: string): { [key: string]: string }[] => {
     });
 };
 
-// Generate weekly events for upcoming weeks
+// Generate weekly events for upcoming weeks - TEMPORARILY DISABLED
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const generateWeeklyEvents = (
     weeklyEvent: { [key: string]: string },
     weeksToGenerate: number = 12
@@ -157,6 +158,7 @@ const getFallbackEvents = (): SalsaEvent[] => {
         },
     ];
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const weeklyEventsData = [
         {
             'id': '15',
@@ -202,11 +204,11 @@ const getFallbackEvents = (): SalsaEvent[] => {
         });
     });
 
-    // Process weekly events
-    weeklyEventsData.forEach((weeklyEvent) => {
-        const generatedEvents = generateWeeklyEvents(weeklyEvent);
-        events.push(...generatedEvents);
-    });
+            // Process weekly events - TEMPORARILY DISABLED
+        // weeklyEventsData.forEach((weeklyEvent) => {
+        //     const generatedEvents = generateWeeklyEvents(weeklyEvent);
+        //     events.push(...generatedEvents);
+        // });
 
     return events.sort(
         (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
@@ -233,21 +235,25 @@ const loadEventsFromCSV = async (): Promise<SalsaEvent[]> => {
         const oneTimeEvents = parseCSV(eventsText);
         console.log('Parsed one-time events:', oneTimeEvents.length);
 
-        // Load weekly events
-        const weeklyEventsResponse = await fetch('/data/weekly-events.csv');
-        if (!weeklyEventsResponse.ok) {
-            throw new Error(
-                `Failed to fetch weekly-events.csv: ${weeklyEventsResponse.status}`
-            );
-        }
-        const weeklyEventsText = await weeklyEventsResponse.text();
-        console.log(
-            'Weekly events CSV loaded, length:',
-            weeklyEventsText.length
-        );
+        // Load weekly events - TEMPORARILY DISABLED
+        // const weeklyEventsResponse = await fetch('/data/weekly-events.csv');
+        // if (!weeklyEventsResponse.ok) {
+        //     throw new Error(
+        //         `Failed to fetch weekly-events.csv: ${weeklyEventsResponse.status}`
+        //     );
+        // }
+        // const weeklyEventsText = await weeklyEventsResponse.text();
+        // console.log(
+        //     'Weekly events CSV loaded, length:',
+        //     weeklyEventsText.length
+        // );
 
-        const weeklyEventsData = parseCSV(weeklyEventsText);
-        console.log('Parsed weekly events:', weeklyEventsData.length);
+        // const weeklyEventsData = parseCSV(weeklyEventsText);
+        // console.log('Parsed weekly events:', weeklyEventsData.length);
+        
+        // Define empty weekly events data for now
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const weeklyEventsData: { [key: string]: string }[] = [];
 
         // Process one-time events
         oneTimeEvents.forEach((eventData) => {
@@ -275,11 +281,11 @@ const loadEventsFromCSV = async (): Promise<SalsaEvent[]> => {
             });
         });
 
-        // Process weekly events
-        weeklyEventsData.forEach((weeklyEvent) => {
-            const generatedEvents = generateWeeklyEvents(weeklyEvent);
-            events.push(...generatedEvents);
-        });
+        // Process weekly events - TEMPORARILY DISABLED
+        // weeklyEventsData.forEach((weeklyEvent) => {
+        //     const generatedEvents = generateWeeklyEvents(weeklyEvent);
+        //     events.push(...generatedEvents);
+        // });
 
         console.log('Total events loaded:', events.length);
         return events.sort(
