@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import './import.css';
 
 const EventsImportPage: React.FC = () => {
@@ -102,7 +103,7 @@ const EventsImportPage: React.FC = () => {
                     } else {
                         errorCount++;
                     }
-                } catch (error) {
+                } catch {
                     errorCount++;
                 }
 
@@ -142,12 +143,12 @@ const EventsImportPage: React.FC = () => {
                     collection.
                 </p>
                 <div className='import-navigation'>
-                    <a
+                    <Link
                         href='/admin/collections/events'
                         className='import-nav-button'
                     >
                         ← Back to Events
-                    </a>
+                    </Link>
                     <a
                         href='/sample-events.csv'
                         download

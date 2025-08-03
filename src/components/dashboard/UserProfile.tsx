@@ -6,7 +6,7 @@ interface User {
     id: string;
     displayName: string;
     email: string;
-    avatar?: any;
+    avatar?: string;
     bio?: string;
     experienceLevel?: string;
     favoriteEventTypes?: string[];
@@ -116,14 +116,14 @@ const UserProfile: React.FC<UserProfileProps> = ({ user, onUserUpdate }) => {
             <div className='px-6 py-4 border-b border-gray-200'>
                 <div className='flex justify-between items-center'>
                     <h2 className='text-xl font-semibold text-gray-900'>
-                        👤 Mijn Profiel
+                        My Profile
                     </h2>
                     {!isEditing && (
                         <button
                             onClick={() => setIsEditing(true)}
                             className='bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm'
                         >
-                            ✏️ Bewerken
+                            Edit
                         </button>
                     )}
                 </div>
@@ -205,16 +205,16 @@ const UserProfile: React.FC<UserProfileProps> = ({ user, onUserUpdate }) => {
                                 </legend>
                                 <div className='mt-2 space-y-2'>
                                     {[
-                                        { value: 'party', label: '🎉 Party' },
+                                        { value: 'party', label: 'Party' },
                                         {
                                             value: 'workshop',
-                                            label: '🎓 Workshop',
+                                            label: 'Workshop',
                                         },
                                         {
                                             value: 'festival',
-                                            label: '🎪 Festival',
+                                            label: 'Festival',
                                         },
-                                        { value: 'social', label: '🤝 Social' },
+                                        { value: 'social', label: 'Social' },
                                     ].map((eventType) => (
                                         <div
                                             key={eventType.value}
@@ -305,8 +305,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ user, onUserUpdate }) => {
                                             htmlFor='commentReplies'
                                             className='ml-2 text-sm text-gray-700'
                                         >
-                                            💬 Notificaties bij reacties op mijn
-                                            comments
+                                            Notify me of replies to my comments
                                         </label>
                                     </div>
                                 </div>
@@ -320,14 +319,14 @@ const UserProfile: React.FC<UserProfileProps> = ({ user, onUserUpdate }) => {
                                 disabled={isLoading}
                                 className='bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm disabled:opacity-50'
                             >
-                                {isLoading ? 'Opslaan...' : '💾 Opslaan'}
+                                {isLoading ? 'Saving...' : 'Save'}
                             </button>
                             <button
                                 type='button'
                                 onClick={handleCancel}
                                 className='bg-gray-300 hover:bg-gray-400 text-gray-700 px-4 py-2 rounded-md text-sm'
                             >
-                                ❌ Annuleren
+                                Cancel
                             </button>
                         </div>
                     </form>
@@ -386,31 +385,31 @@ const UserProfile: React.FC<UserProfileProps> = ({ user, onUserUpdate }) => {
                         {/* Account Statistics */}
                         <div className='border-t pt-6'>
                             <h3 className='text-sm font-medium text-gray-700 mb-3'>
-                                Account statistieken
+                                Account statistics
                             </h3>
                             <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
                                 <div className='bg-blue-50 p-4 rounded-lg'>
                                     <div className='text-2xl font-bold text-blue-600'>
-                                        📅
+                                        0
                                     </div>
                                     <div className='text-sm text-gray-600 mt-1'>
-                                        Events bijgewoond
+                                        Events attended
                                     </div>
                                 </div>
                                 <div className='bg-green-50 p-4 rounded-lg'>
                                     <div className='text-2xl font-bold text-green-600'>
-                                        💬
+                                        0
                                     </div>
                                     <div className='text-sm text-gray-600 mt-1'>
-                                        Comments geplaatst
+                                        Comments posted
                                     </div>
                                 </div>
                                 <div className='bg-purple-50 p-4 rounded-lg'>
                                     <div className='text-2xl font-bold text-purple-600'>
-                                        ⭐
+                                        0
                                     </div>
                                     <div className='text-sm text-gray-600 mt-1'>
-                                        Gemiddelde rating
+                                        Average rating
                                     </div>
                                 </div>
                             </div>

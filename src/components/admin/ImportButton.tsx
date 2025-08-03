@@ -30,7 +30,7 @@ const ImportButton: React.FC = () => {
                         color: '#374151',
                     }}
                 >
-                    📁 Bulk Import Events
+                    Bulk Import Events
                 </h3>
                 <p
                     style={{
@@ -66,7 +66,7 @@ const ImportButton: React.FC = () => {
                     e.currentTarget.style.backgroundColor = '#3b82f6';
                 }}
             >
-                📁 Import CSV
+                Import CSV
             </button>
         </div>
     );

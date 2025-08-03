@@ -36,7 +36,7 @@ const LoginForm: React.FC = () => {
             } else {
                 setError(data.message || 'Login failed');
             }
-        } catch (err) {
+        } catch {
             setError('Er is iets misgegaan. Probeer het opnieuw.');
         } finally {
             setIsLoading(false);

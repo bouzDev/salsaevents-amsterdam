@@ -46,7 +46,10 @@ const EventComments: React.FC<EventCommentsProps> = ({ eventId, user }) => {
         setIsLoading(true);
         try {
             const response = await fetch(
-                `/api/event-comments?where[event][equals]=${eventId}&sort=-createdAt&depth=1`
+                `/api/event-comments?where[event][equals]=${eventId}&sort=-createdAt&depth=1`,
+                {
+                    credentials: 'include',
+                }
             );
             if (response.ok) {
                 const data = await response.json();
@@ -67,11 +70,13 @@ const EventComments: React.FC<EventCommentsProps> = ({ eventId, user }) => {
         try {
             const response = await fetch('/api/event-comments', {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
                     event: eventId,
+                    user: user.id,
                     comment: newComment.trim(),
                     rating: newRating || undefined,
                 }),
@@ -95,6 +100,7 @@ const EventComments: React.FC<EventCommentsProps> = ({ eventId, user }) => {
         try {
             const response = await fetch(`/api/event-comments/${commentId}`, {
                 method: 'PATCH',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -120,11 +126,13 @@ const EventComments: React.FC<EventCommentsProps> = ({ eventId, user }) => {
         try {
             const response = await fetch('/api/event-comments', {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
                     event: eventId,
+                    user: user.id,
                     comment: replyText.trim(),
                     parentComment: replyingTo,
                 }),
@@ -141,12 +149,12 @@ const EventComments: React.FC<EventCommentsProps> = ({ eventId, user }) => {
     };
 
     const handleDeleteComment = async (commentId: string) => {
-        if (!confirm('Weet je zeker dat je deze comment wilt verwijderen?'))
-            return;
+        if (!confirm('Are you sure you want to delete this comment?')) return;
 
         try {
             const response = await fetch(`/api/event-comments/${commentId}`, {
                 method: 'DELETE',
+                credentials: 'include',
             });
 
             if (response.ok) {
@@ -159,7 +167,7 @@ const EventComments: React.FC<EventCommentsProps> = ({ eventId, user }) => {
 
     const getRatingStars = (rating: string) => {
         const num = parseInt(rating);
-        return '⭐'.repeat(num);
+        return `${num}/5 stars`;
     };
 
     // Separate parent comments and replies
@@ -172,7 +180,7 @@ const EventComments: React.FC<EventCommentsProps> = ({ eventId, user }) => {
         return (
             <div className='bg-white rounded-lg shadow p-6'>
                 <h2 className='text-xl font-bold text-gray-900 mb-4'>
-                    💬 Comments
+                    Comments
                 </h2>
                 <div className='animate-pulse space-y-4'>
                     {[...Array(3)].map((_, i) => (
@@ -188,9 +196,9 @@ const EventComments: React.FC<EventCommentsProps> = ({ eventId, user }) => {
     }
 
     return (
-        <div className='bg-white rounded-lg shadow p-6'>
+        <div className='p-6'>
             <h2 className='text-xl font-bold text-gray-900 mb-6'>
-                💬 Comments (
+                Comments (
                 {
                     comments.filter(
                         (c) => c.isApproved || (user && c.user.id === user.id)
@@ -210,13 +218,13 @@ const EventComments: React.FC<EventCommentsProps> = ({ eventId, user }) => {
                             htmlFor='newComment'
                             className='block text-sm font-medium text-gray-700 mb-2'
                         >
-                            Deel je ervaring:
+                            Share your experience:
                         </label>
                         <textarea
                             id='newComment'
                             value={newComment}
                             onChange={(e) => setNewComment(e.target.value)}
-                            placeholder='Hoe was dit event? Deel je ervaring...'
+                            placeholder='How was this event? Share your experience...'
                             className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500'
                             rows={3}
                             required
@@ -228,7 +236,7 @@ const EventComments: React.FC<EventCommentsProps> = ({ eventId, user }) => {
                             htmlFor='newRating'
                             className='block text-sm font-medium text-gray-700 mb-2'
                         >
-                            Rating (optioneel):
+                            Rating (optional):
                         </label>
                         <select
                             id='newRating'
@@ -236,12 +244,12 @@ const EventComments: React.FC<EventCommentsProps> = ({ eventId, user }) => {
                             onChange={(e) => setNewRating(e.target.value)}
                             className='px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500'
                         >
-                            <option value=''>Geen rating</option>
-                            <option value='1'>⭐ 1 ster</option>
-                            <option value='2'>⭐⭐ 2 sterren</option>
-                            <option value='3'>⭐⭐⭐ 3 sterren</option>
-                            <option value='4'>⭐⭐⭐⭐ 4 sterren</option>
-                            <option value='5'>⭐⭐⭐⭐⭐ 5 sterren</option>
+                            <option value=''>No rating</option>
+                            <option value='1'>1 star</option>
+                            <option value='2'>2 stars</option>
+                            <option value='3'>3 stars</option>
+                            <option value='4'>4 stars</option>
+                            <option value='5'>5 stars</option>
                         </select>
                     </div>
 
@@ -250,31 +258,31 @@ const EventComments: React.FC<EventCommentsProps> = ({ eventId, user }) => {
                         disabled={isSubmitting || !newComment.trim()}
                         className='bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md disabled:opacity-50'
                     >
-                        {isSubmitting ? 'Plaatsen...' : '📝 Comment plaatsen'}
+                        {isSubmitting ? 'Posting...' : 'Post Comment'}
                     </button>
 
                     <p className='text-xs text-gray-500 mt-2'>
-                        💡 Comments worden eerst gecontroleerd voordat ze
-                        zichtbaar zijn voor andere gebruikers.
+                        Comments are reviewed before being visible to other
+                        users.
                     </p>
                 </form>
             ) : (
                 <div className='mb-8 p-4 bg-gray-50 rounded-lg text-center'>
                     <p className='text-gray-600 mb-4'>
-                        Meld je aan om een comment achter te laten!
+                        Sign up to leave a comment!
                     </p>
                     <div className='space-x-2'>
                         <a
                             href='/login'
                             className='bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm'
                         >
-                            Inloggen
+                            Login
                         </a>
                         <a
                             href='/register'
                             className='bg-gray-300 hover:bg-gray-400 text-gray-700 px-4 py-2 rounded-md text-sm'
                         >
-                            Registreren
+                            Sign Up
                         </a>
                     </div>
                 </div>
@@ -284,10 +292,12 @@ const EventComments: React.FC<EventCommentsProps> = ({ eventId, user }) => {
             <div className='space-y-6'>
                 {parentComments.length === 0 ? (
                     <div className='text-center py-8'>
-                        <div className='text-4xl mb-4'>💭</div>
+                        <div className='w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4'>
+                            <span className='text-2xl text-gray-500'>💭</span>
+                        </div>
                         <p className='text-gray-600'>
-                            Nog geen comments. Wees de eerste om je ervaring te
-                            delen!
+                            No comments yet. Be the first to share your
+                            experience!
                         </p>
                     </div>
                 ) : (
@@ -334,13 +344,12 @@ const EventComments: React.FC<EventCommentsProps> = ({ eventId, user }) => {
                                             )}
                                             {!comment.isApproved && isOwn && (
                                                 <span className='bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded'>
-                                                    In afwachting van
-                                                    goedkeuring
+                                                    Pending approval
                                                 </span>
                                             )}
                                             {comment.isEdited && (
                                                 <span className='text-gray-400 text-xs'>
-                                                    (bewerkt)
+                                                    (edited)
                                                 </span>
                                             )}
                                         </div>
@@ -348,7 +357,7 @@ const EventComments: React.FC<EventCommentsProps> = ({ eventId, user }) => {
                                         <p className='text-sm text-gray-500 mb-2'>
                                             {new Date(
                                                 comment.createdAt
-                                            ).toLocaleDateString('nl-NL', {
+                                            ).toLocaleDateString('en-US', {
                                                 year: 'numeric',
                                                 month: 'long',
                                                 day: 'numeric',
@@ -378,7 +387,7 @@ const EventComments: React.FC<EventCommentsProps> = ({ eventId, user }) => {
                                                         }
                                                         className='bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded text-sm'
                                                     >
-                                                        Opslaan
+                                                        Save
                                                     </button>
                                                     <button
                                                         onClick={() => {
@@ -389,7 +398,7 @@ const EventComments: React.FC<EventCommentsProps> = ({ eventId, user }) => {
                                                         }}
                                                         className='bg-gray-300 hover:bg-gray-400 text-gray-700 px-3 py-1 rounded text-sm'
                                                     >
-                                                        Annuleren
+                                                        Cancel
                                                     </button>
                                                 </div>
                                             </div>
@@ -409,7 +418,7 @@ const EventComments: React.FC<EventCommentsProps> = ({ eventId, user }) => {
                                                             }
                                                             className='text-indigo-600 hover:text-indigo-800'
                                                         >
-                                                            💬 Reageren
+                                                            Reply
                                                         </button>
                                                     )}
 
@@ -427,7 +436,7 @@ const EventComments: React.FC<EventCommentsProps> = ({ eventId, user }) => {
                                                                     }}
                                                                     className='text-gray-600 hover:text-gray-800'
                                                                 >
-                                                                    ✏️ Bewerken
+                                                                    Edit
                                                                 </button>
                                                                 <button
                                                                     onClick={() =>
@@ -437,8 +446,7 @@ const EventComments: React.FC<EventCommentsProps> = ({ eventId, user }) => {
                                                                     }
                                                                     className='text-red-600 hover:text-red-800'
                                                                 >
-                                                                    🗑️
-                                                                    Verwijderen
+                                                                    Delete
                                                                 </button>
                                                             </>
                                                         )}
@@ -459,7 +467,7 @@ const EventComments: React.FC<EventCommentsProps> = ({ eventId, user }) => {
                                                             e.target.value
                                                         )
                                                     }
-                                                    placeholder={`Reageer op ${comment.user.displayName}...`}
+                                                    placeholder={`Reply to ${comment.user.displayName}...`}
                                                     className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500'
                                                     rows={2}
                                                     required
@@ -469,7 +477,7 @@ const EventComments: React.FC<EventCommentsProps> = ({ eventId, user }) => {
                                                         type='submit'
                                                         className='bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded text-sm'
                                                     >
-                                                        Reageren
+                                                        Reply
                                                     </button>
                                                     <button
                                                         type='button'
@@ -479,7 +487,7 @@ const EventComments: React.FC<EventCommentsProps> = ({ eventId, user }) => {
                                                         }}
                                                         className='bg-gray-300 hover:bg-gray-400 text-gray-700 px-3 py-1 rounded text-sm'
                                                     >
-                                                        Annuleren
+                                                        Cancel
                                                     </button>
                                                 </div>
                                             </form>
@@ -532,9 +540,8 @@ const EventComments: React.FC<EventCommentsProps> = ({ eventId, user }) => {
                                                                     {!reply.isApproved &&
                                                                         isOwnReply && (
                                                                             <span className='bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded'>
-                                                                                Wacht
-                                                                                op
-                                                                                goedkeuring
+                                                                                Pending
+                                                                                approval
                                                                             </span>
                                                                         )}
                                                                 </div>
@@ -542,7 +549,7 @@ const EventComments: React.FC<EventCommentsProps> = ({ eventId, user }) => {
                                                                     {new Date(
                                                                         reply.createdAt
                                                                     ).toLocaleDateString(
-                                                                        'nl-NL',
+                                                                        'en-US',
                                                                         {
                                                                             month: 'short',
                                                                             day: 'numeric',

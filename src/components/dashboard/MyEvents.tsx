@@ -34,7 +34,7 @@ interface MyEventsProps {
     user: User;
 }
 
-const MyEvents: React.FC<MyEventsProps> = ({ user }) => {
+const MyEvents: React.FC<MyEventsProps> = () => {
     const [attendances, setAttendances] = useState<EventAttendance[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [filter, setFilter] = useState<
@@ -59,16 +59,16 @@ const MyEvents: React.FC<MyEventsProps> = ({ user }) => {
         }
     };
 
-    const getStatusIcon = (status: string) => {
+    const getStatusText = (status: string) => {
         switch (status) {
             case 'going':
-                return '✅';
+                return 'Going';
             case 'maybe':
-                return '❓';
+                return 'Maybe';
             case 'not-going':
-                return '❌';
+                return 'Not Going';
             default:
-                return '📅';
+                return 'Event';
         }
     };
 
@@ -117,25 +117,25 @@ const MyEvents: React.FC<MyEventsProps> = ({ user }) => {
             <div className='bg-white shadow rounded-lg p-6'>
                 <div className='flex justify-between items-center mb-4'>
                     <h2 className='text-xl font-semibold text-gray-900'>
-                        📅 Mijn Events
+                        My Events
                     </h2>
                     <div className='flex space-x-2'>
                         {[
                             {
                                 value: 'all',
-                                label: 'Alle',
+                                label: 'All',
                                 count: attendances.length,
                             },
                             {
                                 value: 'going',
-                                label: '✅ Ga',
+                                label: 'Going',
                                 count: attendances.filter(
                                     (a) => a.status === 'going'
                                 ).length,
                             },
                             {
                                 value: 'maybe',
-                                label: '❓ Misschien',
+                                label: 'Maybe',
                                 count: attendances.filter(
                                     (a) => a.status === 'maybe'
                                 ).length,
@@ -172,7 +172,7 @@ const MyEvents: React.FC<MyEventsProps> = ({ user }) => {
                             href='/'
                             className='inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700'
                         >
-                            🎉 Ontdek Events
+                            Discover Events
                         </a>
                     </div>
                 )}
@@ -199,7 +199,7 @@ const MyEvents: React.FC<MyEventsProps> = ({ user }) => {
             {pastEvents.length > 0 && (
                 <div className='bg-white shadow rounded-lg p-6'>
                     <h3 className='text-lg font-medium text-gray-900 mb-4'>
-                        📚 Vorige Events ({pastEvents.length})
+                        Past Events ({pastEvents.length})
                     </h3>
                     <div className='space-y-4'>
                         {pastEvents.map((attendance) => (
@@ -248,10 +248,10 @@ const EventCard: React.FC<EventCardProps> = ({
                             }`}
                         >
                             {attendance.status === 'going'
-                                ? '✅ Ga'
+                                ? 'Going'
                                 : attendance.status === 'maybe'
-                                  ? '❓ Misschien'
-                                  : '❌ Ga niet'}
+                                  ? 'Maybe'
+                                  : 'Not Going'}
                         </span>
                     </div>
 
@@ -265,17 +265,17 @@ const EventCard: React.FC<EventCardProps> = ({
                                 day: 'numeric',
                             })}
                         </div>
-                        {event.time && <div>🕐 {event.time}</div>}
+                        {event.time && <div>{event.time}</div>}
                         <div>
-                            📍 {event.venue}, {event.city}
+                            {event.venue}, {event.city}
                         </div>
-                        {event.type && <div>🎭 {event.type}</div>}
-                        {event.price && <div>💰 {event.price}</div>}
+                        {event.type && <div>{event.type}</div>}
+                        {event.price && <div>{event.price}</div>}
                     </div>
 
                     {attendance.publicComment && (
                         <div className='mt-3 p-3 bg-gray-50 rounded text-sm'>
-                            <strong>Mijn comment:</strong>{' '}
+                            <strong>My comment:</strong>{' '}
                             {attendance.publicComment}
                         </div>
                     )}

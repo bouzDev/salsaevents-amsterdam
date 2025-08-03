@@ -26,7 +26,7 @@ export default function Navbar() {
                 const userData = await response.json();
                 setUser(userData.user);
             }
-        } catch (error) {
+        } catch {
             // User not authenticated, that's fine
         } finally {
             setIsLoading(false);

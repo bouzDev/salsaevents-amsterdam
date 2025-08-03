@@ -63,8 +63,7 @@ export default function Footer() {
 
                 {/* Copyright */}
                 <div className='mt-6 pt-6 border-t border-gray-200 text-center text-caption text-gray-700'>
-                    © {new Date().getFullYear()} SalsaEvents Amsterdam. All
-                    rights reserved.
+                    © 2025 SalsaEvents Amsterdam. All rights reserved.
                 </div>
             </div>
         </footer>

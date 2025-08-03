@@ -40,17 +40,62 @@ const EventRSVP: React.FC<EventRSVPProps> = ({
     }, [user, eventId]);
 
     const loadCurrentAttendance = async () => {
+        if (!user?.id) {
+            console.log('No user ID, skipping attendance load');
+            return;
+        }
+
         setIsLoading(true);
         try {
+            console.log('Loading attendance for:', {
+                userId: user.id,
+                eventId,
+            });
+
+            // First check if user is authenticated
+            const authCheck = await fetch('/api/public-users/me', {
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            console.log('Auth check status:', authCheck.status);
+
             const response = await fetch(
-                `/api/event-attendances?where[event][equals]=${eventId}&where[user][equals]=${user?.id}`
+                `/api/event-attendances?where[event][equals]=${eventId}&where[user][equals]=${user.id}`,
+                {
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                }
             );
+            console.log('Load attendance response status:', response.status);
+
             if (response.ok) {
                 const data = await response.json();
+                console.log('Load attendance data:', data);
                 if (data.docs && data.docs.length > 0) {
                     setAttendance(data.docs[0]);
                     setPublicComment(data.docs[0].publicComment || '');
+                } else {
+                    console.log('No existing attendance found');
                 }
+            } else {
+                let errorText = '';
+                try {
+                    errorText = await response.text();
+                } catch (e) {
+                    errorText = 'Unable to read error response';
+                }
+                console.error('Failed to load attendance:', {
+                    status: response.status,
+                    statusText: response.statusText,
+                    url: response.url,
+                    error: errorText,
+                    userId: user?.id,
+                    eventId,
+                });
             }
         } catch (error) {
             console.error('Failed to load attendance:', error);
@@ -63,10 +108,22 @@ const EventRSVP: React.FC<EventRSVPProps> = ({
         try {
             const [goingResponse, maybeResponse] = await Promise.all([
                 fetch(
-                    `/api/event-attendances?where[event][equals]=${eventId}&where[status][equals]=going`
+                    `/api/event-attendances?where[event][equals]=${eventId}&where[status][equals]=going`,
+                    {
+                        credentials: 'include',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    }
                 ),
                 fetch(
-                    `/api/event-attendances?where[event][equals]=${eventId}&where[status][equals]=maybe`
+                    `/api/event-attendances?where[event][equals]=${eventId}&where[status][equals]=maybe`,
+                    {
+                        credentials: 'include',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    }
                 ),
             ]);
 
@@ -86,7 +143,7 @@ const EventRSVP: React.FC<EventRSVPProps> = ({
 
     const handleRSVP = async (status: 'going' | 'maybe' | 'not-going') => {
         if (!user) {
-            // Redirect to login
+            console.log('No user, redirecting to login');
             window.location.href = '/login';
             return;
         }
@@ -95,12 +152,36 @@ const EventRSVP: React.FC<EventRSVPProps> = ({
         try {
             let response;
 
+            console.log('RSVP attempt:', {
+                userId: user.id,
+                eventId,
+                status,
+                attendance,
+            });
+
+            // Check authentication before RSVP
+            const authCheck = await fetch('/api/public-users/me', {
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            console.log('Auth check for RSVP:', authCheck.status);
+
+            if (!authCheck.ok) {
+                console.log('User not authenticated, redirecting to login');
+                window.location.href = '/login';
+                return;
+            }
+
             if (attendance) {
                 // Update existing attendance
+                console.log('Updating existing attendance:', attendance.id);
                 response = await fetch(
                     `/api/event-attendances/${attendance.id}`,
                     {
                         method: 'PATCH',
+                        credentials: 'include',
                         headers: {
                             'Content-Type': 'application/json',
                         },
@@ -115,13 +196,16 @@ const EventRSVP: React.FC<EventRSVPProps> = ({
                 );
             } else {
                 // Create new attendance
+                console.log('Creating new attendance');
                 response = await fetch('/api/event-attendances', {
                     method: 'POST',
+                    credentials: 'include',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
                         event: eventId,
+                        user: user.id,
                         status,
                         publicComment:
                             status !== 'not-going' ? publicComment : undefined,
@@ -129,15 +213,36 @@ const EventRSVP: React.FC<EventRSVPProps> = ({
                 });
             }
 
+            console.log('API Response status:', response.status);
+
             if (response.ok) {
                 const data = await response.json();
+                console.log('RSVP success:', data);
                 setAttendance(data.doc || data);
                 setShowCommentForm(false);
 
                 // Refresh attendee count
                 loadAttendeeCount();
             } else {
-                console.error('RSVP failed');
+                let errorText = '';
+                try {
+                    errorText = await response.text();
+                } catch (e) {
+                    errorText = 'Unable to read error response';
+                }
+                console.error('RSVP failed:', {
+                    status: response.status,
+                    statusText: response.statusText,
+                    url: response.url,
+                    error: errorText,
+                    requestBody: {
+                        event: eventId,
+                        user: user?.id,
+                        status,
+                        publicComment:
+                            status !== 'not-going' ? publicComment : undefined,
+                    },
+                });
             }
         } catch (error) {
             console.error('RSVP error:', error);
@@ -161,7 +266,7 @@ const EventRSVP: React.FC<EventRSVPProps> = ({
     }
 
     return (
-        <div className='bg-white rounded-lg shadow p-6'>
+        <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
             <h3 className='text-lg font-semibold text-gray-900 mb-4'>RSVP</h3>
 
             {/* Attendee Count */}
@@ -169,7 +274,7 @@ const EventRSVP: React.FC<EventRSVPProps> = ({
                 <div className='flex justify-between items-center text-sm'>
                     <div className='flex items-center space-x-4'>
                         <div className='flex items-center'>
-                            <span className='text-green-600 mr-1'>✓</span>
+                            <span className='text-green-600 mr-1'>Going:</span>
                             <span className='font-medium'>
                                 {attendeeCount.going}
                             </span>
@@ -214,10 +319,10 @@ const EventRSVP: React.FC<EventRSVPProps> = ({
                             <div className='flex items-center'>
                                 <span className='mr-2'>
                                     {attendance.status === 'going'
-                                        ? '✓'
+                                        ? 'Going'
                                         : attendance.status === 'maybe'
-                                          ? '?'
-                                          : '✗'}
+                                          ? 'Maybe'
+                                          : 'Not Going'}
                                 </span>
                                 <span className='text-sm text-blue-800'>
                                     You indicated:{' '}
@@ -236,13 +341,7 @@ const EventRSVP: React.FC<EventRSVPProps> = ({
                     {/* RSVP Buttons */}
                     <div className='space-y-2'>
                         <button
-                            onClick={() => {
-                                if (attendance?.status !== 'going') {
-                                    setShowCommentForm(true);
-                                } else {
-                                    handleRSVP('going');
-                                }
-                            }}
+                            onClick={() => handleRSVP('going')}
                             disabled={isSubmitting}
                             className={`w-full py-2 px-4 rounded-md font-medium ${
                                 attendance?.status === 'going'
@@ -254,13 +353,7 @@ const EventRSVP: React.FC<EventRSVPProps> = ({
                         </button>
 
                         <button
-                            onClick={() => {
-                                if (attendance?.status !== 'maybe') {
-                                    setShowCommentForm(true);
-                                } else {
-                                    handleRSVP('maybe');
-                                }
-                            }}
+                            onClick={() => handleRSVP('maybe')}
                             disabled={isSubmitting}
                             className={`w-full py-2 px-4 rounded-md font-medium ${
                                 attendance?.status === 'maybe'
@@ -284,63 +377,88 @@ const EventRSVP: React.FC<EventRSVPProps> = ({
                         </button>
                     </div>
 
-                    {/* Comment Form */}
-                    {showCommentForm && (
-                        <div className='p-4 bg-gray-50 rounded-lg'>
-                            <label
-                                htmlFor='publicComment'
-                                className='block text-sm font-medium text-gray-700 mb-2'
-                            >
-                                Public comment (optional):
-                            </label>
-                            <textarea
-                                id='publicComment'
-                                value={publicComment}
-                                onChange={(e) =>
-                                    setPublicComment(e.target.value)
-                                }
-                                placeholder="Let others know why you\'re coming or what you expect..."
-                                className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500'
-                                rows={3}
-                            />
-                            <div className='mt-3 flex space-x-2'>
-                                <button
-                                    onClick={() => handleRSVP('going')}
-                                    disabled={isSubmitting}
-                                    className='bg-green-600 hover:bg-green-700 text-white py-1 px-3 rounded text-sm disabled:opacity-50'
-                                >
-                                    Confirm: I'm going
-                                </button>
-                                <button
-                                    onClick={() => handleRSVP('maybe')}
-                                    disabled={isSubmitting}
-                                    className='bg-yellow-600 hover:bg-yellow-700 text-white py-1 px-3 rounded text-sm disabled:opacity-50'
-                                >
-                                    Confirm: Maybe
-                                </button>
-                                <button
-                                    onClick={() => setShowCommentForm(false)}
-                                    className='bg-gray-300 hover:bg-gray-400 text-gray-700 py-1 px-3 rounded text-sm'
-                                >
-                                    Cancel
-                                </button>
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Show current comment if exists */}
-                    {attendance?.publicComment && !showCommentForm && (
-                        <div className='p-3 bg-green-50 rounded-lg'>
-                            <p className='text-sm text-green-800'>
-                                <strong>Your comment:</strong>{' '}
-                                {attendance.publicComment}
-                            </p>
-                            <button
-                                onClick={() => setShowCommentForm(true)}
-                                className='text-green-600 hover:text-green-800 text-xs mt-1'
-                            >
-                                Edit
-                            </button>
+                    {/* Optional Comment Section - only show after RSVP */}
+                    {attendance && (
+                        <div className='mt-4 border-t pt-4'>
+                            {!showCommentForm ? (
+                                <div>
+                                    {attendance.publicComment ? (
+                                        <div className='p-3 bg-blue-50 rounded-lg'>
+                                            <p className='text-sm text-blue-800'>
+                                                <strong>Your comment:</strong>{' '}
+                                                {attendance.publicComment}
+                                            </p>
+                                            <button
+                                                onClick={() => {
+                                                    setPublicComment(
+                                                        attendance.publicComment ||
+                                                            ''
+                                                    );
+                                                    setShowCommentForm(true);
+                                                }}
+                                                className='mt-2 text-indigo-600 hover:text-indigo-800 text-sm font-medium'
+                                            >
+                                                Edit comment
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <button
+                                            onClick={() => {
+                                                setPublicComment('');
+                                                setShowCommentForm(true);
+                                            }}
+                                            className='text-indigo-600 hover:text-indigo-800 text-sm font-medium'
+                                        >
+                                            + Add a comment (optional)
+                                        </button>
+                                    )}
+                                </div>
+                            ) : (
+                                <div className='p-4 bg-gray-50 rounded-lg'>
+                                    <label
+                                        htmlFor='publicComment'
+                                        className='block text-sm font-medium text-gray-700 mb-2'
+                                    >
+                                        Add a comment (optional)
+                                    </label>
+                                    <textarea
+                                        id='publicComment'
+                                        value={publicComment}
+                                        onChange={(e) =>
+                                            setPublicComment(e.target.value)
+                                        }
+                                        placeholder="Let others know why you're coming or what you expect..."
+                                        className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500'
+                                        rows={3}
+                                    />
+                                    <div className='mt-3 flex space-x-2'>
+                                        <button
+                                            onClick={() => {
+                                                // Update attendance with comment
+                                                const currentStatus =
+                                                    attendance.status;
+                                                handleRSVP(currentStatus);
+                                            }}
+                                            disabled={isSubmitting}
+                                            className='bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-md text-sm font-medium disabled:opacity-50'
+                                        >
+                                            Save comment
+                                        </button>
+                                        <button
+                                            onClick={() => {
+                                                setShowCommentForm(false);
+                                                setPublicComment(
+                                                    attendance.publicComment ||
+                                                        ''
+                                                );
+                                            }}
+                                            className='bg-gray-300 hover:bg-gray-400 text-gray-700 py-2 px-4 rounded-md text-sm'
+                                        >
+                                            Cancel
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     )}
                 </div>

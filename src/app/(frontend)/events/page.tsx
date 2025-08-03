@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import EventCard from '../../../components/EventCard';
 import { getSalsaEventsMain } from '../../../data/events.server';
 
@@ -64,76 +65,6 @@ export default async function EventsPage() {
                     </section>
                 )}
 
-                {/* Event Types Filter Info */}
-                <div className='bg-white rounded-lg shadow-sm p-6 mb-8'>
-                    <h3 className='text-lg font-semibold text-gray-900 mb-4'>
-                        Event Types
-                    </h3>
-                    <div className='grid grid-cols-2 md:grid-cols-4 gap-4'>
-                        <div className='text-center p-3 bg-red-50 rounded-lg'>
-                            <div className='text-2xl mb-2'>🎉</div>
-                            <div className='font-medium text-red-700'>
-                                Party
-                            </div>
-                            <div className='text-xs text-red-600'>
-                                Dance & socialize
-                            </div>
-                        </div>
-                        <div className='text-center p-3 bg-blue-50 rounded-lg'>
-                            <div className='text-2xl mb-2'>🎓</div>
-                            <div className='font-medium text-blue-700'>
-                                Workshop
-                            </div>
-                            <div className='text-xs text-blue-600'>
-                                Learn & improve
-                            </div>
-                        </div>
-                        <div className='text-center p-3 bg-purple-50 rounded-lg'>
-                            <div className='text-2xl mb-2'>🎪</div>
-                            <div className='font-medium text-purple-700'>
-                                Festival
-                            </div>
-                            <div className='text-xs text-purple-600'>
-                                Multi-day events
-                            </div>
-                        </div>
-                        <div className='text-center p-3 bg-green-50 rounded-lg'>
-                            <div className='text-2xl mb-2'>🤝</div>
-                            <div className='font-medium text-green-700'>
-                                Social
-                            </div>
-                            <div className='text-xs text-green-600'>
-                                Meet & greet
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Call to Action */}
-                <div className='bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg shadow-lg p-8 text-center text-white mb-8'>
-                    <h3 className='text-2xl font-bold mb-4'>
-                        Create an Account!
-                    </h3>
-                    <p className='text-lg mb-6 opacity-90'>
-                        Register to RSVP for events, leave comments and get
-                        personalized recommendations.
-                    </p>
-                    <div className='flex flex-col sm:flex-row gap-4 justify-center'>
-                        <a
-                            href='/register'
-                            className='bg-white text-indigo-600 hover:bg-gray-100 font-semibold py-3 px-6 rounded-lg transition-colors'
-                        >
-                            Create Account
-                        </a>
-                        <a
-                            href='/login'
-                            className='bg-transparent border-2 border-white text-white hover:bg-white hover:text-indigo-600 font-semibold py-3 px-6 rounded-lg transition-colors'
-                        >
-                            Login
-                        </a>
-                    </div>
-                </div>
-
                 {/* Past Events */}
                 {pastEvents.length > 0 && (
                     <section>
@@ -166,7 +97,11 @@ export default async function EventsPage() {
                 {/* No Events Message */}
                 {events.length === 0 && (
                     <div className='text-center py-12'>
-                        <div className='text-6xl mb-4'>🕺</div>
+                        <div className='w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4'>
+                            <span className='text-4xl text-gray-500 font-bold'>
+                                ?
+                            </span>
+                        </div>
                         <h2 className='text-2xl font-bold text-gray-900 mb-4'>
                             No events found
                         </h2>
@@ -174,12 +109,12 @@ export default async function EventsPage() {
                             There are currently no events available. Check back
                             soon!
                         </p>
-                        <a
+                        <Link
                             href='/'
                             className='bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg'
                         >
                             Back to Home
-                        </a>
+                        </Link>
                     </div>
                 )}
             </div>

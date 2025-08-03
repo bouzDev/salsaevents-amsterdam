@@ -76,7 +76,7 @@ const RegisterForm: React.FC = () => {
             } else {
                 setError(data.message || 'Registratie mislukt');
             }
-        } catch (err) {
+        } catch {
             setError('Er is iets misgegaan. Probeer het opnieuw.');
         } finally {
             setIsLoading(false);
@@ -205,14 +205,14 @@ const RegisterForm: React.FC = () => {
             <div>
                 <fieldset>
                     <legend className='text-sm font-medium text-gray-700'>
-                        Favoriete event types (optioneel)
+                        Favorite event types (optional)
                     </legend>
                     <div className='mt-2 space-y-2'>
                         {[
-                            { value: 'party', label: '🎉 Party' },
-                            { value: 'workshop', label: '🎓 Workshop' },
-                            { value: 'festival', label: '🎪 Festival' },
-                            { value: 'social', label: '🤝 Social' },
+                            { value: 'party', label: 'Party' },
+                            { value: 'workshop', label: 'Workshop' },
+                            { value: 'festival', label: 'Festival' },
+                            { value: 'social', label: 'Social' },
                         ].map((eventType) => (
                             <div
                                 key={eventType.value}

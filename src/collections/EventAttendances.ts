@@ -57,39 +57,7 @@ export const EventAttendances: CollectionConfig = {
             admin: {
                 hidden: true,
             },
-            hooks: {
-                beforeChange: [
-                    ({ data, req, operation }) => {
-                        if (operation === 'create' || operation === 'update') {
-                            // We'll set this in a hook after we have the relations populated
-                            return data.displayTitle;
-                        }
-                    },
-                ],
-                afterRead: [
-                    async ({ data, req }) => {
-                        if (data.user && data.event) {
-                            const user =
-                                typeof data.user === 'object'
-                                    ? data.user
-                                    : await req.payload.findByID({
-                                          collection: 'public-users',
-                                          id: data.user,
-                                      });
-                            const event =
-                                typeof data.event === 'object'
-                                    ? data.event
-                                    : await req.payload.findByID({
-                                          collection: 'events',
-                                          id: data.event,
-                                      });
-
-                            data.displayTitle = `${user?.displayName || 'User'} → ${event?.title || 'Event'}`;
-                        }
-                        return data;
-                    },
-                ],
-            },
+            defaultValue: 'Event Attendance',
         },
         {
             name: 'user',

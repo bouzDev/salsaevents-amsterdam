@@ -5,6 +5,9 @@ import { useSearchParams } from 'next/navigation';
 import { Search } from 'lucide-react';
 import EventCard from '@/components/EventCard';
 import { SalsaEvent } from '@/types/event';
+import Link from 'next/link';
+import { format, parseISO } from 'date-fns';
+import { enUS } from 'date-fns/locale';
 
 interface HomeContentProps {
     initialEvents: SalsaEvent[];
@@ -183,13 +186,13 @@ export default function HomeContent({ initialEvents }: HomeContentProps) {
                                 >
                                     <option value=''>All dates</option>
                                     {dates.map((date) => {
-                                        const formattedDate = new Date(
-                                            date
-                                        ).toLocaleDateString('en-US', {
-                                            weekday: 'short',
-                                            month: 'short',
-                                            day: 'numeric',
-                                        });
+                                        const formattedDate = format(
+                                            parseISO(date),
+                                            'EEE, MMM d',
+                                            {
+                                                locale: enUS,
+                                            }
+                                        );
                                         return (
                                             <option key={date} value={date}>
                                                 {formattedDate}
@@ -255,23 +258,23 @@ export default function HomeContent({ initialEvents }: HomeContentProps) {
                         Discover More Events?
                     </h2>
                     <p className='text-body text-white/90 mb-6 max-w-2xl mx-auto'>
-                        View all available salsa events, workshops and
-                        festivals - including past events. From beginner to
-                        advanced, there's something for everyone!
+                        View all available salsa events, workshops and festivals
+                        - including past events. From beginner to advanced,
+                        there&apos;s something for everyone!
                     </p>
                     <div className='flex flex-col sm:flex-row gap-4 justify-center'>
-                        <a
+                        <Link
                             href='/events'
                             className='bg-white text-indigo-600 hover:bg-gray-100 font-semibold py-3 px-8 rounded-lg transition-colors'
                         >
                             View All Events
-                        </a>
-                        <a
+                        </Link>
+                        <Link
                             href='/register'
                             className='bg-transparent border-2 border-white text-white hover:bg-white hover:text-indigo-600 font-semibold py-3 px-8 rounded-lg transition-colors'
                         >
                             Create Account
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </section>

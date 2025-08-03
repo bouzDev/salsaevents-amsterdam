@@ -1,3 +1,5 @@
+'use client';
+
 import { SalsaEvent } from '@/types/event';
 import { Calendar, MapPin, Clock, ExternalLink } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
@@ -75,7 +77,7 @@ export default function EventCard({ event }: EventCardProps) {
     return (
         <div className='card p-6 hover:shadow-lg transition-shadow cursor-pointer'>
             <Link href={`/events/${event.slug || event.id}`}>
-                <div className='flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4'>
+                <div className='flex flex-col items-start space-between gap-4'>
                     {/* Left Content */}
                     <div className='flex-1'>
                         <div className='flex items-center gap-3 mb-2'>
@@ -153,24 +155,27 @@ export default function EventCard({ event }: EventCardProps) {
                     </div>
 
                     {/* Right Content */}
-                    <div className='flex-shrink-0 flex flex-col gap-2'>
+                    <div className='flex-shrink-0 flex flex-col gap-2 min-w-[120px]'>
                         <div className='text-sm text-gray-600 bg-indigo-50 px-3 py-1 rounded-full text-center'>
                             More details
                         </div>
                         {event.url && (
-                            <a
-                                href={event.url}
-                                target='_blank'
-                                rel='noopener noreferrer'
+                            <button
                                 onClick={(e) => {
                                     e.stopPropagation();
+                                    e.preventDefault();
                                     handleMoreInfoClick();
+                                    window.open(
+                                        event.url,
+                                        '_blank',
+                                        'noopener,noreferrer'
+                                    );
                                 }}
                                 className='btn-secondary inline-flex items-center gap-2 px-4 py-2 text-sm'
                             >
                                 External info
                                 <ExternalLink className='w-4 h-4' />
-                            </a>
+                            </button>
                         )}
                     </div>
                 </div>

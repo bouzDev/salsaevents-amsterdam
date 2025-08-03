@@ -3,7 +3,7 @@ import HomeContent from '@/components/HomeContent';
 import { getSalsaEventsMain } from '@/data/events.server';
 
 export default async function Home() {
-    // Load events server-side vanuit Payload CMS voor SEO
+    // Load events server-side from Payload CMS for SEO
     const events = await getSalsaEventsMain();
 
     return (
