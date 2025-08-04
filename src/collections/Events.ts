@@ -199,5 +199,96 @@ export const Events: CollectionConfig = {
                 return data;
             },
         ],
+        afterChange: [
+            async ({ doc, operation }) => {
+                // Trigger revalidation after event changes
+                try {
+                    const revalidationUrl = `${process.env.PAYLOAD_PUBLIC_SERVER_URL || 'http://localhost:3000'}/api/revalidate`;
+                    const revalidationToken = process.env.REVALIDATION_TOKEN;
+
+                    if (!revalidationToken) {
+                        console.warn(
+                            'REVALIDATION_TOKEN not set, skipping revalidation'
+                        );
+                        return;
+                    }
+
+                    const revalidationType =
+                        operation === 'create'
+                            ? 'event-created'
+                            : 'event-updated';
+
+                    const response = await fetch(revalidationUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${revalidationToken}`,
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            type: revalidationType,
+                            eventId: doc.id,
+                            eventSlug: doc.slug,
+                        }),
+                    });
+
+                    if (response.ok) {
+                        console.log(
+                            `✅ Revalidation triggered for event: ${doc.title} (${revalidationType})`
+                        );
+                    } else {
+                        console.error(
+                            '❌ Revalidation failed:',
+                            response.status,
+                            response.statusText
+                        );
+                    }
+                } catch (error) {
+                    console.error('❌ Revalidation error:', error);
+                }
+            },
+        ],
+        afterDelete: [
+            async ({ doc }) => {
+                // Trigger revalidation after event deletion
+                try {
+                    const revalidationUrl = `${process.env.PAYLOAD_PUBLIC_SERVER_URL || 'http://localhost:3000'}/api/revalidate`;
+                    const revalidationToken = process.env.REVALIDATION_TOKEN;
+
+                    if (!revalidationToken) {
+                        console.warn(
+                            'REVALIDATION_TOKEN not set, skipping revalidation'
+                        );
+                        return;
+                    }
+
+                    const response = await fetch(revalidationUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${revalidationToken}`,
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            type: 'event-deleted',
+                            eventId: doc.id,
+                            eventSlug: doc.slug,
+                        }),
+                    });
+
+                    if (response.ok) {
+                        console.log(
+                            `✅ Revalidation triggered for deleted event: ${doc.title}`
+                        );
+                    } else {
+                        console.error(
+                            '❌ Revalidation failed:',
+                            response.status,
+                            response.statusText
+                        );
+                    }
+                } catch (error) {
+                    console.error('❌ Revalidation error:', error);
+                }
+            },
+        ],
     },
 };

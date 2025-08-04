@@ -1,6 +1,7 @@
 import React from 'react';
 import EventDetail from '../../../../components/events/EventDetail';
 import { notFound } from 'next/navigation';
+import { getSalsaEventsMain } from '../../../../data/events.server';
 
 interface EventDetailPageProps {
     params: {
@@ -17,7 +18,7 @@ async function getEvent(slugOrId: string) {
         let response = await fetch(
             `${baseUrl}/api/events?where[slug][equals]=${slugOrId}&limit=1`,
             {
-                cache: 'no-store',
+                next: { revalidate: 60 }, // ISR: revalidate every 60 seconds
             }
         );
 
@@ -30,7 +31,7 @@ async function getEvent(slugOrId: string) {
 
         // If slug not found, try by ID (backwards compatibility)
         response = await fetch(`${baseUrl}/api/events/${slugOrId}`, {
-            cache: 'no-store',
+            next: { revalidate: 60 }, // ISR: revalidate every 60 seconds
         });
 
         if (!response.ok) {
@@ -81,4 +82,17 @@ export async function generateMetadata({ params }: EventDetailPageProps) {
             images: event.imageUrl ? [event.imageUrl] : [],
         },
     };
+}
+
+// Generate static params for all events (for static generation)
+export async function generateStaticParams() {
+    try {
+        const events = await getSalsaEventsMain();
+        return events.map((event) => ({
+            id: event.slug || event.id.toString(),
+        }));
+    } catch (error) {
+        console.error('Error generating static params:', error);
+        return []; // Return empty array if error, will fallback to ISR
+    }
 }

@@ -14,6 +14,9 @@ export const metadata = {
     },
 };
 
+// Enable ISR for this page - regenerate every 60 seconds
+export const revalidate = 60;
+
 export default async function EventsPage() {
     const events = await getSalsaEventsMain();
 
@@ -37,8 +40,8 @@ export default async function EventsPage() {
                         <p className='text-xl text-gray-600 max-w-2xl mx-auto'>
                             Discover all salsa events, workshops, festivals and
                             social events in Amsterdam and surrounding areas.
-                            From beginner to advanced - there's something for
-                            everyone!
+                            From beginner to advanced - there&apos;s something
+                            for everyone!
                         </p>
                     </div>
                 </div>
