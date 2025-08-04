@@ -40,13 +40,13 @@ const RegisterForm: React.FC = () => {
 
         // Validation
         if (formData.password !== formData.confirmPassword) {
-            setError('Wachtwoorden komen niet overeen');
+            setError('Passwords do not match');
             setIsLoading(false);
             return;
         }
 
         if (formData.password.length < 6) {
-            setError('Wachtwoord moet minimaal 6 karakters zijn');
+            setError('Password must be at least 6 characters');
             setIsLoading(false);
             return;
         }
@@ -71,13 +71,13 @@ const RegisterForm: React.FC = () => {
             if (response.ok) {
                 // Account created successfully
                 router.push(
-                    '/login?message=Account aangemaakt! Je kunt nu inloggen.'
+                    '/login?message=Account created! You can now sign in.'
                 );
             } else {
-                setError(data.message || 'Registratie mislukt');
+                setError(data.message || 'Registration failed');
             }
         } catch {
-            setError('Er is iets misgegaan. Probeer het opnieuw.');
+            setError('Something went wrong. Please try again.');
         } finally {
             setIsLoading(false);
         }
@@ -96,7 +96,7 @@ const RegisterForm: React.FC = () => {
                     htmlFor='displayName'
                     className='block text-sm font-medium text-gray-700'
                 >
-                    Weergavenaam
+                    Display Name
                 </label>
                 <div className='mt-1'>
                     <input
@@ -107,7 +107,7 @@ const RegisterForm: React.FC = () => {
                         value={formData.displayName}
                         onChange={handleInputChange}
                         className='appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500'
-                        placeholder='Hoe anderen je zien'
+                        placeholder='How others see you'
                     />
                 </div>
             </div>
@@ -117,7 +117,7 @@ const RegisterForm: React.FC = () => {
                     htmlFor='email'
                     className='block text-sm font-medium text-gray-700'
                 >
-                    Email adres
+                    Email Address
                 </label>
                 <div className='mt-1'>
                     <input
@@ -129,7 +129,7 @@ const RegisterForm: React.FC = () => {
                         value={formData.email}
                         onChange={handleInputChange}
                         className='appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500'
-                        placeholder='je@email.com'
+                        placeholder='you@email.com'
                     />
                 </div>
             </div>
@@ -139,7 +139,7 @@ const RegisterForm: React.FC = () => {
                     htmlFor='password'
                     className='block text-sm font-medium text-gray-700'
                 >
-                    Wachtwoord
+                    Password
                 </label>
                 <div className='mt-1'>
                     <input
@@ -151,7 +151,7 @@ const RegisterForm: React.FC = () => {
                         value={formData.password}
                         onChange={handleInputChange}
                         className='appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500'
-                        placeholder='Minimaal 6 karakters'
+                        placeholder='At least 6 characters'
                     />
                 </div>
             </div>
@@ -161,7 +161,7 @@ const RegisterForm: React.FC = () => {
                     htmlFor='confirmPassword'
                     className='block text-sm font-medium text-gray-700'
                 >
-                    Bevestig wachtwoord
+                    Confirm Password
                 </label>
                 <div className='mt-1'>
                     <input
@@ -173,7 +173,7 @@ const RegisterForm: React.FC = () => {
                         value={formData.confirmPassword}
                         onChange={handleInputChange}
                         className='appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500'
-                        placeholder='Herhaal je wachtwoord'
+                        placeholder='Repeat your password'
                     />
                 </div>
             </div>
@@ -183,7 +183,7 @@ const RegisterForm: React.FC = () => {
                     htmlFor='experienceLevel'
                     className='block text-sm font-medium text-gray-700'
                 >
-                    Ervaring niveau
+                    Experience Level
                 </label>
                 <div className='mt-1'>
                     <select
@@ -193,7 +193,7 @@ const RegisterForm: React.FC = () => {
                         onChange={handleInputChange}
                         className='block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500'
                     >
-                        <option value=''>Selecteer je niveau</option>
+                        <option value=''>Select your level</option>
                         <option value='beginner'>Beginner</option>
                         <option value='intermediate'>Intermediate</option>
                         <option value='advanced'>Advanced</option>
@@ -247,7 +247,7 @@ const RegisterForm: React.FC = () => {
                     disabled={isLoading}
                     className='group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50'
                 >
-                    {isLoading ? 'Account aanmaken...' : 'Account aanmaken'}
+                    {isLoading ? 'Creating account...' : 'Create account'}
                 </button>
             </div>
         </form>

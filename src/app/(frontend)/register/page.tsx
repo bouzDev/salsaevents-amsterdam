@@ -11,15 +11,15 @@ export default function RegisterPage() {
                     </h1>
                 </div>
                 <h2 className='mt-6 text-center text-3xl font-extrabold text-gray-900'>
-                    Maak je account aan
+                    Create your account
                 </h2>
                 <p className='mt-2 text-center text-sm text-gray-600'>
-                    Of{' '}
+                    Or{' '}
                     <a
                         href='/login'
                         className='font-medium text-indigo-600 hover:text-indigo-500'
                     >
-                        login met bestaand account
+                        sign in to your existing account
                     </a>
                 </p>
             </div>
