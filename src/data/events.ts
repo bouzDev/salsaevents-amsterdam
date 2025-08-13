@@ -32,12 +32,14 @@ const parseCSV = (csvText: string): { [key: string]: string }[] => {
     });
 };
 
-// Generate weekly events for upcoming weeks
+// Generate weekly events for upcoming weeks using Europe/Amsterdam timezone
 const generateWeeklyEvents = (
     weeklyEvent: { [key: string]: string },
     weeksToGenerate: number = 12
 ): SalsaEvent[] => {
     const events: SalsaEvent[] = [];
+    const tz = 'Europe/Amsterdam';
+
     const dayMap: { [key: string]: number } = {
         sunday: 0,
         monday: 1,
@@ -48,51 +50,83 @@ const generateWeeklyEvents = (
         saturday: 6,
     };
 
-    const dayNumber = dayMap[weeklyEvent.day.toLowerCase()];
-    if (dayNumber === undefined) return events;
+    const shortDayToNum: { [key: string]: number } = {
+        sun: 0,
+        mon: 1,
+        tue: 2,
+        wed: 3,
+        thu: 4,
+        fri: 5,
+        sat: 6,
+    };
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0); // Set to midnight for consistent comparison
+    const formatYMDInTZ = (date: Date): string =>
+        new Intl.DateTimeFormat('en-CA', {
+            timeZone: tz,
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+        }).format(date);
 
-    const endDate = weeklyEvent['end-date']
-        ? new Date(weeklyEvent['end-date'])
-        : new Date(today.getFullYear() + 1, today.getMonth(), today.getDate());
-    endDate.setHours(23, 59, 59, 999); // Set to end of day
+    const getDayInTZ = (date: Date): number => {
+        const weekday = new Intl.DateTimeFormat('en-US', {
+            timeZone: tz,
+            weekday: 'short',
+        })
+            .format(date)
+            .toLowerCase()
+            .slice(0, 3);
+        return shortDayToNum[weekday];
+    };
+
+    const parseYMDToUTCNoon = (ymd: string): Date => {
+        const [y, m, d] = ymd.split('-').map((v) => parseInt(v, 10));
+        return new Date(Date.UTC(y, m - 1, d, 12, 0, 0, 0));
+    };
+
+    const targetDayNumber = dayMap[weeklyEvent.day.toLowerCase()];
+    if (targetDayNumber === undefined) return events;
+
+    // Today in Amsterdam timezone (as UTC noon date)
+    const todayYMDInAms = formatYMDInTZ(new Date());
+    const todayUTCNoon = parseYMDToUTCNoon(todayYMDInAms);
+    const todayDayNumber = getDayInTZ(todayUTCNoon);
+
+    // Determine end date (as UTC end-of-day for Amsterdam date)
+    let endDateUTC: Date;
+    if (weeklyEvent['end-date']) {
+        const [ey, em, ed] = weeklyEvent['end-date']
+            .split('-')
+            .map((v) => parseInt(v, 10));
+        endDateUTC = new Date(Date.UTC(ey, em - 1, ed, 23, 59, 59, 999));
+    } else {
+        const [ty, tm, td] = todayYMDInAms
+            .split('-')
+            .map((v) => parseInt(v, 10));
+        endDateUTC = new Date(Date.UTC(ty + 1, tm - 1, td, 23, 59, 59, 999));
+    }
 
     for (let i = 0; i < weeksToGenerate; i++) {
-        // Calculate the next occurrence of the target weekday
-        const eventDate = new Date(today);
+        let daysToAdd = targetDayNumber - todayDayNumber;
+        if (daysToAdd < 0) daysToAdd += 7;
 
-        // Calculate days to add to get to the next occurrence of dayNumber
-        const todayDayNumber = today.getDay();
-        let daysToAdd = dayNumber - todayDayNumber;
+        const eventDateUTC = new Date(todayUTCNoon);
+        eventDateUTC.setUTCDate(eventDateUTC.getUTCDate() + daysToAdd + 7 * i);
 
-        // If the target day has already passed this week, go to next week
-        if (daysToAdd < 0) {
-            daysToAdd += 7;
-        }
-        // If it's today, but we want to show future events, we can include today as well
-        // (you can adjust this logic if needed)
-
-        // Add the calculated days plus week offset
-        eventDate.setDate(today.getDate() + daysToAdd + 7 * i);
-        eventDate.setHours(0, 0, 0, 0); // Set to midnight
-
-        // Skip if before today or after end date
-        const todayMidnight = new Date(today);
-        todayMidnight.setHours(0, 0, 0, 0);
-
-        if (eventDate < todayMidnight || eventDate > endDate) continue;
+        // Skip if before today (Amsterdam) or after end date
+        if (eventDateUTC < todayUTCNoon || eventDateUTC > endDateUTC) continue;
 
         const tags = weeklyEvent.tags
             ? weeklyEvent.tags.split(',').map((tag: string) => tag.trim())
             : [];
 
+        const eventYMDInAms = formatYMDInTZ(eventDateUTC);
+
         events.push({
-            id: `${weeklyEvent.id}-${eventDate.toISOString().split('T')[0]}`,
+            id: `${weeklyEvent.id}-${eventYMDInAms}`,
             title: weeklyEvent.title,
             description: weeklyEvent.description,
-            date: eventDate.toISOString().split('T')[0],
+            date: eventYMDInAms,
             time: weeklyEvent.time,
             venue: weeklyEvent.venue,
             location: weeklyEvent.venue,
