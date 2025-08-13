@@ -22,54 +22,67 @@ export default async function Home({
 
     return (
         <>
-            {/* Structured data (SSR inline, geen JS nodig voor parsing) */}
+            {/* Structured data (SSR inline, meerdere Events via @graph) */}
             <script
                 type='application/ld+json'
                 dangerouslySetInnerHTML={{
                     __html: JSON.stringify({
                         '@context': 'https://schema.org',
-                        '@type': 'ItemList',
-                        'name': 'Cuban Salsa Events in Amsterdam',
-                        'itemListElement': events.map((e, index) => {
+                        '@graph': events.map((e) => {
                             const startTime = (e.time || '')
                                 .split('-')[0]
                                 ?.trim();
                             const startDate = startTime
                                 ? `${e.date}T${startTime}`
                                 : e.date;
+                            const endTime = (e.time || '').includes('-')
+                                ? (e.time || '').split('-')[1]?.trim()
+                                : undefined;
+                            const endDate = endTime
+                                ? `${e.date}T${endTime}`
+                                : undefined;
                             const isFree =
                                 Array.isArray(e.tags) &&
                                 e.tags.some((t) => t.toLowerCase() === 'free');
+                            const baseUrl = 'https://salsaevents-amsterdam.com';
+                            const image = `${baseUrl}/salsaeventsamsterdam.jpg`;
                             return {
-                                '@type': 'ListItem',
-                                'position': index + 1,
-                                'item': {
-                                    '@type': 'Event',
-                                    'name': e.title,
-                                    'description': e.description || undefined,
-                                    startDate,
-                                    'eventStatus':
-                                        'https://schema.org/EventScheduled',
-                                    'eventAttendanceMode':
-                                        'https://schema.org/OfflineEventAttendanceMode',
-                                    'isAccessibleForFree': isFree || undefined,
-                                    'location': {
-                                        '@type': 'Place',
-                                        'name': e.venue,
-                                        'address': {
-                                            '@type': 'PostalAddress',
-                                            'addressLocality': e.city,
-                                            'addressCountry': 'Netherlands',
-                                        },
+                                '@type': 'Event',
+                                'name': e.title,
+                                'description': e.description || undefined,
+                                startDate,
+                                endDate,
+                                'eventStatus':
+                                    'https://schema.org/EventScheduled',
+                                'eventAttendanceMode':
+                                    'https://schema.org/OfflineEventAttendanceMode',
+                                'isAccessibleForFree': isFree || undefined,
+                                image,
+                                'location': {
+                                    '@type': 'Place',
+                                    'name': e.venue,
+                                    'address': {
+                                        '@type': 'PostalAddress',
+                                        'addressLocality': e.city,
+                                        'addressCountry': 'Netherlands',
                                     },
-                                    'organizer': {
-                                        '@type': 'Organization',
-                                        'name': 'SalsaEvents Amsterdam',
-                                    },
-                                    'url':
-                                        e.url ||
-                                        'https://salsaevents-amsterdam.com',
                                 },
+                                'organizer': {
+                                    '@type': 'Organization',
+                                    'name': 'SalsaEvents Amsterdam',
+                                    'url': baseUrl,
+                                },
+                                'offers': isFree
+                                    ? {
+                                          '@type': 'Offer',
+                                          'price': '0',
+                                          'priceCurrency': 'EUR',
+                                          'availability':
+                                              'https://schema.org/InStock',
+                                          'url': e.url || baseUrl,
+                                      }
+                                    : undefined,
+                                'url': e.url || baseUrl,
                             };
                         }),
                     }),
