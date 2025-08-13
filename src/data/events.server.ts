@@ -206,11 +206,11 @@ const getFallbackEvents = (): SalsaEvent[] => {
         });
     });
 
-    // Process weekly events - TEMPORARILY DISABLED
-    // weeklyEventsData.forEach((weeklyEvent) => {
-    //     const generatedEvents = generateWeeklyEvents(weeklyEvent);
-    //     events.push(...generatedEvents);
-    // });
+    // Process weekly events as part of fallback as well
+    weeklyEventsData.forEach((weeklyEvent) => {
+        const generatedEvents = generateWeeklyEvents(weeklyEvent);
+        events.push(...generatedEvents);
+    });
 
     return events.sort(
         (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
@@ -232,23 +232,19 @@ export const getSalsaEventsServer = async (): Promise<SalsaEvent[]> => {
         const oneTimeEvents = parseCSV(eventsText);
         console.log('Parsed one-time events:', oneTimeEvents.length);
 
-        // Load weekly events - TEMPORARILY DISABLED
-        // const weeklyEventsPath = path.join(
-        //     process.cwd(),
-        //     'public/data/weekly-events.csv'
-        // );
-        // const weeklyEventsText = fs.readFileSync(weeklyEventsPath, 'utf8');
-        // console.log(
-        //     'Weekly events CSV loaded, length:',
-        //     weeklyEventsText.length
-        // );
+        // Load weekly events
+        const weeklyEventsPath = path.join(
+            process.cwd(),
+            'public/data/weekly-events.csv'
+        );
+        const weeklyEventsText = fs.readFileSync(weeklyEventsPath, 'utf8');
+        console.log(
+            'Weekly events CSV loaded, length:',
+            weeklyEventsText.length
+        );
 
-        // const weeklyEventsData = parseCSV(weeklyEventsText);
-        // console.log('Parsed weekly events:', weeklyEventsData.length);
-
-        // Define empty weekly events data for now
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const weeklyEventsData: { [key: string]: string }[] = [];
+        const weeklyEventsData = parseCSV(weeklyEventsText);
+        console.log('Parsed weekly events:', weeklyEventsData.length);
 
         // Process one-time events
         oneTimeEvents.forEach((eventData) => {
@@ -276,11 +272,11 @@ export const getSalsaEventsServer = async (): Promise<SalsaEvent[]> => {
             });
         });
 
-        // Process weekly events - TEMPORARILY DISABLED
-        // weeklyEventsData.forEach((weeklyEvent) => {
-        //     const generatedEvents = generateWeeklyEvents(weeklyEvent);
-        //     events.push(...generatedEvents);
-        // });
+        // Process weekly events
+        weeklyEventsData.forEach((weeklyEvent) => {
+            const generatedEvents = generateWeeklyEvents(weeklyEvent);
+            events.push(...generatedEvents);
+        });
 
         console.log('Total events loaded:', events.length);
         return events.sort(
