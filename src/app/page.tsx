@@ -1,5 +1,6 @@
 import HomeContent from '@/components/HomeContent';
 import Script from 'next/script';
+import { Suspense } from 'react';
 import { getSalsaEventsServer } from '@/data/events.server';
 
 export const revalidate = 3600; // Pre-render statisch en herbouw elk uur
@@ -52,7 +53,9 @@ export default async function Home() {
                     }),
                 }}
             />
-            <HomeContent initialEvents={events} />
+            <Suspense fallback={null}>
+                <HomeContent initialEvents={events} />
+            </Suspense>
         </>
     );
 }
