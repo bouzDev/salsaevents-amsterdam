@@ -46,6 +46,12 @@ export default async function Home({
                                 e.tags.some((t) => t.toLowerCase() === 'free');
                             const baseUrl = 'https://salsaevents-amsterdam.com';
                             const image = `${baseUrl}/salsaeventsamsterdam.jpg`;
+                            const organizer = e.venue
+                                ? {
+                                      '@type': 'Organization',
+                                      'name': e.venue,
+                                  }
+                                : undefined;
                             return {
                                 '@type': 'Event',
                                 'name': e.title,
@@ -67,11 +73,7 @@ export default async function Home({
                                         'addressCountry': 'Netherlands',
                                     },
                                 },
-                                'organizer': {
-                                    '@type': 'Organization',
-                                    'name': 'SalsaEvents Amsterdam',
-                                    'url': baseUrl,
-                                },
+                                'organizer': organizer,
                                 'offers': isFree
                                     ? {
                                           '@type': 'Offer',
