@@ -75,9 +75,9 @@ export default function HomeContent({ initialEvents }: HomeContentProps) {
         <div className='bg-white min-h-screen'>
             {/* Hero Section */}
             <section className='max-w-4xl mx-auto px-6 pt-16 pb-12 text-center'>
-                <h2 className='text-display text-gray-900 mb-4'>
+                <h1 className='text-display text-gray-900 mb-4'>
                     Where are we dancing Cuban salsa this week?
-                </h2>
+                </h1>
                 <p className='text-body text-gray-700 max-w-2xl mx-auto mb-8'>
                     Discover the best spots to dance authentic Cuban salsa,
                     rueda de casino, and salsa cubana - events, parties,
@@ -96,7 +96,11 @@ export default function HomeContent({ initialEvents }: HomeContentProps) {
             </section>
 
             {/* Search and Filters */}
-            <section className='max-w-4xl mx-auto px-6 mb-16'>
+            <section
+                className='max-w-4xl mx-auto px-6 mb-16'
+                role='search'
+                aria-label='Search and filter events'
+            >
                 <div className='bg-gray-50 rounded-xl p-6'>
                     <div className='flex flex-col space-y-4'>
                         {/* Search Bar */}
@@ -201,7 +205,10 @@ export default function HomeContent({ initialEvents }: HomeContentProps) {
                         </div>
 
                         {/* Results count */}
-                        <p className='text-caption text-gray-700'>
+                        <p
+                            className='text-caption text-gray-700'
+                            aria-live='polite'
+                        >
                             {filteredEvents.length} event
                             {filteredEvents.length !== 1 ? 's' : ''} found
                         </p>
@@ -218,11 +225,13 @@ export default function HomeContent({ initialEvents }: HomeContentProps) {
                         </p>
                     </div>
                 ) : filteredEvents.length > 0 ? (
-                    <div className='space-y-4'>
+                    <ol className='space-y-4' role='list' aria-live='polite'>
                         {filteredEvents.map((event) => (
-                            <EventCard key={event.id} event={event} />
+                            <li key={event.id}>
+                                <EventCard event={event} />
+                            </li>
                         ))}
-                    </div>
+                    </ol>
                 ) : (
                     <div className='text-center py-16'>
                         <h3 className='text-title text-gray-900 mb-2'>

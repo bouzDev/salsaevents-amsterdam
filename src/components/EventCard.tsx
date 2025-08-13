@@ -72,7 +72,7 @@ export default function EventCard({ event }: EventCardProps) {
     };
 
     return (
-        <div className='card p-6 hover:shadow-sm'>
+        <article className='card p-6 hover:shadow-sm'>
             <div className='flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4'>
                 {/* Left Content */}
                 <div className='flex-1'>
@@ -105,7 +105,7 @@ export default function EventCard({ event }: EventCardProps) {
                     <div className='flex items-center gap-6 text-caption text-gray-700 mb-2'>
                         <div className='flex items-center gap-2'>
                             <Calendar className='w-4 h-4' />
-                            <span>{formattedDate}</span>
+                            <time dateTime={event.date}>{formattedDate}</time>
                         </div>
                         {event.time && (
                             <div className='flex items-center gap-2'>
@@ -118,9 +118,9 @@ export default function EventCard({ event }: EventCardProps) {
                     {/* Location */}
                     <div className='flex items-center gap-2 text-caption text-gray-700 mb-3'>
                         <MapPin className='w-4 h-4' />
-                        <span>
+                        <address className='not-italic'>
                             {event.venue}, {event.city}
-                        </span>
+                        </address>
                     </div>
 
                     {/* Vibe */}
@@ -166,6 +166,6 @@ export default function EventCard({ event }: EventCardProps) {
                     )}
                 </div>
             </div>
-        </div>
+        </article>
     );
 }

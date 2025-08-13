@@ -1,27 +1,58 @@
-import { Suspense } from 'react';
 import HomeContent from '@/components/HomeContent';
+import Script from 'next/script';
 import { getSalsaEventsServer } from '@/data/events.server';
+
+export const revalidate = 3600; // Pre-render statisch en herbouw elk uur
 
 export default async function Home() {
     // Load events server-side voor SEO
     const events = await getSalsaEventsServer();
 
     return (
-        <Suspense
-            fallback={
-                <div className='bg-white min-h-screen'>
-                    <div className='max-w-4xl mx-auto px-6 pt-16 pb-12 text-center'>
-                        <h1 className='text-display text-gray-900 mb-4'>
-                            Where are we dancing Cuban salsa this week?
-                        </h1>
-                        <p className='text-body text-gray-600 max-w-2xl mx-auto mb-8'>
-                            Loading Cuban salsa events...
-                        </p>
-                    </div>
-                </div>
-            }
-        >
+        <>
+            {/* Structured data voor betere SEO/AI indexatie */}
+            <Script
+                id='events-structured-data'
+                type='application/ld+json'
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        '@context': 'https://schema.org',
+                        '@type': 'ItemList',
+                        'name': 'Cuban Salsa Events in Amsterdam',
+                        'itemListElement': events.map((e, index) => ({
+                            '@type': 'ListItem',
+                            'position': index + 1,
+                            'item': {
+                                '@type': 'Event',
+                                'name': e.title,
+                                'description': e.description || undefined,
+                                'startDate': e.date,
+                                'eventStatus':
+                                    'https://schema.org/EventScheduled',
+                                'eventAttendanceMode':
+                                    'https://schema.org/OfflineEventAttendanceMode',
+                                'location': {
+                                    '@type': 'Place',
+                                    'name': e.venue,
+                                    'address': {
+                                        '@type': 'PostalAddress',
+                                        'addressLocality': e.city,
+                                        'addressCountry': 'Netherlands',
+                                    },
+                                },
+                                'organizer': {
+                                    '@type': 'Organization',
+                                    'name': 'SalsaEvents Amsterdam',
+                                },
+                                'url':
+                                    e.url ||
+                                    'https://salsaevents-amsterdam.com',
+                            },
+                        })),
+                    }),
+                }}
+            />
             <HomeContent initialEvents={events} />
-        </Suspense>
+        </>
     );
 }
