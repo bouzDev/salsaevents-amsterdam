@@ -1,31 +1,30 @@
 'use client';
 
 import { useState, useMemo, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
 import { Search } from 'lucide-react';
 import EventCard from '@/components/EventCard';
 import { SalsaEvent } from '@/types/event';
 
 interface HomeContentProps {
     initialEvents: SalsaEvent[];
+    initialCity?: string;
 }
 
-export default function HomeContent({ initialEvents }: HomeContentProps) {
-    const searchParams = useSearchParams();
+export default function HomeContent({
+    initialEvents,
+    initialCity,
+}: HomeContentProps) {
     const [searchTerm, setSearchTerm] = useState('');
-    const [selectedCity, setSelectedCity] = useState('');
+    const [selectedCity, setSelectedCity] = useState(initialCity || '');
     const [selectedType, setSelectedType] = useState('');
     const [selectedDate, setSelectedDate] = useState('');
     const [salsaEvents] = useState<SalsaEvent[]>(initialEvents);
     const loading = false; // No loading since events are passed as props
 
-    // Check for query parameters on load
+    // Sync prop changes (if any) to state
     useEffect(() => {
-        const cityParam = searchParams.get('city');
-        if (cityParam) {
-            setSelectedCity(cityParam);
-        }
-    }, [searchParams]);
+        if (initialCity) setSelectedCity(initialCity);
+    }, [initialCity]);
 
     // Helper function to check if event is in the future or today
     const isEventUpcoming = (eventDate: string): boolean => {

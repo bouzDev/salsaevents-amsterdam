@@ -1,11 +1,15 @@
 import HomeContent from '@/components/HomeContent';
 import Script from 'next/script';
-import { Suspense } from 'react';
 import { getSalsaEventsServer } from '@/data/events.server';
 
 export const revalidate = 3600; // Pre-render statisch en herbouw elk uur
 
 export default async function Home() {
+    // Read query server-side (SSG/SSR friendly)
+    let cityFromUrl: string | undefined = undefined;
+    // Note: voor SSG houden we filters client-side; cityFromUrl is optioneel.
+    cityFromUrl = undefined;
+
     // Load events server-side voor SEO
     const events = await getSalsaEventsServer();
 
@@ -53,9 +57,7 @@ export default async function Home() {
                     }),
                 }}
             />
-            <Suspense fallback={null}>
-                <HomeContent initialEvents={events} />
-            </Suspense>
+            <HomeContent initialEvents={events} initialCity={cityFromUrl} />
         </>
     );
 }
