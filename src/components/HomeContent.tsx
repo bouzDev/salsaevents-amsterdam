@@ -4,6 +4,7 @@ import { useState, useMemo, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Search } from 'lucide-react';
 import EventCard from '@/components/EventCard';
+import DatePicker from '@/components/DatePicker';
 import { SalsaEvent } from '@/types/event';
 import Link from 'next/link';
 import { format, parseISO } from 'date-fns';
@@ -30,19 +31,62 @@ export default function HomeContent({ initialEvents }: HomeContentProps) {
         }
     }, [searchParams]);
 
-    // Helper function to check if event is in the future or today
-    const isEventUpcoming = (eventDate: string): boolean => {
+    // Helper function to check if event is upcoming
+    const isEventUpcoming = (date: string, endDate?: string): boolean => {
         const today = new Date();
-        today.setHours(0, 0, 0, 0); // Reset time to start of day
-        const eventDateObj = new Date(eventDate);
-        return eventDateObj >= today;
+        today.setHours(0, 0, 0, 0); // Set to start of day
+
+        // For single day events, check if start date is today or later
+        if (!endDate) {
+            const eventDate = new Date(date);
+            return eventDate >= today;
+        }
+
+        // For multi-day events, check if end date is today or later
+        const eventEndDate = new Date(endDate);
+        return eventEndDate >= today;
+    };
+
+    // Helper function to check if a specific date falls within an event's date range
+    const isDateInEventRange = (
+        eventDate: string,
+        eventEndDate: string | undefined,
+        targetDate: string
+    ): boolean => {
+        const target = new Date(targetDate);
+        const start = new Date(eventDate);
+
+        if (!eventEndDate) {
+            // Single day event - exact match
+            return eventDate === targetDate;
+        }
+
+        const end = new Date(eventEndDate);
+        return target >= start && target <= end;
+    };
+
+    // Helper function to get all dates for an event (for date picker)
+    const getEventDates = (date: string, endDate?: string): string[] => {
+        if (!endDate) {
+            return [date];
+        }
+
+        const dates: string[] = [];
+        const start = new Date(date);
+        const end = new Date(endDate);
+
+        for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+            dates.push(d.toISOString().split('T')[0]);
+        }
+
+        return dates;
     };
 
     // Filter events - only show upcoming events
     const filteredEvents = useMemo(() => {
         return salsaEvents.filter((event) => {
             // First check if event is upcoming
-            if (!isEventUpcoming(event.date)) {
+            if (!isEventUpcoming(event.date, event.endDate)) {
                 return false;
             }
 
@@ -57,7 +101,12 @@ export default function HomeContent({ initialEvents }: HomeContentProps) {
             const matchesType =
                 selectedType === '' || event.type === selectedType;
             const matchesDate =
-                selectedDate === '' || event.date === selectedDate;
+                selectedDate === '' ||
+                isDateInEventRange(
+                    event.date,
+                    event.endDate,
+                    selectedDate
+                );
 
             return matchesSearch && matchesCity && matchesType && matchesDate;
         });
@@ -65,67 +114,92 @@ export default function HomeContent({ initialEvents }: HomeContentProps) {
 
     // Get unique cities, types and dates for filters (only from upcoming events)
     const upcomingEvents = useMemo(() => {
-        return salsaEvents.filter((event) => isEventUpcoming(event.date));
+        return salsaEvents.filter((event) =>
+            isEventUpcoming(event.date, event.endDate)
+        );
     }, [salsaEvents]);
 
     const cities = [...new Set(upcomingEvents.map((event) => event.city))];
     const types = [...new Set(upcomingEvents.map((event) => event.type))];
-    const dates = [
-        ...new Set(upcomingEvents.map((event) => event.date)),
-    ].sort();
+
+    // Get all individual dates from all events (including date ranges)
+    const dates = useMemo(() => {
+        const allDates = upcomingEvents.flatMap((event) =>
+            getEventDates(event.date, event.endDate)
+        );
+        return [...new Set(allDates)].sort();
+    }, [upcomingEvents]);
 
     return (
         <div className='bg-white min-h-screen'>
-            {/* Hero Section */}
-            <section className='max-w-4xl mx-auto px-6 pt-16 pb-12 text-center'>
-                <h2 className='text-display text-gray-900 mb-4'>
-                    Where are we dancing Cuban salsa this week?
-                </h2>
-                <p className='text-body text-gray-700 max-w-2xl mx-auto mb-8'>
-                    Discover the best spots to dance authentic Cuban salsa,
-                    rueda de casino, and salsa cubana - events, parties,
-                    workshops and festivals in Amsterdam and surrounding areas.
-                    Your weekly guide to the Cuban salsa scene!
+            {/* Apple-style Hero Section */}
+            <section className='max-w-5xl mx-auto px-6 pt-24 pb-16 text-center'>
+                <h1 className='text-6xl md:text-7xl font-semibold text-gray-900 mb-8 tracking-tight leading-none'>
+                    Cuban Salsa
+                    <br />
+                    <span className='text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500'>
+                        This Week
+                    </span>
+                </h1>
+                <p className='text-xl text-gray-600 max-w-3xl mx-auto mb-12 leading-relaxed'>
+                    Discover authentic Cuban salsa, rueda de casino, and salsa
+                    cubana events. Your guide to the vibrant Cuban salsa scene
+                    in Amsterdam and beyond.
                 </p>
 
-                {/* Quick Stats */}
-                <div className='flex justify-center items-center gap-8 text-caption text-gray-700 mb-12'>
-                    <span>{upcomingEvents.length} Events</span>
-                    <span>•</span>
-                    <span>{cities.length} Cities</span>
-                    <span>•</span>
-                    <span>{types.length} Types</span>
+                {/* Apple-style Stats */}
+                <div className='flex justify-center items-center gap-12 text-gray-500 mb-16'>
+                    <div className='text-center'>
+                        <div className='text-3xl font-semibold text-gray-900 mb-1'>
+                            {upcomingEvents.length}
+                        </div>
+                        <div className='text-sm font-medium'>Events</div>
+                    </div>
+                    <div className='w-px h-12 bg-gray-200'></div>
+                    <div className='text-center'>
+                        <div className='text-3xl font-semibold text-gray-900 mb-1'>
+                            {cities.length}
+                        </div>
+                        <div className='text-sm font-medium'>Cities</div>
+                    </div>
+                    <div className='w-px h-12 bg-gray-200'></div>
+                    <div className='text-center'>
+                        <div className='text-3xl font-semibold text-gray-900 mb-1'>
+                            {types.length}
+                        </div>
+                        <div className='text-sm font-medium'>Types</div>
+                    </div>
                 </div>
             </section>
 
-            {/* Search and Filters */}
-            <section className='max-w-4xl mx-auto px-6 mb-16'>
-                <div className='bg-gray-50 rounded-xl p-6'>
-                    <div className='flex flex-col space-y-4'>
+            {/* Apple-style Search and Filters */}
+            <section className='max-w-5xl mx-auto px-6 mb-20 relative z-50'>
+                <div className='bg-white/80 backdrop-blur-xl rounded-2xl border border-gray-200/50 shadow-xl p-8'>
+                    <div className='flex flex-col space-y-6'>
                         {/* Search Bar */}
                         <div className='relative'>
                             <label htmlFor='search-events' className='sr-only'>
                                 Search events, venues, and descriptions
                             </label>
-                            <Search className='absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5' />
+                            <Search className='absolute left-5 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5' />
                             <input
                                 id='search-events'
                                 type='text'
                                 placeholder='Search events, venues, descriptions...'
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                className='w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all'
+                                className='w-full pl-14 pr-6 py-4 bg-gray-50/50 border-0 rounded-xl text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-blue-500/20 focus:bg-white transition-all text-lg'
                             />
                         </div>
 
-                        {/* Filters */}
-                        <div className='flex gap-3'>
-                            <div className='flex-1'>
+                        {/* Apple-style Filters */}
+                        <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
+                            <div>
                                 <label
                                     htmlFor='filter-city'
-                                    className='sr-only'
+                                    className='block text-sm font-medium text-gray-700 mb-2'
                                 >
-                                    Filter by city
+                                    City
                                 </label>
                                 <select
                                     id='filter-city'
@@ -133,7 +207,7 @@ export default function HomeContent({ initialEvents }: HomeContentProps) {
                                     onChange={(e) =>
                                         setSelectedCity(e.target.value)
                                     }
-                                    className='w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+                                    className='w-full px-4 py-3 bg-white border border-gray-300 rounded-xl text-gray-900 focus:ring-2 focus:ring-blue-500/20 focus:bg-white transition-all'
                                 >
                                     <option value=''>All cities</option>
                                     {cities.map((city) => (
@@ -144,12 +218,12 @@ export default function HomeContent({ initialEvents }: HomeContentProps) {
                                 </select>
                             </div>
 
-                            <div className='flex-1'>
+                            <div>
                                 <label
                                     htmlFor='filter-type'
-                                    className='sr-only'
+                                    className='block text-sm font-medium text-gray-700 mb-2'
                                 >
-                                    Filter by event type
+                                    Type
                                 </label>
                                 <select
                                     id='filter-type'
@@ -157,7 +231,7 @@ export default function HomeContent({ initialEvents }: HomeContentProps) {
                                     onChange={(e) =>
                                         setSelectedType(e.target.value)
                                     }
-                                    className='w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+                                    className='w-full px-4 py-3 bg-white border border-gray-300 rounded-xl text-gray-900 focus:ring-2 focus:ring-blue-500/20 focus:bg-white transition-all'
                                 >
                                     <option value=''>All types</option>
                                     {types.map((type) => (
@@ -169,45 +243,40 @@ export default function HomeContent({ initialEvents }: HomeContentProps) {
                                 </select>
                             </div>
 
-                            <div className='flex-1'>
-                                <label
-                                    htmlFor='filter-date'
-                                    className='sr-only'
-                                >
-                                    Filter by date
-                                </label>
-                                <select
-                                    id='filter-date'
-                                    value={selectedDate}
-                                    onChange={(e) =>
-                                        setSelectedDate(e.target.value)
-                                    }
-                                    className='w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent'
-                                >
-                                    <option value=''>All dates</option>
-                                    {dates.map((date) => {
-                                        const formattedDate = format(
-                                            parseISO(date),
-                                            'EEE, MMM d',
-                                            {
-                                                locale: enUS,
-                                            }
-                                        );
-                                        return (
-                                            <option key={date} value={date}>
-                                                {formattedDate}
-                                            </option>
-                                        );
-                                    })}
-                                </select>
+                            <div>
+                                <DatePicker
+                                    selectedDate={selectedDate}
+                                    onDateChange={setSelectedDate}
+                                    eventDates={dates}
+                                    placeholder='All dates'
+                                    accentColor='blue'
+                                />
                             </div>
                         </div>
 
-                        {/* Results count */}
-                        <p className='text-caption text-gray-700'>
-                            {filteredEvents.length} event
-                            {filteredEvents.length !== 1 ? 's' : ''} found
-                        </p>
+                        {/* Apple-style Results count */}
+                        <div className='flex justify-between items-center pt-2'>
+                            <p className='text-sm text-gray-600 font-medium'>
+                                {filteredEvents.length} event
+                                {filteredEvents.length !== 1 ? 's' : ''} found
+                            </p>
+                            {(searchTerm ||
+                                selectedCity ||
+                                selectedType ||
+                                selectedDate) && (
+                                <button
+                                    onClick={() => {
+                                        setSearchTerm('');
+                                        setSelectedCity('');
+                                        setSelectedType('');
+                                        setSelectedDate('');
+                                    }}
+                                    className='text-sm text-blue-600 hover:text-blue-700 font-medium'
+                                >
+                                    Clear filters
+                                </button>
+                            )}
+                        </div>
                     </div>
                 </div>
             </section>
@@ -251,31 +320,42 @@ export default function HomeContent({ initialEvents }: HomeContentProps) {
                 )}
             </section>
 
-            {/* Call to Action - View All Events */}
-            <section className='max-w-4xl mx-auto px-6 py-16'>
-                <div className='bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl p-8 text-center text-white'>
-                    <h2 className='text-headline text-white mb-4'>
-                        Discover More Events?
-                    </h2>
-                    <p className='text-body text-white/90 mb-6 max-w-2xl mx-auto'>
-                        View all available salsa events, workshops and festivals
-                        - including past events. From beginner to advanced,
-                        there&apos;s something for everyone!
-                    </p>
-                    <div className='flex flex-col sm:flex-row gap-4 justify-center'>
-                        <Link
-                            href='/events'
-                            className='bg-white text-indigo-600 hover:bg-gray-100 font-semibold py-3 px-8 rounded-lg transition-colors'
-                        >
-                            View All Events
-                        </Link>
-                        <Link
-                            href='/register'
-                            className='bg-transparent border-2 border-white text-white hover:bg-white hover:text-indigo-600 font-semibold py-3 px-8 rounded-lg transition-colors'
-                        >
-                            Create Account
-                        </Link>
+            {/* Apple-style Call to Action */}
+            <section className='max-w-6xl mx-auto px-6 py-24'>
+                <div className='bg-black rounded-3xl overflow-hidden relative'>
+                    {/* Background gradient */}
+                    <div className='absolute inset-0 bg-gradient-to-br from-gray-900 via-black to-gray-800'></div>
+
+                    {/* Content */}
+                    <div className='relative z-10 px-8 py-16 text-center'>
+                        <h2 className='text-5xl font-semibold text-white mb-6 tracking-tight'>
+                            Discover More
+                        </h2>
+                        <p className='text-xl text-gray-300 mb-12 max-w-2xl mx-auto leading-relaxed'>
+                            Explore workshops to master your technique or join
+                            festivals for unforgettable experiences in the Cuban
+                            salsa community.
+                        </p>
+
+                        <div className='flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto'>
+                            <Link
+                                href='/workshops'
+                                className='bg-white text-black hover:bg-gray-100 font-medium py-4 px-8 rounded-full transition-all duration-200 hover:scale-105 active:scale-95'
+                            >
+                                Workshops
+                            </Link>
+                            <Link
+                                href='/festivals'
+                                className='border border-white/30 text-white hover:bg-white/10 font-medium py-4 px-8 rounded-full transition-all duration-200 hover:scale-105 active:scale-95 backdrop-blur-sm'
+                            >
+                                Festivals
+                            </Link>
+                        </div>
                     </div>
+
+                    {/* Subtle decoration */}
+                    <div className='absolute top-8 right-8 w-32 h-32 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-xl'></div>
+                    <div className='absolute bottom-8 left-8 w-24 h-24 bg-gradient-to-br from-orange-500/20 to-red-500/20 rounded-full blur-xl'></div>
                 </div>
             </section>
 

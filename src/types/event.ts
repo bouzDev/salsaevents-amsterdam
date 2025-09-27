@@ -4,6 +4,7 @@ export interface SalsaEvent {
     title: string;
     description?: string;
     date: string;
+    endDate?: string;
     time?: string;
     venue: string;
     location: string;

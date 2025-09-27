@@ -4,7 +4,15 @@ export const Events: CollectionConfig = {
     slug: 'events',
     admin: {
         useAsTitle: 'title',
-        defaultColumns: ['title', 'slug', 'date', 'venue', 'city', 'type'],
+        defaultColumns: [
+            'title',
+            'slug',
+            'date',
+            'endDate',
+            'venue',
+            'city',
+            'type',
+        ],
         description:
             'Manage your salsa events. Want to bulk import? Go to: /admin/collections/events/import',
         components: {
@@ -76,11 +84,25 @@ export const Events: CollectionConfig = {
             name: 'date',
             type: 'date',
             required: true,
-            label: 'Date',
+            label: 'Start Date',
             admin: {
                 date: {
                     pickerAppearance: 'dayOnly',
                 },
+                description: 'First day of the event',
+            },
+        },
+        {
+            name: 'endDate',
+            type: 'date',
+            required: false,
+            label: 'End Date',
+            admin: {
+                date: {
+                    pickerAppearance: 'dayOnly',
+                },
+                description:
+                    'Last day of the event (leave empty for single-day events)',
             },
         },
         {

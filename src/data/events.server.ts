@@ -191,6 +191,7 @@ const getFallbackEvents = (): SalsaEvent[] => {
             title: eventData.title,
             description: eventData.description,
             date: eventData.date,
+            endDate: eventData.endDate || undefined,
             time: eventData.time,
             venue: eventData.venue,
             location: eventData.venue,
@@ -325,7 +326,12 @@ export const getSalsaEventsFromPayload = async (): Promise<SalsaEvent[]> => {
                     slug: doc.slug,
                     title: doc.title,
                     description: doc.description || '',
-                    date: new Date(doc.date).toISOString().split('T')[0], // Format as YYYY-MM-DD
+                    date: new Date(doc.date)
+                        .toISOString()
+                        .split('T')[0], // Format as YYYY-MM-DD
+                    endDate: doc.endDate
+                        ? new Date(doc.endDate).toISOString().split('T')[0]
+                        : undefined,
                     time: doc.time || '',
                     venue: doc.venue,
                     location: doc.venue, // Use venue as location for backwards compatibility

@@ -77,6 +77,7 @@ const EventsImportPage: React.FC = () => {
                         date:
                             csvEvent.date ||
                             new Date().toISOString().split('T')[0],
+                        endDate: csvEvent.endDate || undefined,
                         time: csvEvent.time || '',
                         venue: csvEvent.venue || 'TBD',
                         city: csvEvent.city || 'Amsterdam',
@@ -198,17 +199,17 @@ const EventsImportPage: React.FC = () => {
                 </h3>
                 <div className='import-instructions-content'>
                     <p>
-                        <strong>Required columns:</strong> title, date, venue,
-                        city
+                        <strong>Required columns:</strong> title, date (or
+                        startDate), venue, city
                     </p>
                     <p>
-                        <strong>Optional columns:</strong> description, time,
-                        type, url, price, tags, vibe, imageUrl, isRecurring,
-                        frequency
+                        <strong>Optional columns:</strong> description, endDate,
+                        time, type, url, price, tags, vibe, imageUrl,
+                        isRecurring, frequency
                     </p>
                     <p>
                         <strong>Date format:</strong> YYYY-MM-DD (e.g.,
-                        2024-12-28)
+                        2024-12-28). Use endDate for multi-day events.
                     </p>
                     <p>
                         <strong>Time format:</strong> HH:MM-HH:MM (e.g.,

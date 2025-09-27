@@ -10,9 +10,6 @@ import sharp from 'sharp';
 import { Users } from './collections/Users';
 import { Media } from './collections/Media';
 import { Events } from './collections/Events';
-import { PublicUsers } from './collections/PublicUsers';
-import { EventAttendances } from './collections/EventAttendances';
-import { EventComments } from './collections/EventComments';
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -28,9 +25,6 @@ export default buildConfig({
         Users,
         Media,
         Events,
-        PublicUsers,
-        EventAttendances,
-        EventComments,
     ],
     editor: lexicalEditor(),
     secret: process.env.PAYLOAD_SECRET || '',

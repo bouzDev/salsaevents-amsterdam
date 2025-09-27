@@ -11,13 +11,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
             priority: 1,
         },
         {
-            url: `${baseUrl}/festivals`,
+            url: `${baseUrl}/workshops`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
             priority: 0.8,
         },
         {
-            url: `${baseUrl}/locations`,
+            url: `${baseUrl}/festivals`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
             priority: 0.8,
@@ -39,13 +39,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
             lastModified: new Date(),
             changeFrequency: 'monthly',
             priority: 0.3,
-        },
-        // Events sitemap index
-        {
-            url: `${baseUrl}/events-sitemap.xml`,
-            lastModified: new Date(),
-            changeFrequency: 'daily',
-            priority: 0.9,
         },
     ];
 }
