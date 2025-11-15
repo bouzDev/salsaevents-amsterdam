@@ -124,6 +124,9 @@ const generateWeeklyEvents = (
 
         const eventYMDInAms = formatYMDInTZ(eventDateUTC);
 
+        // Only include URL if it's not empty and not just whitespace
+        const cleanUrl = weeklyEvent.url?.trim();
+
         events.push({
             id: `${weeklyEvent.id}-${eventYMDInAms}`,
             title: weeklyEvent.title,
@@ -133,7 +136,7 @@ const generateWeeklyEvents = (
             venue: weeklyEvent.venue,
             location: weeklyEvent.venue,
             city: weeklyEvent.city,
-            url: weeklyEvent.url || undefined,
+            url: cleanUrl && cleanUrl.length > 0 ? cleanUrl : undefined,
             type: weeklyEvent.type as
                 | 'party'
                 | 'workshop'
@@ -218,6 +221,8 @@ const getFallbackEvents = (): SalsaEvent[] => {
         const tags = eventData.tags
             ? eventData.tags.split(',').map((tag: string) => tag.trim())
             : [];
+        // Only include URL if it's not empty and not just whitespace
+        const cleanUrl = eventData.url?.trim();
         events.push({
             id: eventData.id,
             title: eventData.title,
@@ -227,7 +232,7 @@ const getFallbackEvents = (): SalsaEvent[] => {
             venue: eventData.venue,
             location: eventData.venue,
             city: eventData.city,
-            url: eventData.url || undefined,
+            url: cleanUrl && cleanUrl.length > 0 ? cleanUrl : undefined,
             type: eventData.type as
                 | 'party'
                 | 'workshop'
@@ -284,6 +289,8 @@ export const getSalsaEventsServer = async (): Promise<SalsaEvent[]> => {
             const tags = eventData.tags
                 ? eventData.tags.split(',').map((tag: string) => tag.trim())
                 : [];
+            // Only include URL if it's not empty and not just whitespace
+            const cleanUrl = eventData.url?.trim();
             events.push({
                 id: eventData.id,
                 title: eventData.title,
@@ -293,7 +300,7 @@ export const getSalsaEventsServer = async (): Promise<SalsaEvent[]> => {
                 venue: eventData.venue,
                 location: eventData.venue,
                 city: eventData.city,
-                url: eventData.url || undefined,
+                url: cleanUrl && cleanUrl.length > 0 ? cleanUrl : undefined,
                 type: eventData.type as
                     | 'party'
                     | 'workshop'

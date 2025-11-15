@@ -65,6 +65,12 @@ export default function EventCard({ event }: EventCardProps) {
         locale: enUS,
     });
 
+    // Check if URL is valid (not empty, not just whitespace, and starts with http/https)
+    const hasValidUrl =
+        event.url &&
+        event.url.trim().length > 0 &&
+        (event.url.startsWith('http://') || event.url.startsWith('https://'));
+
     const handleMoreInfoClick = () => {
         if (event.url) {
             trackEventClick(event.title, event.type, event.url);
@@ -152,7 +158,7 @@ export default function EventCard({ event }: EventCardProps) {
 
                 {/* Right Content */}
                 <div className='flex-shrink-0'>
-                    {event.url && (
+                    {hasValidUrl && (
                         <a
                             href={event.url}
                             target='_blank'
